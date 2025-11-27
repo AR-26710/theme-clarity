@@ -7,6 +7,8 @@ import SwupHeadPlugin from "@swup/head-plugin";
 import SwupPreloadPlugin from "@swup/preload-plugin";
 import SwupScrollPlugin from "@swup/scroll-plugin";
 import SwupScriptsPlugin from "@swup/scripts-plugin";
+import { Fancybox } from "@fancyapps/ui";
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 import type { ThemeConfig } from "./types/config";
 
@@ -157,6 +159,18 @@ const swup = new Swup({
 
 Alpine.start();
 
+// 搜索快捷键 Ctrl+K / Cmd+K
+document.addEventListener("keydown", (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+    e.preventDefault();
+    // @ts-ignore - SearchWidget 由 Halo 搜索插件提供
+    if (typeof SearchWidget !== "undefined") {
+      // @ts-ignore
+      SearchWidget.open();
+    }
+  }
+});
+
 function getThemeConfig(): ThemeConfig | undefined {
   const el = document.querySelector<HTMLScriptElement>("#theme-config");
   if (!el?.textContent) return undefined;
@@ -189,13 +203,24 @@ swup.hooks.on("visit:start", () => {
 swup.hooks.on("content:replace", () => {
   console.log("Content replaced");
   // mountWidgets();
+  initFancybox(); // 重新绑定 Fancybox
 });
+
+// 初始化 Fancybox 灯箱
+function initFancybox() {
+  // 销毁之前的绑定（避免 swup 切换页面后重复绑定）
+  Fancybox.destroy();
+
+  // 自动绑定文章内的图片
+  Fancybox.bind(".article img:not(.no-lightbox)");
+}
 
 // 页面初始加载
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM fully loaded and parsed");
   mountWidgets();
   initDropdownMenus();
+  initFancybox();
 });
 
 // 初始化下拉菜单定位

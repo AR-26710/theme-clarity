@@ -1,0 +1,958 @@
+$breakpoint-mobile: 768px !default;
+
+// ========================================
+// 文章头部 (PostHeader)
+// ========================================
+.post-header {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	position: relative;
+	margin: 0.5rem;
+	border-radius: 1rem;
+	background-color: var(--c-bg-2);
+	color: var(--c-text);
+
+	@media (max-width: $breakpoint-mobile) {
+		margin: 0;
+		border-radius: 0;
+	}
+
+	&:hover .operations {
+		opacity: 1;
+	}
+
+	&.has-cover {
+		position: relative;
+		overflow: hidden;
+		overflow: clip;
+		min-height: 256px;
+		max-height: 320px;
+		color: var(--c-text);
+		transition: font-size 0.2s;
+
+		&:hover {
+			font-size: 0.8em;
+		}
+
+		.post-title {
+			margin: 0 1rem 1rem;
+			background-image: none;
+			text-shadow: none;
+		}
+	}
+}
+
+.operations {
+	position: absolute;
+	top: 0.8em;
+	opacity: 0;
+	inset-inline-end: 1em;
+	color: var(--c-text-1);
+	transition: opacity 0.2s;
+	z-index: 2;
+}
+
+.z-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3em;
+	padding: 0.4em 0.8em;
+	border-radius: 0.5em;
+	background-color: var(--c-bg-a80);
+	backdrop-filter: blur(4px);
+	font-size: 0.85em;
+	color: inherit;
+	cursor: pointer;
+	transition: all 0.2s;
+
+	&:hover {
+		background-color: var(--c-bg-soft);
+		color: var(--c-primary);
+	}
+}
+
+.post-cover {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.post-title {
+	padding: 0.8em 1rem;
+	font-size: 1.6em;
+	line-height: 1.2;
+	z-index: 1;
+}
+
+.post-nav {
+	padding: 0.8em 1rem;
+}
+
+.post-info {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5em 1.2em;
+	font-size: 0.8rem;
+	color: var(--c-text-2);
+	
+	// 毛玻璃背景
+	width: fit-content;
+	padding: 0.4em 0.8em;
+	border-radius: 0.5rem;
+	background-color: var(--c-bg-a80); // 适配深浅色模式的半透明背景
+	backdrop-filter: blur(8px);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+	span {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3em;
+	}
+
+	a {
+		color: inherit;
+		
+		&:hover {
+			color: var(--c-primary);
+		}
+	}
+}
+
+// ========================================
+// 文章摘要 (Excerpt)
+// ========================================
+.md-excerpt {
+	margin: 1rem;
+	padding: 0.5rem;
+	font-size: 0.9em;
+	color: var(--c-text-2);
+
+	> [class^="icon-"] {
+		margin-inline-end: 0.3em;
+	}
+
+	&:hover {
+		color: currentcolor;
+	}
+}
+
+// ========================================
+// 文章正文样式
+// ========================================
+.article {
+	margin: 1rem;
+	line-height: 1.8;
+
+
+	p {
+		margin: 0.5em 0;
+	}
+
+	> *, > p {
+		margin: 1rem 0;
+	}
+
+	// 锚点高亮
+	:target {
+		border-radius: 0.2rem;
+		animation: highlight 3s;
+
+		@keyframes highlight {
+			50% { background-color: var(--c-primary-soft); }
+		}
+	}
+
+	// 标题通用样式
+	> :where(h1, h2, h3, h4, h5, h6) {
+		position: relative;
+		margin: 1.6em 0 0.8em;
+		font-family: var(--font-creative);
+		font-weight: 550;
+		color: var(--c-text);
+
+		// 标题锚点链接
+		> a {
+			text-decoration: none;
+			color: inherit;
+
+			&:hover {
+				color: var(--c-primary);
+			}
+		}
+	}
+
+	> h1 { font-size: 2em; }
+	> h2 { font-size: 1.5em; }
+	> h3 { font-size: 1.25em; }
+	> h4 { font-size: 1.1em; }
+	> h5 { font-size: 1em; }
+	> h6 { font-size: 0.9em; color: var(--c-text-2); }
+
+	// ==========================================
+	// 技术文章样式 (.md-tech)
+	// ==========================================
+	&.md-tech {
+		// h2 链接前的 # 符号
+		> h2 > a::before {
+			content: "#";
+			color: white;
+		}
+
+		// h2-h6 链接前的装饰块
+		> :where(h2, h3, h4, h5, h6) > a::before {
+			content: "";
+			margin-inline-end: 0.5em;
+			padding: 0 2px;
+			border-radius: 0.2rem;
+			background-color: var(--c-primary);
+		}
+
+		// 无链接的标题也加装饰块
+		> :where(h2, h3, h4, h5, h6):not(:has(> a))::before {
+			content: "";
+			display: inline-block;
+			width: 4px;
+			height: 1em;
+			margin-inline-end: 0.5em;
+			border-radius: 2px;
+			background-color: var(--c-primary);
+			vertical-align: middle;
+		}
+	}
+
+	// ==========================================
+	// 故事/散文样式 (.md-story)
+	// ==========================================
+	&.md-story {
+		h1, h2, h3, h4, h5, h6, .title-like {
+			position: relative;
+			font-family: var(--font-serif);
+			font-weight: bolder;
+			text-align: center;
+			text-wrap: balance;
+		}
+
+		// h2 前的圆形渐变装饰
+		> h2::before {
+			content: "";
+			position: absolute;
+			width: 2.5em;
+			height: 2.5em;
+			margin: -0.4em 0 0 -0.7em;
+			border-radius: 2.5em;
+			background-image: linear-gradient(var(--c-primary-soft), transparent);
+			z-index: -1;
+		}
+
+		// h3 后的小装饰块
+		> h3::after {
+			content: "";
+			position: absolute;
+			bottom: 0;
+			width: 0.4em;
+			height: 0.7em;
+			background-color: var(--c-primary-soft);
+		}
+
+		// 段落首行缩进
+		> p, :not([class]) > p {
+			text-indent: 2em;
+
+			> [class] {
+				text-indent: 0;
+			}
+		}
+	}
+
+	// ==========================================
+	// 默认样式（无特殊类名时）- 所有标题加装饰块
+	// ==========================================
+	&:not(.md-tech):not(.md-story) {
+		> :where(h1, h2, h3, h4, h5, h6)::before {
+			content: "";
+			display: inline-block;
+			width: 4px;
+			height: 1em;
+			margin-inline-end: 0.5em;
+			border-radius: 2px;
+			background-color: var(--c-primary);
+			vertical-align: middle;
+		}
+
+		// 如果标题包含链接，隐藏标题的装饰块，改用链接的
+		> :where(h1, h2, h3, h4, h5, h6):has(> a)::before {
+			display: none;
+		}
+
+		> :where(h1, h2, h3, h4, h5, h6) > a::before {
+			content: "";
+			display: inline-block;
+			width: 4px;
+			height: 1em;
+			margin-inline-end: 0.5em;
+			border-radius: 2px;
+			background-color: var(--c-primary);
+			vertical-align: middle;
+		}
+	}
+
+	// ==========================================
+	// 列表样式
+	// ==========================================
+	:where(menu, ol, ul):not([class]) {
+		margin: 0.5em 0;
+		padding-inline-start: 1.5em;
+		font-size: 0.95rem;
+
+		&, ol ol ol {
+			list-style: revert;
+		}
+
+		ol, ol ol ol ol {
+			list-style-type: lower-alpha;
+		}
+
+		ol ol, ol ol ol ol ol {
+			list-style-type: lower-roman;
+		}
+
+		ol, ul {
+			margin-top: 0;
+		}
+
+		> li {
+			margin: 0.3em 0;
+
+			&::marker {
+				color: var(--c-primary);
+			}
+		}
+	}
+
+	// ==========================================
+	// 任务列表 (Checkbox List)
+	// ==========================================
+	ul[data-type="taskList"] {
+		list-style: none;
+		padding-inline-start: 0;
+		margin: 0.5em 0;
+
+		> li[data-type="taskItem"] {
+			display: flex;
+			align-items: flex-start;
+			gap: 0.5em;
+			margin: 0.3em 0;
+
+			> label {
+				display: flex;
+				align-items: center;
+				flex-shrink: 0;
+				margin-top: 0.2em;
+
+				input[type="checkbox"] {
+					width: 1.1em;
+					height: 1.1em;
+					accent-color: var(--c-primary);
+					cursor: pointer;
+				}
+
+				> span {
+					display: none; 
+				}
+			}
+
+			> div {
+				flex: 1;
+
+				> p {
+					margin: 0;
+				}
+			}
+
+			// 已完成的任务
+			&[data-checked="true"] > div {
+				opacity: 0.6;
+				text-decoration: line-through;
+				text-decoration-color: var(--c-text-3);
+			}
+		}
+	}
+
+	// ==========================================
+	// 引用块
+	// ==========================================
+	blockquote {
+		margin: 1em 0;
+		padding: 0.5rem 1rem;
+		border-inline-start: 4px solid var(--c-primary);
+		border-radius: 4px;
+		background-color: var(--c-bg-2);
+		font-size: 0.95rem;
+		color: var(--c-text-2);
+
+		p:first-child {
+			margin-top: 0;
+		}
+
+		p:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	// ==========================================
+	// 图片
+	// ==========================================
+	img {
+		max-width: 100%;
+
+		// 行内小图标
+		&.icon {
+			height: 1.4em;
+			vertical-align: middle;
+			transform: translateY(-0.1em);
+		}
+
+		&:not([class]), &.image {
+			display: block;
+			margin: 1.5rem auto;
+			border-radius: 0.5rem;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			cursor: url("/themes/theme-clarity/assets/images/zoom-in.cur"), zoom-in;
+			transition: transform 0.2s, box-shadow 0.2s;
+
+			&:hover {
+				transform: scale(1.02);
+				box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+			}
+		}
+
+		// 禁用灯箱的图片
+		&.no-lightbox {
+			cursor: default;
+
+			&:hover {
+				transform: none;
+			}
+		}
+	}
+
+	// 图片说明
+	figcaption {
+		text-align: center;
+		font-size: 0.85em;
+		color: var(--c-text-3);
+		margin-top: -0.5rem;
+	}
+
+	// ==========================================
+	// 分割线
+	// ==========================================
+	hr {
+		margin: 3em 0;
+		border: none;
+		border-top: 3px dashed var(--c-border);
+	}
+
+	// ==========================================
+	// 文字样式
+	// ==========================================
+	
+	// 加粗 - 底部高亮效果
+	strong, b {
+		font-weight: 600;
+		background: linear-gradient(var(--c-primary-soft), var(--c-primary-soft)) no-repeat center bottom / 100% 30%;
+	}
+
+	// 斜体
+	em, i {
+		font-style: italic;
+		color: var(--c-text-2);
+	}
+
+	// 删除线
+	del, s {
+		opacity: 0.5;
+		text-decoration: line-through;
+		text-decoration-color: var(--c-text-3);
+	}
+
+	// 下划线
+	u, ins {
+		text-decoration: underline;
+		text-decoration-color: var(--c-primary);
+		text-underline-offset: 0.2em;
+	}
+
+	// 标记/高亮
+	mark {
+		padding: 0.1em 0.2em;
+		border-radius: 0.2em;
+		background-color: var(--c-primary-soft);
+		color: inherit;
+	}
+
+	// 上标和下标
+	sub, sup {
+		font-size: 0.75em;
+		color: var(--c-text-2);
+	}
+
+	// 缩写
+	abbr[title] {
+		text-decoration: underline dotted;
+		text-underline-offset: 0.2em;
+		cursor: help;
+	}
+
+	// 键盘按键
+	kbd {
+		display: inline-block;
+		padding: 0.1em 0.4em;
+		border: 1px solid var(--c-border);
+		border-radius: 0.25em;
+		background-color: var(--c-bg-2);
+		box-shadow: 0 2px 0 var(--c-border);
+		font-family: var(--font-monospace);
+		font-size: 0.85em;
+	}
+
+	// ==========================================
+	// 行内代码
+	// ==========================================
+	:not(pre) > code {
+		margin: 0 0.1em;
+		padding: 0.1em 0.4em;
+		border: 1px solid var(--c-border);
+		border-radius: 4px;
+		background-color: var(--c-bg-2);
+		font-family: var(--font-monospace);
+		font-size: 0.85em;
+		white-space: break-spaces;
+
+		// 使用 color-mix 让边框和背景更和谐
+		@supports (color: color-mix(in srgb, transparent, transparent)) {
+			border-color: color-mix(in srgb, currentcolor 15%, transparent);
+			background-color: color-mix(in srgb, currentcolor 5%, transparent);
+		}
+	}
+
+	// ==========================================
+	// 代码块
+	// ==========================================
+	pre {
+		position: relative;
+		overflow: auto;
+		margin: 1em 0;
+		padding: 1em;
+		border-radius: 0.5em;
+		background-color: var(--c-bg-2);
+		font-family: var(--font-monospace);
+		font-size: 0.8125rem;
+		line-height: 1.5;
+		tab-size: 4;
+		color: var(--c-text);
+
+		code {
+			background: none;
+			border: none;
+			padding: 0;
+			font-size: inherit;
+			color: inherit;
+		}
+
+		// 代码块语言标签（如果有）
+		&[data-language]::before {
+			content: attr(data-language);
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding: 0.2em 0.6em;
+			border-radius: 0 0.5em 0 0.5em;
+			background-color: var(--c-bg-3);
+			font-size: 0.75em;
+			color: var(--c-text-3);
+			text-transform: uppercase;
+		}
+	}
+
+	// Halo 代码高亮样式覆盖
+	.hljs {
+		background: transparent;
+		color: var(--c-text);
+	}
+
+	// ==========================================
+	// 表格
+	// ==========================================
+	table {
+		width: 100%;
+		margin: 1em 0;
+		border-collapse: collapse;
+		border-radius: 0.5em;
+		overflow: hidden;
+		font-size: 0.9em;
+
+		th, td {
+			padding: 0.6em 1em;
+			border: 1px solid var(--c-border);
+			text-align: start;
+		}
+
+		th {
+			background-color: var(--c-bg-2);
+			font-weight: 600;
+			color: var(--c-text);
+		}
+
+		tr:nth-child(even) td {
+			background-color: var(--c-bg-soft);
+		}
+
+		tr:hover td {
+			background-color: var(--c-primary-soft);
+		}
+	}
+
+	// ==========================================
+	// 链接样式 (来自 blog-v3 ProseA)
+	// ==========================================
+	a:not([class]) {
+		margin: -0.1em -0.2em;
+		padding: 0.1em 0.2em;
+		background: linear-gradient(var(--c-primary-soft), var(--c-primary-soft)) no-repeat center bottom / 100% 0.1em;
+		color: var(--c-primary);
+		text-decoration: none;
+		transition: all 0.2s;
+
+		&:hover {
+			border-radius: 0.3em;
+			background-size: 100% 100%;
+		}
+	}
+
+	// ==========================================
+	// 定义列表
+	// ==========================================
+	dl {
+		margin: 1em 0;
+
+		dt {
+			font-weight: 600;
+			color: var(--c-text);
+			margin-top: 0.5em;
+		}
+
+		dd {
+			margin-inline-start: 1.5em;
+			color: var(--c-text-2);
+		}
+	}
+
+	// ==========================================
+	// 详情/折叠
+	// ==========================================
+	details {
+		margin: 1em 0;
+		padding: 0.5em 1em;
+		border: 1px solid var(--c-border);
+		border-radius: 0.5em;
+		background-color: var(--c-bg-soft);
+
+		summary {
+			cursor: pointer;
+			font-weight: 500;
+			color: var(--c-text);
+
+			&:hover {
+				color: var(--c-primary);
+			}
+
+			&::marker {
+				color: var(--c-primary);
+			}
+		}
+
+		&[open] {
+			padding-bottom: 1em;
+		}
+	}
+}
+
+// ========================================
+// 文章页脚 (PostFooter)
+// ========================================
+.post-footer {
+	margin: 2rem 0.5rem;
+	border: 1px solid var(--c-border);
+	border-radius: 1rem;
+	background-color: var(--c-bg-2);
+
+	section {
+		padding: 1rem;
+
+		& + section {
+			border-top: 1px solid var(--c-border);
+		}
+	}
+
+	.title {
+		font-weight: bold;
+		color: var(--c-text);
+	}
+
+	.content {
+		margin-top: 0.5em;
+		font-size: 0.9rem;
+
+		a {
+			color: var(--c-primary);
+			text-decoration: underline;
+			text-decoration-color: transparent;
+			transition: text-decoration-color 0.2s;
+
+			&:hover {
+				text-decoration-color: var(--c-primary);
+			}
+		}
+	}
+}
+
+// 标签列表
+.tags-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5em;
+
+	.tag-item {
+		padding: 0.2em 0.6em;
+		border-radius: 0.3em;
+		background-color: var(--c-bg-soft);
+		font-size: 0.85em;
+		color: var(--c-text-2);
+		text-decoration: none !important;
+		transition: all 0.2s;
+
+		&:hover {
+			background-color: var(--c-primary-soft);
+			color: var(--c-primary);
+		}
+	}
+}
+
+// ========================================
+// 上下篇导航 (PostSurround)
+// ========================================
+.surround-post {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	margin: 3rem 1rem;
+}
+
+.surround-link {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	transition: color 0.2s;
+
+	&.no-link {
+		opacity: 0.4;
+		user-select: none;
+	}
+
+	&.align-end {
+		flex-direction: row-reverse;
+		text-align: end;
+	}
+
+	> .surround-text {
+		transition: transform 0.2s;
+
+		> .title {
+			display: block;
+		}
+
+		> .date {
+			display: block;
+			opacity: 0.6;
+			font-size: 0.8rem;
+		}
+	}
+
+	> [class^="icon-"] {
+		opacity: 0.5;
+		font-size: 2rem;
+		transition: all 0.2s;
+	}
+
+	&:not(.no-link):hover {
+		color: var(--c-primary);
+
+		> .surround-text {
+			transform: translateX(-1em);
+		}
+
+		&.align-end > .surround-text {
+			transform: translateX(1em);
+		}
+
+		> [class^="icon-"] {
+			opacity: 0.2;
+			transform: scale(2);
+		}
+	}
+}
+
+// ========================================
+// 评论区
+// ========================================
+.z-comment {
+	margin: 3rem 1rem;
+
+	> h3 {
+		margin-top: 3rem;
+		font-size: 1.25rem;
+	}
+}
+
+// Fancybox 灯箱样式
+.fancybox__container {
+	// 深色毛玻璃背景
+	--fancybox-bg: rgba(24, 24, 27, 0.95);
+	backdrop-filter: blur(20px);
+
+	// 工具栏 - 顶部固定
+	.fancybox__toolbar {
+		position: absolute;
+		top: 0;
+		right: 0;
+		background: transparent;
+		padding: 1rem;
+		z-index: 20;
+	}
+
+	// 所有按钮统一样式
+	.fancybox__button {
+		width: 40px;
+		height: 40px;
+		background: rgba(255, 255, 255, 0.08);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 10px;
+		color: rgba(255, 255, 255, 0.8);
+		backdrop-filter: blur(10px);
+		transition: all 0.2s ease;
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.15);
+			border-color: rgba(255, 255, 255, 0.2);
+			color: #fff;
+		}
+
+		svg {
+			width: 20px;
+			height: 20px;
+			stroke-width: 2;
+		}
+	}
+
+	// 关闭按钮特殊样式
+	.fancybox__button--close {
+		&:hover {
+			background: rgba(239, 68, 68, 0.2);
+			border-color: rgba(239, 68, 68, 0.3);
+			color: #ef4444;
+		}
+	}
+
+	// 图片容器
+	.fancybox__content {
+		background: transparent;
+		border-radius: 12px;
+		overflow: hidden;
+		box-shadow: 
+			0 0 0 1px rgba(255, 255, 255, 0.1),
+			0 25px 50px -12px rgba(0, 0, 0, 0.6);
+	}
+
+	// 图片本身
+	.fancybox__image {
+		border-radius: 12px;
+	}
+
+	// 图片说明
+	.fancybox__caption {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 3rem 1.5rem 1.5rem;
+		background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+		font-size: 0.875rem;
+		color: rgba(255, 255, 255, 0.9);
+		text-align: center;
+		pointer-events: none;
+	}
+
+	// 导航箭头
+	.fancybox__nav .fancybox__button {
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+	}
+
+	// 计数器
+	.fancybox__infobar {
+		position: absolute;
+		top: 1rem;
+		left: 1rem;
+		padding: 0.5rem 1rem;
+		background: rgba(255, 255, 255, 0.08);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 20px;
+		backdrop-filter: blur(10px);
+		font-size: 0.8rem;
+		color: rgba(255, 255, 255, 0.7);
+	}
+
+	// 缩略图
+	.fancybox__thumbs {
+		background: rgba(0, 0, 0, 0.6);
+		backdrop-filter: blur(10px);
+		padding: 0.75rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+		.fancybox__thumb {
+			border-radius: 8px;
+			border: 2px solid transparent;
+			opacity: 0.6;
+			transition: all 0.2s;
+
+			&:hover {
+				opacity: 0.9;
+			}
+
+			&.is-selected {
+				opacity: 1;
+				border-color: var(--c-primary);
+			}
+		}
+	}
+
+	// 加载动画
+	.fancybox__spinner {
+		width: 40px;
+		height: 40px;
+
+		circle {
+			stroke: var(--c-primary);
+		}
+	}
+
+	// 幻灯片背景
+	.fancybox__slide {
+		padding: 2rem;
+	}
+}

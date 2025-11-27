@@ -1,9 +1,10 @@
 :root {
-	--font-basic: "InterVariable", "Noto Sans SC-Local", ui-sans-serif, "sans-serif", "Noto Sans SC", system-ui, sans-serif;
-	--font-serif: "Noto Serif SC-Local", "Noto Serif SC", serif;
-	--font-creative: "InterVariable", "Noto Sans SC-Local", "Noto Sans SC", system-ui, sans-serif;
+	--font-basic: "InterVariable", system-ui, -apple-system, "Microsoft YaHei", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	--font-serif: "Noto Serif SC", "Songti SC", "SimSun", "Times New Roman", Times, serif;
+	--font-creative: "Alimama FangYuanTi VF", var(--font-basic);
+	--font-logo: "Alimama FangYuanTi VF", var(--font-basic);
 	--font-stroke-free: "Inter", "Microsoft YaHei", "MiSans", system-ui, sans-serif;
-	--font-monospace: ui-monospace, "JetBrains Mono", "Cascadia Code", "Consolas", "monospace", var(--font-basic), monospace;
+	--font-monospace: "JetBrains Mono", "Cascadia Code", "Consolas", "Menlo", "Monaco", monospace;
 
 	@media (max-resolution: 1.2dppx) {
 		--font-basic: "InterVariable", system-ui, sans-serif;

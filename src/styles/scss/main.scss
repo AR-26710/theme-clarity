@@ -4,6 +4,21 @@
 	--transform-start-far: translateX(-100%);
 	--transform-end-far: translateX(100%);
 
+	// Halo 搜索插件样式变量
+	--halo-search-widget-base-font-size: 1rem;
+	--halo-search-widget-base-font-family: var(--font-basic, sans-serif);
+	--halo-search-widget-base-rounded: 0.75rem;
+	--halo-search-widget-base-bg-color: var(--c-bg);
+	--halo-search-widget-primary-color: var(--c-primary);
+	--halo-search-widget-muted-color: var(--c-text-3);
+	--halo-search-widget-content-color: var(--c-text);
+	--halo-search-widget-modal-bg-color: var(--ld-bg-card);
+	--halo-search-widget-modal-layer-color: rgba(0, 0, 0, 0.5);
+	--halo-search-widget-hit-bg-color: var(--c-bg-soft);
+	--halo-search-widget-divider-color: var(--c-border);
+	--halo-search-widget-kbd-border-color: var(--c-border);
+	--halo-search-widget-kbd-shadow: 0 2px 0 var(--c-border);
+
 	overflow-wrap: break-word;
 	background-color: var(--c-bg-1);
 	font-family: var(--font-basic, sans-serif);

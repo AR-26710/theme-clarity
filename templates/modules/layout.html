@@ -9,10 +9,22 @@
     <link rel="icon" th:href="${site.logo}" />
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.cn" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.cn/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Noto+Sans+SC:wght@100..900&display=swap"
+      th:href="@{/assets/fonts/JetBrainsMono-Regular/jetBrainsMonoRegular.css}"
+      media="print"
+      onload="this.media='all'"
+    />
+    <link
+      rel="stylesheet"
+      th:href="@{/assets/fonts/JetBrainsMono-Italic/jetBrainsMonoItalic.css}"
+      media="print"
+      onload="this.media='all'"
+    />
+
+    <link
+      rel="stylesheet"
+      th:href="@{/assets/fonts/AlimamaFangYuanTiVF/alimamaFangYuanTiVF.css}"
       media="print"
       onload="this.media='all'"
     />

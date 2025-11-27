@@ -29,3 +29,6 @@ $breakpoint-widescreen: 1080px;
   $breakpoint-phone: $breakpoint-phone
 );
 @use "./scss/components/slide";
+@use "./scss/components/post" with (
+  $breakpoint-mobile: $breakpoint-mobile
+);

@@ -4,13 +4,14 @@
 
   <!-- 导航菜单区域 -->
   <nav class="sidebar-nav scrollcheck-y">
-    <!-- 搜索按钮 -->
     <div
+      th:if="${pluginFinder.available('PluginSearchWidget')}"
       class="search-btn sidebar-nav-item gradient-card"
-      onclick="window.dispatchEvent(new CustomEvent('open-search'))"
+      onclick="SearchWidget.open()"
     >
       <span class="icon-[ph--magnifying-glass-bold]"></span>
       <span class="nav-text">搜索</span>
+      <kbd class="search-shortcut" x-data x-text="navigator.platform.includes('Mac') ? '⌘K' : 'Ctrl+K'"></kbd>
     </div>
 
     <!-- 从 Halo 后台读取的菜单 -->

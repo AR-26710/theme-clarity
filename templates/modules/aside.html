@@ -7,103 +7,100 @@
 ></div>
 
 <aside th:fragment="aside" id="z-aside">
-  <section class="widget" th:if="${theme.config.aside.show_user_info}">
-    <hgroup class="widget-title text-creative">博客统计</hgroup>
-    <div class="widget-body widget-card">
-      <dl class="dl-group small">
-        <div>
-          <dt>运营时长</dt>
-          <dd id="site-runtime" th:title="'博客于' + ${theme.config.aside.site_start_time} + '上线'">-</dd>
-        </div>
-        <th:block th:with="latestPosts = ${postFinder.list(1, 1)}">
-          <div th:if="${not #lists.isEmpty(latestPosts.items)}">
-            <dt>上次更新</dt>
-            <dd class="time-ago" th:data-time="${latestPosts.items[0].spec.publishTime}">-</dd>
+  <!-- 非文章页：显示博客统计、技术信息、社区群组 -->
+  <th:block th:if="${post == null}">
+    <section class="widget" th:if="${theme.config.aside.show_user_info}">
+      <hgroup class="widget-title text-creative">博客统计</hgroup>
+      <div class="widget-body widget-card">
+        <dl class="dl-group small">
+          <div>
+            <dt>运营时长</dt>
+            <dd id="site-runtime" th:title="'博客于' + ${theme.config.aside.site_start_time} + '上线'">-</dd>
           </div>
-        </th:block>
-        <div>
-          <dt>文章数目</dt>
-          <dd th:text="${postFinder.archives(1, 1).total}">0</dd>
-        </div>
-      </dl>
-    </div>
-  </section>
-
-  <!-- ==================== -->
-  <!-- 2. 技术信息 (BlogTech) -->
-  <!-- ==================== -->
-  <section class="widget">
-    <hgroup class="widget-title text-creative">技术信息</hgroup>
-    <div class="widget-body widget-card">
-      <dl class="dl-group medium">
-        <div>
-          <dt>构建平台</dt>
-          <dd class="platform-halo"><img th:src="@{/assets/images/logo.png}" alt="Halo" /> Halo</dd>
-        </div>
-        <div>
-          <dt>图片存储</dt>
-          <dd th:text="${theme.config.aside.image_hosting}">本地存储</dd>
-        </div>
-        <div>
-          <dt>软件协议</dt>
-          <dd>GPL-3.0</dd>
-        </div>
-        <div>
-          <dt>文章许可</dt>
-          <dd th:text="${theme.config.aside.license}">CC BY-NC-SA 4.0</dd>
-        </div>
-        <div>
-          <dt>规范域名</dt>
-          <dd class="domain-text" th:text="${site.url}"></dd>
-        </div>
-      </dl>
-
-      <!-- 可展开的构建信息 -->
-      <div class="z-expand" x-data="{ expand: false }">
-        <div class="expand-content" x-show="expand" x-collapse>
-          <dl class="dl-group small build-info">
-            <div>
-              <dt>Theme</dt>
-              <dd>Clarity</dd>
+          <th:block th:with="latestPosts = ${postFinder.list(1, 1)}">
+            <div th:if="${not #lists.isEmpty(latestPosts.items)}">
+              <dt>上次更新</dt>
+              <dd class="time-ago" th:data-time="${latestPosts.items[0].spec.publishTime}">-</dd>
             </div>
-            <div>
-              <dt>Version</dt>
-              <dd th:text="${theme.spec.version}">1.0.0</dd>
-            </div>
-            <div>
-              <dt>Framework</dt>
-              <dd>Halo 2.x</dd>
-            </div>
-          </dl>
-        </div>
-        <button class="toggle-btn in-place" @click="expand = !expand">
-          <span class="icon-[ph--caret-double-down-bold] toggle-icon" :class="{ 'expand': expand }"></span>
-          <span x-text="expand ? '收起构建信息' : '展开构建信息'"></span>
-        </button>
+          </th:block>
+          <div>
+            <dt>文章数目</dt>
+            <dd th:text="${postFinder.archives(1, 1).total}">0</dd>
+          </div>
+        </dl>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ==================== -->
-  <!-- 3. 博客/技术社区 (CommGroup) -->
-  <!-- ==================== -->
-  <section class="widget dim" th:if="${not #strings.isEmpty(theme.config.aside.community_group_image)}">
-    <hgroup class="widget-title text-creative" th:text="${theme.config.aside.community_group_title}">
-      博客/技术社区
-    </hgroup>
-    <div class="widget-body widget-card with-bg">
-      <img class="bg-img bg-right" th:src="${theme.config.aside.community_group_image}" alt="" loading="lazy" />
-      <div class="comm-title text-creative" th:text="${theme.config.aside.community_group_name}">技术交流群</div>
-      <p class="comm-tip">
-        <span class="icon-[ph--chat-circle-dots-bold]"></span>
-        <span th:text="${theme.config.aside.community_group_desc}">169994096</span>
-      </p>
-    </div>
-  </section>
+    <!-- 技术信息 -->
+    <section class="widget">
+      <hgroup class="widget-title text-creative">技术信息</hgroup>
+      <div class="widget-body widget-card">
+        <dl class="dl-group medium">
+          <div>
+            <dt>构建平台</dt>
+            <dd class="platform-halo"><img th:src="@{/assets/images/logo.png}" alt="Halo" /> Halo</dd>
+          </div>
+          <div>
+            <dt>图片存储</dt>
+            <dd th:text="${theme.config.aside.image_hosting}">本地存储</dd>
+          </div>
+          <div>
+            <dt>软件协议</dt>
+            <dd>GPL-3.0</dd>
+          </div>
+          <div>
+            <dt>文章许可</dt>
+            <dd th:text="${theme.config.aside.license}">CC BY-NC-SA 4.0</dd>
+          </div>
+          <div>
+            <dt>规范域名</dt>
+            <dd class="domain-text" th:text="${site.url}"></dd>
+          </div>
+        </dl>
 
-  <!-- ==================== -->
-  <!-- 4. 文章目录 (Toc) -->
-  <!-- ==================== -->
+        <!-- 可展开的构建信息 -->
+        <div class="z-expand" x-data="{ expand: false }">
+          <div class="expand-content" x-show="expand" x-collapse>
+            <dl class="dl-group small build-info">
+              <div>
+                <dt>Theme</dt>
+                <dd>Clarity</dd>
+              </div>
+              <div>
+                <dt>Version</dt>
+                <dd th:text="${theme.spec.version}">1.0.0</dd>
+              </div>
+              <div>
+                <dt>Framework</dt>
+                <dd>Halo 2.x</dd>
+              </div>
+            </dl>
+          </div>
+          <button class="toggle-btn in-place" @click="expand = !expand">
+            <span class="icon-[ph--caret-double-down-bold] toggle-icon" :class="{ 'expand': expand }"></span>
+            <span x-text="expand ? '收起构建信息' : '展开构建信息'"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 博客/技术社区 -->
+    <section class="widget dim" th:if="${not #strings.isEmpty(theme.config.aside.community_group_image)}">
+      <hgroup class="widget-title text-creative" th:text="${theme.config.aside.community_group_title}">
+        博客/技术社区
+      </hgroup>
+      <div class="widget-body widget-card with-bg">
+        <img class="bg-img bg-right" th:src="${theme.config.aside.community_group_image}" alt="" loading="lazy" />
+        <div class="comm-title text-creative" th:text="${theme.config.aside.community_group_name}">技术交流群</div>
+        <p class="comm-tip">
+          <span class="icon-[ph--chat-circle-dots-bold]"></span>
+          <span th:text="${theme.config.aside.community_group_desc}">169994096</span>
+        </p>
+      </div>
+    </section>
+  </th:block>
+
+  <!-- 文章页：只显示文章目录 -->
   <section class="widget toc-widget" th:if="${theme.config.aside.show_toc and post != null}">
     <hgroup class="widget-title text-creative">
       <span class="title-text">文章目录</span>
@@ -264,7 +261,7 @@
       }
 
       // Swup 页面切换后重新生成目录
-      if (window.swup) {
+      if (window.swup && window.swup.hooks) {
         window.swup.hooks.on("content:replace", generateToc);
       }
     })();
