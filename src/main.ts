@@ -1,5 +1,4 @@
-import "./styles/tailwind.css";
-import "./styles/main.css";
+import "./styles/style.scss";
 import Alpine from "alpinejs";
 import Swup from "swup";
 import SwupHeadPlugin from "@swup/head-plugin";

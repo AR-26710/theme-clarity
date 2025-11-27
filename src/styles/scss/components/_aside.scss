@@ -1,0 +1,164 @@
+$breakpoint-widescreen: 1080px !default;
+
+#z-aside {
+	padding: 0.5rem;
+
+	@media (max-width: $breakpoint-widescreen) {
+		display: none;
+	}
+}
+
+.widget-list {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.widget {
+	padding: 1rem;
+	border-radius: 0.8rem;
+
+	.widget-title {
+		margin-bottom: 0.8rem;
+		font-weight: 600;
+		color: var(--c-text);
+	}
+}
+
+// 博客统计样式
+.stats-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 0.5rem;
+	text-align: center;
+
+	.stat-box {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+	}
+
+	.stat-label {
+		font-size: 0.75rem;
+		color: var(--c-text-3);
+	}
+
+	.stat-value {
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--c-text);
+	}
+}
+
+// 技术信息样式
+.tech-info-list {
+	display: grid;
+	gap: 0.5rem;
+	font-size: 0.85rem;
+
+	.tech-item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		dt {
+			color: var(--c-text-2);
+		}
+
+		dd {
+			font-weight: 500;
+			color: var(--c-text);
+		}
+	}
+
+	&.small {
+		font-size: 0.75rem;
+		margin-top: 0.5rem;
+		padding-top: 0.5rem;
+		border-top: 1px dashed var(--c-border);
+	}
+}
+
+.tech-details {
+	margin-top: 0.8rem;
+	
+	summary {
+		font-size: 0.75rem;
+		color: var(--c-text-3);
+		cursor: pointer;
+		text-align: center;
+		list-style: none;
+		
+		&::before {
+			content: "DATA";
+			margin-right: 0.3em;
+			font-family: var(--font-monospace);
+			opacity: 0.5;
+		}
+	}
+}
+
+// 社区群组样式
+.comm-group {
+	position: relative;
+	min-height: 100px;
+	background-size: cover;
+	background-position: center;
+	overflow: hidden;
+	
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(90deg, var(--ld-bg-card) 30%, transparent);
+	}
+
+	.comm-content {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		height: 100%;
+	}
+
+	.comm-title {
+		font-size: 1.2rem;
+		font-weight: 800;
+		background: linear-gradient(45deg, var(--c-primary), var(--c-accent));
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+		margin-bottom: 0.2rem;
+	}
+
+	.comm-desc {
+		font-size: 0.8rem;
+		color: var(--c-text-2);
+		display: flex;
+		align-items: center;
+		gap: 0.3em;
+	}
+}
+
+// 目录样式
+.toc-widget {
+	.toc-content {
+		font-size: 0.85rem;
+		
+		ul {
+			padding-left: 1em;
+		}
+
+		a {
+			display: block;
+			padding: 0.3em 0;
+			color: var(--c-text-2);
+			transition: color 0.2s;
+
+			&:hover {
+				color: var(--c-primary);
+			}
+		}
+	}
+}

@@ -1,0 +1,79 @@
+<aside th:fragment="sidebar" id="z-sidebar">
+    <!-- Header -->
+    <th:block th:replace="~{modules/header :: header}" />
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav scrollcheck-y">
+        <!-- Search Button -->
+        <div class="search-btn sidebar-nav-item gradient-card" onclick="window.dispatchEvent(new CustomEvent('open-search'))">
+            <span class="icon-[ph--magnifying-glass-bold]"></span>
+            <span class="nav-text">搜索</span>
+        </div>
+
+        <!-- Menu from Halo -->
+        <th:block th:with="menu = ${menuFinder.getByName(theme.config.nav.primary)}">
+            <menu th:if="${menu != null and menu.menuItems != null}">
+                <li th:each="menuItem : ${menu.menuItems}">
+                    <a th:href="${menuItem.status.href}" class="sidebar-nav-item">
+                        <span class="icon-[ph--files-bold]"></span>
+                        <span class="nav-text" th:text="${menuItem.status.displayName}"></span>
+                        <span th:if="${menuItem.spec.target == '_blank'}" class="icon-[ph--arrow-up-right] external-tip"></span>
+                    </a>
+                    
+                    <!-- Children -->
+                    <menu th:if="${menuItem.children != null and not #lists.isEmpty(menuItem.children)}">
+                        <li th:each="child : ${menuItem.children}">
+                            <a th:href="${child.status.href}" class="sidebar-nav-item sub-item">
+                                <span class="nav-text" th:text="${child.status.displayName}"></span>
+                            </a>
+                        </li>
+                    </menu>
+                </li>
+            </menu>
+        </th:block>
+        
+        <!-- Fallback menu if no menu configured -->
+        <menu th:if="${theme.config.nav.primary == null}">
+            <li>
+                <a href="/" class="sidebar-nav-item">
+                    <span class="icon-[ph--house-bold]"></span>
+                    <span class="nav-text">首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives" class="sidebar-nav-item">
+                    <span class="icon-[ph--archive-bold]"></span>
+                    <span class="nav-text">归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/links" class="sidebar-nav-item">
+                    <span class="icon-[ph--link-bold]"></span>
+                    <span class="nav-text">友链</span>
+                </a>
+            </li>
+        </menu>
+    </nav>
+
+    <!-- Footer -->
+    <footer class="sidebar-footer">
+        <!-- Theme Toggle -->
+        <div class="theme-toggle">
+            <button onclick="toggleTheme()" class="toggle-btn">
+                <span class="icon-[ph--sun-bold] light-icon"></span>
+                <span class="icon-[ph--moon-bold] dark-icon"></span>
+            </button>
+        </div>
+        
+        <!-- Social Icons -->
+        <div class="social-icons" th:if="${theme.config.footer.social_links != null}">
+            <a th:each="link : ${theme.config.footer.social_links}" 
+               th:href="${link.url}" 
+               th:title="${link.text}"
+               target="_blank"
+               rel="noopener noreferrer">
+               <span th:class="'icon-[' + ${#strings.replace(link.icon, ':', '--')} + ']'"></span>
+            </a>
+        </div>
+    </footer>
+</aside>

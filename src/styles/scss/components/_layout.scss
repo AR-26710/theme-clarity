@@ -1,0 +1,60 @@
+$breakpoint-widescreen: 1080px !default;
+
+// 三栏布局核心样式
+#clarity-root {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+	min-width: 0;
+	min-height: 100vh;
+}
+
+// 左侧边栏
+#z-sidebar {
+	flex-shrink: 0;
+	position: sticky;
+	top: 0;
+	width: 280px;
+	height: 100vh;
+	height: 100dvh;
+	overflow-y: auto;
+	scrollbar-width: thin;
+}
+
+// 中间内容区
+#content {
+	display: flex;
+	gap: 1rem;
+	flex: 1;
+	max-width: $breakpoint-widescreen;
+	min-width: 0;
+
+	> main {
+		flex-grow: 1;
+		min-width: 0;
+	}
+}
+
+// 右侧边栏
+#z-aside {
+	flex-shrink: 0;
+	position: sticky;
+	top: 0;
+	width: 280px;
+	height: 100vh;
+	height: 100dvh;
+	overflow-y: auto;
+	scrollbar-width: thin;
+}
+
+// 页脚样式
+.clarity-footer {
+	margin: 3rem 1rem;
+	font-size: 0.9em;
+	text-align: center;
+	color: var(--c-text-2);
+
+	p {
+		margin: 0.5em;
+	}
+}

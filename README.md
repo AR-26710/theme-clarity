@@ -19,11 +19,11 @@
 ## 开发
 
 ```bash
-git clone git@github.com:halo-dev/theme-modern-starter.git ~/halo2-dev/themes/theme-modern-starter
+git clone git@github.com:halo-dev/theme-clarity.git ~/halo2-dev/themes/theme-clarity
 ```
 
 ```bash
-cd ~/halo2-dev/themes/theme-modern-starter
+cd ~/halo2-dev/themes/theme-clarity
 ```
 
 ```bash

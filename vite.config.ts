@@ -16,7 +16,7 @@ export default ({ mode }: { mode: string }) => {
 
   return defineConfig({
     root: "./src",
-    base: isProduction ? "/themes/theme-modern-starter/assets/dist/" : "",
+    base: isProduction ? "/themes/theme-clarity/assets/dist/" : "",
     plugins: [tailwindcss(), preact()],
     define: {
       "process.env.NODE_ENV": JSON.stringify(mode),

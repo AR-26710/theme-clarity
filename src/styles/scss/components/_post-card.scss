@@ -1,0 +1,138 @@
+$breakpoint-phone: 528px !default;
+
+.post-list {
+	margin: 1rem;
+}
+
+.toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1rem;
+}
+
+.posts-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.article-card {
+	container-type: inline-size;
+	position: relative;
+	margin: 1rem 0;
+	border-radius: 0.8rem;
+	color: var(--c-text);
+	animation: float-in 0.2s var(--delay) backwards;
+
+	.article-body {
+		display: grid;
+		gap: 0.5rem;
+		padding: 1rem;
+	}
+}
+
+.pagination {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	margin: 2rem 0;
+
+	.btn {
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
+		padding: 0.5em 1em;
+		border-radius: 0.5em;
+		transition: all 0.2s;
+
+		&:hover {
+			background-color: var(--c-bg-soft);
+		}
+	}
+
+	.page-info {
+		color: var(--c-text-2);
+	}
+}
+
+.article-info {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5em clamp(1em, 5%, 1.5em);
+	font-size: 0.8em;
+	color: var(--c-text-2);
+
+	&:empty {
+		display: none;
+	}
+
+	.use-updated {
+		order: -1;
+	}
+}
+
+.article-title {
+	font-size: 1.2em;
+	color: var(--c-text);
+}
+
+.article-description {
+	font-size: 0.9em;
+	color: var(--c-text-2);
+}
+
+.article-category {
+	color: var(--cg-color);
+}
+
+// CSR 前空 category 产生 double gap，同时需避免误伤 iconify
+span:not([class]):empty {
+	display: none;
+}
+
+.article-cover {
+	position: absolute;
+	opacity: 0.8;
+	top: 0;
+	inset-inline-end: 0;
+	width: min(320px, 50%);
+	height: 100%;
+	margin: 0;
+	mask-image: linear-gradient(to var(--end), transparent, #FFF 50%);
+	transition: all 0.2s;
+	object-fit: cover;
+
+	:hover > & {
+		opacity: 1;
+	}
+
+	& + article {
+		position: relative;
+		width: 60%;
+		text-shadow: 0 0 0.5rem var(--ld-bg-card), 0 0 1rem var(--ld-bg-card);
+	}
+
+	@mixin cover-narrow {
+		position: revert;
+		width: 100%;
+		height: auto;
+		max-width: none;
+		max-height: 256px;
+		aspect-ratio: 2.4;
+		margin-bottom: -10%;
+		mask-image: linear-gradient(#FFF 50%, transparent);
+
+		& + article {
+			width: auto;
+		}
+	}
+
+	@media (max-width: $breakpoint-phone) {
+		@include cover-narrow;
+	}
+
+	@container (max-width: #{$breakpoint-phone}) {
+		@include cover-narrow;
+	}
+}
