@@ -82,6 +82,48 @@
 
   <!-- 页脚区域 -->
   <footer class="sidebar-footer">
+    <!-- 用户登录/信息 -->
+    <div class="user-auth" x-data="userAuth()" @click.outside="showMenu = false">
+      <!-- 未登录 -->
+      <a x-show="!currentUser" href="/login" class="user-entry">
+        <div class="avatar-wrapper">
+          <span class="icon-[ph--user-circle-bold] default-avatar-icon"></span>
+        </div>
+        <div class="user-info">
+          <span class="user-name">登录</span>
+          <span class="user-desc">点击登录账号</span>
+        </div>
+      </a>
+      
+      <!-- 已登录 -->
+      <div x-show="currentUser" class="user-entry" @click="handleClick()">
+        <div class="avatar-wrapper">
+          <img :src="currentUser?.avatar || '/assets/images/default-avatar.png'" :alt="currentUser?.name" class="user-avatar" />
+        </div>
+        <div class="user-info">
+          <span class="user-name" x-text="currentUser?.name"></span>
+          <span class="user-desc" x-text="currentUser?.isAdmin ? '管理员' : '个人中心'"></span>
+        </div>
+        <span x-show="currentUser?.isAdmin" class="icon-[ph--caret-down-bold] menu-arrow" :class="{ 'rotate': showMenu }"></span>
+      </div>
+      
+      <!-- 管理员下拉菜单 -->
+      <div x-show="showMenu" x-transition class="user-menu">
+        <a href="/uc" class="user-menu-item">
+          <span class="icon-[ph--user-bold]"></span>
+          <span>个人中心</span>
+        </a>
+        <a href="/console" class="user-menu-item">
+          <span class="icon-[ph--gear-six-bold]"></span>
+          <span>管理中心</span>
+        </a>
+        <a href="/logout" class="user-menu-item logout">
+          <span class="icon-[ph--sign-out-bold]"></span>
+          <span>退出登录</span>
+        </a>
+      </div>
+    </div>
+
     <!-- 主题切换（三按钮：浅色/深色/跟随系统） -->
     <div class="theme-toggle" x-data="themeToggle()">
       <button :class="{ active: theme === 'light' }" @click="setTheme('light', $event)" title="浅色模式">

@@ -7,125 +7,136 @@
 ></div>
 
 <aside th:fragment="aside" id="z-aside">
-  <!-- 非文章页：显示博客统计、技术信息、社区群组 -->
-  <th:block th:if="${post == null}">
-    <section class="widget" th:if="${theme.config.aside.show_user_info}">
-      <hgroup class="widget-title text-creative">博客统计</hgroup>
-      <div class="widget-body widget-card">
-        <dl class="dl-group small">
-          <div>
-            <dt>运营时长</dt>
-            <dd id="site-runtime" th:title="'博客于' + ${theme.config.aside.site_start_time} + '上线'">-</dd>
-          </div>
-          <th:block th:with="latestPosts = ${postFinder.list(1, 1)}">
-            <div th:if="${not #lists.isEmpty(latestPosts.items)}">
-              <dt>上次更新</dt>
-              <dd class="time-ago" th:data-time="${latestPosts.items[0].spec.publishTime}">-</dd>
-            </div>
-          </th:block>
-          <div>
-            <dt>文章数目</dt>
-            <dd th:text="${postFinder.archives(1, 1).total}">0</dd>
-          </div>
-        </dl>
-      </div>
-    </section>
-
+  <!-- 根据配置动态渲染小组件 -->
+  <th:block th:each="item : ${theme.config.aside.widgets.index}">
+    
+    <!-- 博客统计 -->
+    <th:block th:if="${item.widget == 'stats'}" th:insert="~{modules/aside :: widget-stats}" />
+    
     <!-- 技术信息 -->
-    <section class="widget">
-      <hgroup class="widget-title text-creative">技术信息</hgroup>
-      <div class="widget-body widget-card">
-        <dl class="dl-group medium">
-          <div>
-            <dt>构建平台</dt>
-            <dd class="platform-halo"><img th:src="@{/assets/images/logo.png}" alt="Halo" /> Halo</dd>
-          </div>
-          <div>
-            <dt>图片存储</dt>
-            <dd th:text="${theme.config.aside.image_hosting}">本地存储</dd>
-          </div>
-          <div>
-            <dt>软件协议</dt>
-            <dd>GPL-3.0</dd>
-          </div>
-          <div>
-            <dt>文章许可</dt>
-            <dd th:text="${theme.config.aside.license}">CC BY-NC-SA 4.0</dd>
-          </div>
-          <div>
-            <dt>规范域名</dt>
-            <dd class="domain-text" th:text="${site.url}"></dd>
-          </div>
-        </dl>
-
-        <!-- 可展开的构建信息 -->
-        <div class="z-expand" x-data="{ expand: false }">
-          <div class="expand-content" x-show="expand" x-collapse>
-            <dl class="dl-group small build-info">
-              <div>
-                <dt>Theme</dt>
-                <dd>Clarity</dd>
-              </div>
-              <div>
-                <dt>Version</dt>
-                <dd th:text="${theme.spec.version}">1.0.0</dd>
-              </div>
-              <div>
-                <dt>Framework</dt>
-                <dd>Halo 2.x</dd>
-              </div>
-            </dl>
-          </div>
-          <button class="toggle-btn in-place" @click="expand = !expand">
-            <span class="icon-[ph--caret-double-down-bold] toggle-icon" :class="{ 'expand': expand }"></span>
-            <span x-text="expand ? '收起构建信息' : '展开构建信息'"></span>
-          </button>
-        </div>
-      </div>
+    <th:block th:if="${item.widget == 'tech-info'}" th:insert="~{modules/aside :: widget-tech-info}" />
+    
+    <!-- 社区群组 -->
+    <th:block th:if="${item.widget == 'community'}" th:insert="~{modules/aside :: widget-community}" />
+    
+    <!-- 自定义组件 -->
+    <section class="widget" th:if="${item.widget == 'custom' and not #strings.isEmpty(item.title)}">
+      <hgroup class="widget-title text-creative" th:text="${item.title}">自定义</hgroup>
+      <div class="widget-body widget-card" th:utext="${item.content}"></div>
     </section>
-
-    <!-- 博客/技术社区 -->
-    <section class="widget dim" th:if="${not #strings.isEmpty(theme.config.aside.community_group_image)}">
-      <hgroup class="widget-title text-creative" th:text="${theme.config.aside.community_group_title}">
-        博客/技术社区
-      </hgroup>
-      <div class="widget-body widget-card with-bg">
-        <img class="bg-img bg-right" th:src="${theme.config.aside.community_group_image}" alt="" loading="lazy" />
-        <div class="comm-title text-creative" th:text="${theme.config.aside.community_group_name}">技术交流群</div>
-        <p class="comm-tip">
-          <span class="icon-[ph--chat-circle-dots-bold]"></span>
-          <span th:text="${theme.config.aside.community_group_desc}">169994096</span>
-        </p>
-      </div>
-    </section>
+    
   </th:block>
+</aside>
 
-  <!-- 文章页：只显示文章目录 -->
-  <section class="widget toc-widget" th:if="${theme.config.aside.show_toc and post != null}">
-    <hgroup class="widget-title text-creative">
-      <span class="title-text">文章目录</span>
-      <a href="#main-content" aria-label="返回开头" title="返回开头">
-        <span class="icon-[ph--arrow-circle-up-bold]"></span>
-      </a>
-      <a th:if="${haloCommentEnabled}" href="#comment" aria-label="评论区" title="评论区">
-        <span class="icon-[ph--chat-circle-text-bold]"></span>
-      </a>
-    </hgroup>
-    <div class="widget-body toc-body">
-      <nav id="toc" class="toc-nav">
-        <!-- TOC 由 JS 动态生成 -->
-        <p class="no-toc">暂无目录信息</p>
-      </nav>
+<!-- ==================== -->
+<!-- 小组件片段定义 -->
+<!-- ==================== -->
+
+<!-- 博客统计 -->
+<th:block th:fragment="widget-stats">
+  <section class="widget">
+    <hgroup class="widget-title text-creative">博客统计</hgroup>
+    <div class="widget-body widget-card">
+      <dl class="dl-group small">
+        <div>
+          <dt>运营时长</dt>
+          <dd id="site-runtime" th:title="'博客于' + ${theme.config.aside.basic.site_start_time} + '上线'">-</dd>
+        </div>
+        <th:block th:with="latestPosts = ${postFinder.list(1, 1)}">
+          <div th:if="${not #lists.isEmpty(latestPosts.items)}">
+            <dt>上次更新</dt>
+            <dd class="time-ago" th:data-time="${latestPosts.items[0].spec.publishTime}">-</dd>
+          </div>
+        </th:block>
+        <div>
+          <dt>文章数目</dt>
+          <dd th:text="${postFinder.archives(1, 1).total}">0</dd>
+        </div>
+      </dl>
     </div>
   </section>
+</th:block>
 
-  <!-- ==================== -->
-  <!-- 右侧栏脚本 -->
-  <!-- ==================== -->
+<!-- 技术信息 -->
+<th:block th:fragment="widget-tech-info">
+  <section class="widget">
+    <hgroup class="widget-title text-creative">技术信息</hgroup>
+    <div class="widget-body widget-card">
+      <dl class="dl-group medium">
+        <div>
+          <dt>构建平台</dt>
+          <dd class="platform-halo"><img th:src="@{/assets/images/logo.png}" alt="Halo" /> Halo</dd>
+        </div>
+        <div>
+          <dt>图片存储</dt>
+          <dd th:text="${theme.config.aside.basic.image_hosting}">本地存储</dd>
+        </div>
+        <div>
+          <dt>软件协议</dt>
+          <dd>GPL-3.0</dd>
+        </div>
+        <div>
+          <dt>文章许可</dt>
+          <dd th:text="${theme.config.aside.basic.license}">CC BY-NC-SA 4.0</dd>
+        </div>
+        <div>
+          <dt>规范域名</dt>
+          <dd class="domain-text" th:text="${site.url}"></dd>
+        </div>
+      </dl>
+
+      <!-- 可展开的构建信息 -->
+      <div class="z-expand" x-data="{ expand: false }">
+        <div class="expand-content" x-show="expand" x-collapse>
+          <dl class="dl-group small build-info">
+            <div>
+              <dt>Theme</dt>
+              <dd>Clarity</dd>
+            </div>
+            <div>
+              <dt>Version</dt>
+              <dd th:text="${theme.spec.version}">1.0.0</dd>
+            </div>
+            <div>
+              <dt>Framework</dt>
+              <dd>Halo 2.x</dd>
+            </div>
+          </dl>
+        </div>
+        <button class="toggle-btn in-place" @click="expand = !expand">
+          <span class="icon-[ph--caret-double-down-bold] toggle-icon" :class="{ 'expand': expand }"></span>
+          <span x-text="expand ? '收起构建信息' : '展开构建信息'"></span>
+        </button>
+      </div>
+    </div>
+  </section>
+</th:block>
+
+<!-- 社区群组 -->
+<th:block th:fragment="widget-community">
+  <section class="widget dim" th:if="${not #strings.isEmpty(theme.config.aside.community.image)}">
+    <hgroup class="widget-title text-creative" th:text="${theme.config.aside.community.title}">
+      博客/技术社区
+    </hgroup>
+    <div class="widget-body widget-card with-bg">
+      <img class="bg-img bg-right" th:src="${theme.config.aside.community.image}" alt="" loading="lazy" />
+      <div class="comm-title text-creative" th:text="${theme.config.aside.community.name}">技术交流群</div>
+      <p class="comm-tip">
+        <span class="icon-[ph--chat-circle-dots-bold]"></span>
+        <span th:text="${theme.config.aside.community.desc}">169994096</span>
+      </p>
+    </div>
+  </section>
+</th:block>
+
+<!-- ==================== -->
+<!-- 右侧栏脚本 -->
+<!-- ==================== -->
+<th:block th:fragment="aside-scripts">
   <script th:inline="javascript">
     (function () {
       // 计算运营时长
-      const startTime = /*[[${theme.config.aside.site_start_time}]]*/ "";
+      const startTime = /*[[${theme.config.aside.basic.site_start_time}]]*/ "";
       if (startTime) {
         const start = new Date(startTime).getTime();
         const now = Date.now();
@@ -165,105 +176,6 @@
           el.title = "更新于 " + new Date(timeStr).toLocaleString("zh-CN");
         }
       });
-
-      // 生成文章目录 (TOC)
-      function generateToc() {
-        const tocContainer = document.getElementById("toc");
-        const article = document.querySelector("article");
-        if (!tocContainer || !article) return;
-
-        const headings = article.querySelectorAll("h1, h2, h3, h4");
-        if (headings.length === 0) return;
-
-        // 清空默认提示
-        tocContainer.innerHTML = "";
-
-        const ol = document.createElement("ol");
-        let currentLevel = 0;
-        let currentOl = ol;
-        const stack = [ol];
-
-        headings.forEach((heading, index) => {
-          // 确保标题有 ID
-          if (!heading.id) {
-            heading.id = "heading-" + index;
-          }
-
-          const level = parseInt(heading.tagName.charAt(1));
-          const li = document.createElement("li");
-          const a = document.createElement("a");
-          a.href = "#" + heading.id;
-          a.textContent = heading.textContent;
-          a.title = heading.textContent;
-          li.appendChild(a);
-
-          // 处理层级
-          if (level > currentLevel) {
-            // 进入更深层级
-            while (currentLevel < level) {
-              const newOl = document.createElement("ol");
-              if (currentOl.lastElementChild) {
-                currentOl.lastElementChild.appendChild(newOl);
-              } else {
-                currentOl.appendChild(newOl);
-              }
-              stack.push(newOl);
-              currentOl = newOl;
-              currentLevel++;
-            }
-          } else if (level < currentLevel) {
-            // 返回上层
-            while (currentLevel > level && stack.length > 1) {
-              stack.pop();
-              currentOl = stack[stack.length - 1];
-              currentLevel--;
-            }
-          }
-
-          currentOl.appendChild(li);
-        });
-
-        tocContainer.appendChild(ol);
-
-        // TOC 高亮当前标题
-        const tocLinks = tocContainer.querySelectorAll("a");
-        const observerOptions = {
-          rootMargin: "-10% 0px -80% 0px",
-          threshold: 0,
-        };
-
-        let activeId = null;
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              activeId = entry.target.id;
-              tocLinks.forEach((link) => {
-                const li = link.parentElement;
-                const isActive = link.getAttribute("href") === "#" + activeId;
-                li.classList.toggle("active", isActive);
-
-                // 检查是否有激活的子项
-                const hasActiveChild = li.querySelector("li.active");
-                li.classList.toggle("has-active", hasActiveChild !== null || isActive);
-              });
-            }
-          });
-        }, observerOptions);
-
-        headings.forEach((heading) => observer.observe(heading));
-      }
-
-      // 页面加载完成后生成目录
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", generateToc);
-      } else {
-        generateToc();
-      }
-
-      // Swup 页面切换后重新生成目录
-      if (window.swup && window.swup.hooks) {
-        window.swup.hooks.on("content:replace", generateToc);
-      }
     })();
   </script>
-</aside>
+</th:block>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = false)}">
+  <th:block th:fragment="content">
+    <!-- 页面头部 -->
+    <div class="post-header" th:classappend="${singlePage.spec.cover != null and singlePage.spec.cover != ''} ? 'has-cover' : ''">
+      <!-- 封面图 -->
+      <img th:if="${singlePage.spec.cover}" th:src="${singlePage.spec.cover}" class="post-cover" th:alt="${singlePage.spec.title}" />
+
+      <!-- 页面信息栏 -->
+      <div class="post-nav">
+        <!-- 分享按钮 -->
+        <div class="operations">
+          <button class="z-btn" id="share-btn" title="复制分享文本">
+            <span class="icon-[ph--share-bold]"></span>
+            <span>文字分享</span>
+          </button>
+        </div>
+
+        <!-- 页面元信息 -->
+        <div class="post-info">
+          <span th:if="${singlePage.spec.publishTime}">
+            <span class="icon-[ph--calendar-dots-bold]"></span>
+            <time th:text="${#temporals.format(singlePage.spec.publishTime, 'yyyy-MM-dd')}"></time>
+          </span>
+
+          <span th:if="${singlePage.status.lastModifyTime != null and singlePage.status.lastModifyTime != singlePage.spec.publishTime}">
+            <span class="icon-[ph--calendar-plus-bold]"></span>
+            <time th:text="${#temporals.format(singlePage.status.lastModifyTime, 'yyyy-MM-dd')}"></time>
+          </span>
+
+          <span th:if="${singlePage.stats.visit != null}">
+            <span class="icon-[ph--eye-bold]"></span>
+            <span th:text="${singlePage.stats.visit}"></span> 阅读
+          </span>
+        </div>
+      </div>
+      
+      <!-- 页面标题 -->
+      <h1 class="post-title text-creative" th:text="${singlePage.spec.title}"></h1>
+    </div>
+
+    <article class="article" th:utext="${singlePage.content.content}"></article>
+
+    <!-- 评论区 -->
+    <h3 th:if="${haloCommentEnabled}" class="comment-title">
+      <span class="icon-[ph--chat-circle-text-bold]"></span>
+      评论区
+    </h3>
+    <section th:if="${haloCommentEnabled}" class="z-comment" id="comment">
+      <halo:comment group="content.halo.run" kind="SinglePage" th:attr="name=${singlePage.metadata.name}" />
+    </section>
+
+    <!-- 分享脚本 -->
+    <script th:inline="javascript">
+      (function () {
+        const shareBtn = document.getElementById("share-btn");
+        if (shareBtn) {
+          const title = /*[[${singlePage.spec.title}]]*/ "";
+          const url = window.location.href;
+          const siteTitle = /*[[${site.title}]]*/ "";
+
+          const shareText = `【${siteTitle}】${title}\n\n${url}`;
+
+          shareBtn.addEventListener("click", async () => {
+            try {
+              await navigator.clipboard.writeText(shareText);
+              const icon = shareBtn.querySelector("span:first-child");
+              const text = shareBtn.querySelector("span:last-child");
+              icon.className = "icon-[ph--check-bold]";
+              text.textContent = "已复制";
+              setTimeout(() => {
+                icon.className = "icon-[ph--share-bold]";
+                text.textContent = "文字分享";
+              }, 2000);
+            } catch (err) {
+              console.error("复制失败:", err);
+            }
+          });
+        }
+      })();
+    </script>
+  </th:block>
+</html>

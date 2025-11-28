@@ -35,47 +35,60 @@
 	transition: transform 0.2s !important;
 }
 
-/* View Transitions API 主题切换动画 */
+.collapse-enter-active,
+.collapse-leave-active {
+	overflow: hidden;
+	overflow: clip;
+	transition: max-height 0.1s;
+}
+
+.collapse-enter-from,
+.collapse-leave-to {
+	max-height: 0;
+	transition-timing-function: var(--max-bezier-to-collapse);
+}
+
+
+// View Transitions API
 ::view-transition-old(root),
 ::view-transition-new(root) {
 	animation: none;
 	mix-blend-mode: normal;
 }
 
-@keyframes circle-expand {
-	from {
-		clip-path: circle(0% at var(--x, 50%) var(--y, 50%));
-	}
-	to {
-		clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
-	}
-}
-
-/* 默认（浅色 -> 深色）：新视图（深色）从上层圆形展开 */
-::view-transition-new(root) {
-	z-index: 9999;
-	animation: 0.5s ease-out circle-expand;
-}
-
 ::view-transition-old(root) {
 	z-index: 1;
 }
 
-:root:not(.dark)::view-transition-new(root) {
+::view-transition-new(root) {
 	z-index: 9999;
-	animation: 0.5s ease-out circle-expand;
 }
 
-:root:not(.dark)::view-transition-old(root) {
+[data-theme-transition="dark"]::view-transition-old(root) {
+	z-index: 9999;
+}
+
+[data-theme-transition="dark"]::view-transition-new(root) {
 	z-index: 1;
 }
 
-/* 深色模式下（即切到深色时），新视图（深色）从上层展开 */
-:root.dark::view-transition-new(root) {
-	z-index: 9999;
-	animation: 0.5s ease-out circle-expand;
+// 扩展动画，配合 JS 使用 clip-path
+// 由于 CSS 无法直接获取 JS 设置的 --x 和 --y，通常需要 JS 配合设置
+// 这里我们使用通用的全屏渐变，或者如果想实现圆形扩散，需要更复杂的 setup
+// 但为了简单起见，我们可以先加上基础的淡入淡出，或者尝试实现圆形扩散
+
+// 实际上，要实现圆形扩散，我们需要在 JS 中动态构建动画，或者使用 CSS 变量
+// 下面是一个基于 CSS 变量的圆形扩散实现尝试
+
+::view-transition-new(root) {
+	animation: clip-in 0.5s ease-in;
 }
 
-:root.dark::view-transition-old(root) {
-	z-index: 1;
+@keyframes clip-in {
+	from {
+		clip-path: circle(0% at var(--x) var(--y));
+	}
+	to {
+		clip-path: circle(150% at var(--x) var(--y));
+	}
 }

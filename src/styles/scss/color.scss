@@ -50,9 +50,3 @@
 
 	color-scheme: dark;
 }
-
-@media (prefers-color-scheme: dark) {
-    :root:not(.light) {
-        @include dark-theme;
-    }
-}

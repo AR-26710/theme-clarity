@@ -19,11 +19,28 @@ spec:
         - $formkit: text
           name: subtitle
           label: 副标题
+          value: "Just another Halo site"
           placeholder: 一句话介绍
         - $formkit: text
           name: emoji_tail
           label: Emoji 尾巴
+          value: "📄,🦌,🙌,🐟,🏖️"
           help: 使用英文逗号分隔，例如：📄,🦌,🙌,🐟,🏖️
+    - group: style
+      label: 样式设置
+      formSchema:
+        - $formkit: color
+          name: primary_color
+          label: 主配色
+          value: "#3b82f6"
+          help: 用于按钮、链接、高亮等主要元素
+          validation: required
+        - $formkit: color
+          name: accent_color
+          label: 辅配色
+          value: "#60a5fa"
+          help: 用于次要高亮、悬停状态等
+          validation: required
     - group: nav
       label: 导航菜单
       formSchema:
@@ -37,6 +54,7 @@ spec:
           name: copyright
           label: 版权信息
           value: "© 2025 Powered by Halo"
+          validation: required
         - $formkit: text
           name: beian
           label: ICP 备案号
@@ -45,11 +63,6 @@ spec:
           name: gongan_beian
           label: 公安备案号
           placeholder: 陕公网安备61010302001234号
-        - $formkit: text
-          name: gongan_beian_code
-          label: 公安备案编号
-          help: 用于跳转链接，只需填写数字部分
-          placeholder: 61010302001234
         - $formkit: repeater
           name: social_links
           label: 社交链接
@@ -71,46 +84,81 @@ spec:
     - group: aside
       label: 右侧边栏
       formSchema:
-        - $formkit: date
-          name: site_start_time
-          label: 建站时间
-          help: 用于计算运营时长
-        - $formkit: text
-          name: image_hosting
-          label: 图片存储服务
-          value: "本地存储"
-        - $formkit: text
-          name: license
-          label: 文章许可协议
-          value: "CC BY-NC-SA 4.0"
-        - $formkit: checkbox
-          name: show_user_info
-          label: 显示用户信息
-          value: true
-        - $formkit: checkbox
-          name: show_toc
-          label: 文章页显示目录
-          value: true
-        - $formkit: text
-          name: community_group_image
-          label: 社区群组背景图
-          help: "例如：https://p.qlogo.cn/gh/169994096/169994096/100/"
-          placeholder: https://p.qlogo.cn/gh/169994096/169994096/100/
-        - $formkit: text
-          name: community_group_title
-          label: 社区群组小标题
-          value: "博客/技术社区"
-          help: "显示在小部件标题位置"
-        - $formkit: text
-          name: community_group_name
-          label: 社区群组名称
-          value: "技术交流群"
-          help: "显示在卡片内的大标题"
-        - $formkit: text
-          name: community_group_desc
-          label: 社区群组描述
-          value: "169994096"
-          help: "例如 QQ 群号"
+        - $formkit: group
+          name: widgets
+          label: 小组件配置
+          help: 拖拽调整顺序，越靠前优先级越高
+          children:
+            - $formkit: repeater
+              name: index
+              label: 首页侧边栏
+              value:
+                - widget: "stats"
+                - widget: "tech-info"
+                - widget: "community"
+              children:
+                - $formkit: select
+                  name: widget
+                  label: 小组件
+                  options:
+                    - value: "stats"
+                      label: 博客统计
+                    - value: "tech-info"
+                      label: 技术信息
+                    - value: "community"
+                      label: 社区群组
+                    - value: "custom"
+                      label: 自定义
+                - $formkit: text
+                  name: title
+                  label: 自定义标题
+                  if: "$value.widget === 'custom'"
+                  placeholder: 小组件标题
+                - $formkit: textarea
+                  name: content
+                  label: 自定义内容
+                  if: "$value.widget === 'custom'"
+                  placeholder: 支持 HTML
+                  rows: 5
+        - $formkit: group
+          name: basic
+          label: 基础设置
+          children:
+            - $formkit: date
+              name: site_start_time
+              label: 建站时间
+              value: "2024-01-01"
+              help: 用于计算运营时长
+            - $formkit: text
+              name: image_hosting
+              label: 图片存储服务
+              value: "本地存储"
+            - $formkit: text
+              name: license
+              label: 文章许可协议
+              value: "CC BY-NC-SA 4.0"
+        - $formkit: group
+          name: community
+          label: 社区群组卡片
+          children:
+            - $formkit: attachment
+              name: image
+              label: 背景图
+              accepts:
+                - "image/*"
+            - $formkit: text
+              name: title
+              label: 小标题
+              value: "博客/技术社区"
+            - $formkit: text
+              name: name
+              label: 群组名称
+              value: "技术交流群"
+            - $formkit: text
+              name: desc
+              label: 描述
+              value: "169994096"
+              help: "例如 QQ 群号"
     - group: post
       label: 文章
       formSchema:
@@ -125,6 +173,32 @@ spec:
           value: 10
           min: 1
           max: 50
+          validation: required
+    - group: auth
+      label: 登录注册
+      formSchema:
+        - $formkit: attachment
+          name: background_image
+          label: 背景图片
+          accepts:
+            - "image/*"
+          help: 登录/注册页面的背景图片
+        - $formkit: attachment
+          name: logo
+          label: 页面 Logo
+          accepts:
+            - "image/*"
+          help: 登录页面显示的 Logo，留空使用站点 Logo
+        - $formkit: text
+          name: title
+          label: 欢迎标题
+          value: "Welcome Back"
+          placeholder: Welcome Back
+        - $formkit: text
+          name: subtitle
+          label: 欢迎描述
+          value: "登录以继续访问"
+          placeholder: 登录以继续访问
     - group: custom
       label: 自定义
       formSchema:

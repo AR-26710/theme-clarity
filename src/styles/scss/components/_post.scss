@@ -28,11 +28,35 @@ $breakpoint-mobile: 768px !default;
 		overflow: clip;
 		min-height: 256px;
 		max-height: 320px;
-		color: var(--c-text);
+		color: #fff;
 		transition: font-size 0.2s;
 
 		&:hover {
 			font-size: 0.8em;
+		}
+
+		&::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 80px;
+			background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
+			z-index: 1;
+			pointer-events: none;
+		}
+
+		&::after {
+			content: "";
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			height: 120px;
+			background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+			z-index: 1;
+			pointer-events: none;
 		}
 
 		.post-title {
@@ -51,6 +75,10 @@ $breakpoint-mobile: 768px !default;
 	color: var(--c-text-1);
 	transition: opacity 0.2s;
 	z-index: 2;
+
+	.has-cover & {
+		color: #fff;
+	}
 }
 
 .z-btn {
@@ -59,16 +87,25 @@ $breakpoint-mobile: 768px !default;
 	gap: 0.3em;
 	padding: 0.4em 0.8em;
 	border-radius: 0.5em;
-	background-color: var(--c-bg-a80);
+	background-color: var(--c-bg-soft);
 	backdrop-filter: blur(4px);
 	font-size: 0.85em;
 	color: inherit;
 	cursor: pointer;
 	transition: all 0.2s;
 
+	.has-cover & {
+		background-color: rgba(255, 255, 255, 0.2);
+	}
+
 	&:hover {
-		background-color: var(--c-bg-soft);
+		background-color: var(--c-primary-soft);
 		color: var(--c-primary);
+
+		.has-cover & {
+			background-color: rgba(255, 255, 255, 0.3);
+			color: #fff;
+		}
 	}
 }
 
@@ -81,30 +118,39 @@ $breakpoint-mobile: 768px !default;
 }
 
 .post-title {
-	padding: 0.8em 1rem;
+	width: fit-content;
+	margin: 0 1rem 1rem;
 	font-size: 1.6em;
 	line-height: 1.2;
-	z-index: 1;
+	color: var(--c-text);
+	z-index: 2;
+
+	.has-cover & {
+		color: #fff;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+	}
 }
 
 .post-nav {
 	padding: 0.8em 1rem;
+	position: relative;
+	z-index: 2;
 }
 
 .post-info {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.5em 1.2em;
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	color: var(--c-text-2);
-	
-	// 毛玻璃背景
+
+	.has-cover & {
+		color: rgba(255, 255, 255, 0.9);
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+	}
+
 	width: fit-content;
 	padding: 0.4em 0.8em;
-	border-radius: 0.5rem;
-	background-color: var(--c-bg-a80); // 适配深浅色模式的半透明背景
-	backdrop-filter: blur(8px);
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
 	span {
 		display: inline-flex;
@@ -114,9 +160,10 @@ $breakpoint-mobile: 768px !default;
 
 	a {
 		color: inherit;
-		
+
 		&:hover {
 			color: var(--c-primary);
+			.has-cover & { color: #fff; text-decoration: underline; }
 		}
 	}
 }

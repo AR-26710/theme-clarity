@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content})}">
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true)}">
   <th:block th:fragment="content">
     <div class="post-header" th:classappend="${post.spec.cover != null and post.spec.cover != ''} ? 'has-cover' : ''">
       <!-- 封面图 -->
@@ -122,8 +122,11 @@
     <!-- ==================== -->
     <!-- 6. 评论区 -->
     <!-- ==================== -->
+    <h3 th:if="${haloCommentEnabled}" class="comment-title">
+      <span class="icon-[ph--chat-circle-text-bold]"></span>
+      评论区
+    </h3>
     <section th:if="${haloCommentEnabled}" class="z-comment" id="comment">
-      <h3 class="text-creative">评论区</h3>
       <halo:comment group="content.halo.run" kind="Post" th:attr="name=${post.metadata.name}" />
     </section>
 

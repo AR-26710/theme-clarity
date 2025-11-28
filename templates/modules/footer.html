@@ -56,12 +56,22 @@
         </li>
         <li th:if="${not #strings.isEmpty(theme.config.footer.gongan_beian)}">
           <a
-            th:href="'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=' + ${theme.config.footer.gongan_beian_code}"
+            id="gongan-beian-link"
+            href="https://beian.mps.gov.cn/#/query/webSearch"
             target="_blank"
           >
             <img th:src="@{/assets/images/gonganbeian.png}" alt="公安备案" class="beian-icon" />
-            <span class="nav-text" th:text="${theme.config.footer.gongan_beian}"></span>
+            <span id="gongan-beian-text" class="nav-text" th:text="${theme.config.footer.gongan_beian}"></span>
           </a>
+          <script>
+            (function() {
+              const text = document.getElementById('gongan-beian-text').innerText;
+              const code = text.replace(/[^0-9]/g, '');
+              if (code) {
+                document.getElementById('gongan-beian-link').href = 'https://beian.mps.gov.cn/#/query/webSearch?code=' + code;
+              }
+            })();
+          </script>
         </li>
       </menu>
     </div>

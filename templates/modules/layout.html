@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN" th:fragment="html (content)">
+<html lang="zh-CN" th:fragment="html (content, showAside)">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -38,7 +38,6 @@
       onload="this.media='all'"
     />
 
-    <script type="application/json" id="theme-config" th:utext="${theme.config}"></script>
     <th:block th:if="${theme.config.development.enabled}">
       <script type="module" src="http://localhost:5173/@vite/client"></script>
       <script type="module" src="http://localhost:5173/main.ts"></script>
@@ -48,11 +47,15 @@
       <link rel="stylesheet" th:href="@{/assets/dist/main.css?v={version}(version=${theme.spec.version})}" />
       <script type="module" th:src="@{/assets/dist/main.js?v={version}(version=${theme.spec.version})}"></script>
     </th:block>
-
-    <!-- 主题初始化脚本 -->
+    <style th:inline="text">
+      :root, :root.light, :root.dark {
+        --c-primary: [(${theme.config.style.primary_color})] !important;
+        --c-primary-soft: color-mix(in srgb, [(${theme.config.style.primary_color})], transparent 85%) !important;
+        --c-accent: [(${theme.config.style.accent_color})] !important;
+      }
+    </style>
     <script>
       (function () {
-        // 在页面加载前立即应用主题，防止闪烁
         const theme = localStorage.getItem("theme") || "system";
         const isDark =
           theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
@@ -92,7 +95,8 @@
       </main>
 
       <!-- 右侧边栏 -->
-      <th:block th:replace="~{modules/aside :: aside}" />
+      <th:block th:if="${showAside == null or showAside}" th:replace="~{modules/aside :: aside}" />
+      <th:block th:if="${showAside == null or showAside}" th:replace="~{modules/aside :: aside-scripts}" />
     </div>
 
     <!-- 底部浮动面板 (ZPanel) -->
@@ -105,6 +109,7 @@
         <span class="icon-[ph--sidebar-duotone] rtl-flip"></span>
       </button>
       <button
+        th:if="${showAside == null or showAside}"
         id="toggle-aside"
         aria-label="切换侧边栏"
         onclick="(function(btn){var as=document.getElementById('z-aside'),mk=document.getElementById('z-aside-bgmask');as.classList.toggle('show');mk.classList.toggle('hidden');btn.classList.toggle('active')})(this)"

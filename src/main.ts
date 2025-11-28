@@ -63,6 +63,55 @@ Alpine.data("themeToggle", () => ({
   },
 }));
 
+/* Alpine.js 用户登录组件 */
+Alpine.data("userAuth", () => ({
+  currentUser: null as { name: string; avatar?: string; isAdmin: boolean } | null,
+  showMenu: false,
+
+  init() {
+    this.checkLoginStatus();
+  },
+
+  async checkLoginStatus() {
+    try {
+      const res = await fetch("/apis/api.console.halo.run/v1alpha1/users/-");
+      if (res.ok) {
+        const data = await res.json();
+        const userName = data.user?.metadata?.name;
+        if (userName && userName !== "anonymousUser") {
+          // 检查用户角色，判断是否为管理员
+          const roles = data.user?.metadata?.annotations?.["rbac.authorization.halo.run/role-names"] || "";
+          const isAdmin = roles.includes("super-role") || roles.includes("admin") || userName === "admin";
+          
+          this.currentUser = {
+            name: data.user?.spec?.displayName || userName,
+            avatar: data.user?.spec?.avatar,
+            isAdmin
+          };
+        } else {
+          this.currentUser = null;
+        }
+      } else {
+        this.currentUser = null;
+      }
+    } catch {
+      this.currentUser = null;
+    }
+  },
+
+  toggleMenu() {
+    this.showMenu = !this.showMenu;
+  },
+
+  handleClick() {
+    if (this.currentUser?.isAdmin) {
+      this.toggleMenu();
+    } else {
+      window.location.href = "/uc";
+    }
+  }
+}));
+
 /* Alpine.js 侧边栏控制组件 */
 Alpine.data("sidebarControl", () => ({
   isOpen: false,
@@ -183,10 +232,6 @@ function getThemeConfig(): ThemeConfig | undefined {
   }
 }
 
-// 使用
-const themeConfig = getThemeConfig();
-console.log("主题配置：", themeConfig);
-
 export function count(x: number, y: number) {
   return x + y;
 }
@@ -223,31 +268,20 @@ document.addEventListener("DOMContentLoaded", () => {
   initFancybox();
 });
 
-// 初始化下拉菜单定位
+// 初始化下拉菜单交互
 function initDropdownMenus() {
-  const hasSubmenuItems = document.querySelectorAll(".has-submenu");
-
-  hasSubmenuItems.forEach((item) => {
-    const trigger = item.querySelector(".has-dropdown");
-    const dropdown = item.querySelector(".dropdown-menu") as HTMLElement;
-
-    if (!trigger || !dropdown) return;
-
-    const positionDropdown = () => {
-      const rect = trigger.getBoundingClientRect();
-
-      // 定位到触发器下方
-      dropdown.style.top = `${rect.bottom + 4}px`;
-      dropdown.style.left = `${rect.left}px`;
-      dropdown.style.minWidth = `${rect.width}px`;
-
-      // 检查是否超出视口底部，如果超出则显示在上方
-      const dropdownHeight = dropdown.offsetHeight;
-      if (rect.bottom + dropdownHeight + 4 > window.innerHeight) {
-        dropdown.style.top = `${rect.top - dropdownHeight - 4}px`;
+  // 使用事件委托处理点击事件，支持 Swup 页面切换
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    const trigger = target.closest(".has-dropdown");
+    
+    if (trigger) {
+      const parent = trigger.closest(".has-submenu");
+      if (parent) {
+        // 阻止可能的默认链接行为（如果有的话）
+        e.preventDefault();
+        parent.classList.toggle("expanded");
       }
-    };
-
-    item.addEventListener("mouseenter", positionDropdown);
+    }
   });
 }
