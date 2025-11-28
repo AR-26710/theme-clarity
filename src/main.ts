@@ -249,6 +249,7 @@ swup.hooks.on("content:replace", () => {
   console.log("Content replaced");
   // mountWidgets();
   initFancybox(); // 重新绑定 Fancybox
+  initBackToTop(); // 更新返回顶部按钮状态
 });
 
 // 初始化 Fancybox 灯箱
@@ -266,6 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
   mountWidgets();
   initDropdownMenus();
   initFancybox();
+  initBackToTop();
 });
 
 // 初始化下拉菜单交互
@@ -284,4 +286,66 @@ function initDropdownMenus() {
       }
     }
   });
+}
+
+// 返回顶部按钮：滚动 300px 后显示；点击回顶；长按返回上一页
+function initBackToTop() {
+  const btn = document.getElementById("back-to-top") as HTMLButtonElement | null;
+  if (!btn) return;
+
+  // 避免重复绑定：标记已初始化
+  if ((btn as any)._inited) {
+    // 仅更新可见性
+    const y = window.scrollY || document.documentElement.scrollTop || 0;
+    btn.style.display = y > 300 ? "" : "none";
+    return;
+  }
+  (btn as any)._inited = true;
+
+  const updateVisibility = () => {
+    const y = window.scrollY || document.documentElement.scrollTop || 0;
+    btn.style.display = y > 300 ? "" : "none";
+  };
+
+  // 初始与滚动时更新
+  updateVisibility();
+  window.addEventListener("scroll", updateVisibility, { passive: true });
+
+  // 长按返回上一页，点击回到顶部
+  let pressTimer: number | null = null;
+  let longPressed = false;
+  const pressDuration = 600; // ms
+
+  const onPointerDown = () => {
+    longPressed = false;
+    pressTimer = window.setTimeout(() => {
+      longPressed = true;
+      if (history.length > 1) {
+        history.back();
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }, pressDuration);
+  };
+
+  const clearTimer = () => {
+    if (pressTimer !== null) {
+      clearTimeout(pressTimer);
+      pressTimer = null;
+    }
+  };
+
+  const onPointerUp = (e: Event) => {
+    // 若未达到长按阈值，则作为点击处理
+    if (!longPressed) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    clearTimer();
+  };
+  // 移除未使用参数 e，避免 TS 警告
+  // const onPointerUp = () => { /* ... */ }
+
+  btn.addEventListener("pointerdown", onPointerDown);
+  btn.addEventListener("pointerup", onPointerUp);
+  btn.addEventListener("pointerleave", clearTimer);
 }
