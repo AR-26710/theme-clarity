@@ -8,6 +8,14 @@ $breakpoint-widescreen: 1080px !default;
 	gap: 1rem;
 	min-width: 0;
 	min-height: 100vh;
+
+	@media (max-width: $breakpoint-widescreen) {
+		gap: 0;
+	}
+
+	@media (max-width: $breakpoint-mobile) {
+		display: block;
+	}
 }
 
 // 左侧边栏（详细样式在 _sidebar.scss）

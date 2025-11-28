@@ -1,3 +1,5 @@
+@use "../variable" as *;
+
 // ========================================
 // 侧边栏头部区域
 // ========================================
@@ -10,6 +12,13 @@
 	line-height: 1.4;
 	color: var(--c-text);
 	user-select: none;
+	&.mobile-only {
+		display: none;
+
+		@media (max-width: $breakpoint-mobile) {
+			display: flex;
+		}
+	}
 
 	// 悬停时触发动画
 	&:hover {

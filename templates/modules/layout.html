@@ -95,8 +95,12 @@
       </main>
 
       <!-- 右侧边栏 -->
-      <th:block th:if="${showAside == null or showAside}" th:replace="~{modules/aside :: aside}" />
-      <th:block th:if="${showAside == null or showAside}" th:replace="~{modules/aside :: aside-scripts}" />
+      <th:block th:if="${showAside == null or showAside}">
+        <th:block th:replace="~{modules/aside :: aside}" />
+      </th:block>
+      <th:block th:unless="${showAside == null or showAside}">
+        <aside id="z-aside" style="display: none;"></aside>
+      </th:block>
     </div>
 
     <!-- 底部浮动面板 (ZPanel) -->

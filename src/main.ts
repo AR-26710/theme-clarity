@@ -203,7 +203,7 @@ const swup = new Swup({
       body: true,
     }),
   ],
-  containers: ["#swup"],
+  containers: ["#swup", "#z-aside"],
 });
 
 Alpine.start();

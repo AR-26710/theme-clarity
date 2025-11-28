@@ -7,26 +7,170 @@
 ></div>
 
 <aside th:fragment="aside" id="z-aside">
-  <!-- 根据配置动态渲染小组件 -->
-  <th:block th:each="item : ${theme.config.aside.widgets.index}">
-    
-    <!-- 博客统计 -->
-    <th:block th:if="${item.widget == 'stats'}" th:insert="~{modules/aside :: widget-stats}" />
-    
-    <!-- 技术信息 -->
-    <th:block th:if="${item.widget == 'tech-info'}" th:insert="~{modules/aside :: widget-tech-info}" />
-    
-    <!-- 社区群组 -->
-    <th:block th:if="${item.widget == 'community'}" th:insert="~{modules/aside :: widget-community}" />
-    
-    <!-- 自定义组件 -->
-    <section class="widget" th:if="${item.widget == 'custom' and not #strings.isEmpty(item.title)}">
-      <hgroup class="widget-title text-creative" th:text="${item.title}">自定义</hgroup>
-      <div class="widget-body widget-card" th:utext="${item.content}"></div>
+  <!-- 1. 文章/页面目录 (仅在文章页或独立页面显示) -->
+  <th:block th:if="${post != null or singlePage != null}">
+    <section class="widget toc-widget" id="catalog-widget" style="display: none;">
+      <hgroup class="widget-title">
+        <span class="title-text">文章目录</span>
+        <a href="#content" aria-label="返回开头" title="返回开头" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
+          <span class="icon-[ph--arrow-circle-up-bold]"></span>
+        </a>
+        <a href="#comment" aria-label="评论区" title="评论区" onclick="document.getElementById('comment').scrollIntoView({behavior: 'smooth'}); return false;">
+          <span class="icon-[ph--chat-circle-text-bold]"></span>
+        </a>
+      </hgroup>
+      
+      <div class="widget-body widget-card toc-body">
+        <nav id="catalog-content" class="toc-nav">
+          <!-- 目录内容由 JS 生成 -->
+        </nav>
+        <p id="no-toc-tip" class="no-toc" style="display: none;">暂无目录信息</p>
+        
+        <!-- 返回顶部按钮（桌面端显示在右下角） -->
+        <button class="toc-back-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="返回顶部">
+          <span class="icon-[ph--arrow-up-bold]"></span>
+        </button>
+      </div>
     </section>
     
+    <!-- 目录生成脚本 -->
+    <script>
+      (function() {
+        function generateCatalog() {
+          const article = document.querySelector('.article');
+          const catalogWidget = document.getElementById('catalog-widget');
+          const catalogContent = document.getElementById('catalog-content');
+          const noTocTip = document.getElementById('no-toc-tip');
+  
+          if (!article || !catalogWidget || !catalogContent) return;
+  
+          const headers = Array.from(article.querySelectorAll('h1, h2, h3, h4, h5, h6'));
+          if (headers.length === 0) {
+            catalogWidget.style.display = 'block';
+            catalogContent.style.display = 'none';
+            noTocTip.style.display = 'block';
+            return;
+          }
+  
+          // 显示组件
+          catalogWidget.style.display = 'block';
+          catalogContent.style.display = 'block';
+          noTocTip.style.display = 'none';
+          catalogContent.innerHTML = '';
+  
+          // 构建嵌套树结构
+          const root = { children: [] };
+          const stack = [root]; // 栈中存储 { level, element, children }
+  
+          headers.forEach((header, index) => {
+            if (!header.id) header.id = 'heading-' + index;
+            
+            const level = parseInt(header.tagName.substring(1));
+            const item = {
+              id: header.id,
+              text: header.textContent,
+              level: level,
+              children: []
+            };
+  
+            // 找到父级：栈顶元素的 level 必须小于当前 level
+            while (stack.length > 1 && stack[stack.length - 1].level >= level) {
+              stack.pop();
+            }
+            
+            stack[stack.length - 1].children.push(item);
+            stack.push(item);
+          });
+  
+          // 递归渲染函数
+          function renderTree(items) {
+            if (!items.length) return null;
+            const ol = document.createElement('ol');
+            items.forEach(item => {
+              const li = document.createElement('li');
+              li.dataset.id = item.id;
+              
+              const a = document.createElement('a');
+              a.href = '#' + item.id;
+              a.textContent = item.text;
+              a.title = item.text;
+              a.onclick = (e) => {
+                e.preventDefault();
+                document.getElementById(item.id).scrollIntoView({ behavior: 'smooth' });
+                history.pushState(null, null, '#' + item.id);
+              };
+  
+              li.appendChild(a);
+              
+              const childrenOl = renderTree(item.children);
+              if (childrenOl) {
+                li.appendChild(childrenOl);
+              }
+              ol.appendChild(li);
+            });
+            return ol;
+          }
+  
+          const treeDom = renderTree(root.children);
+          if (treeDom) catalogContent.appendChild(treeDom);
+  
+          // 滚动监听 (ScrollSpy)
+          if (window.tocObserver) window.tocObserver.disconnect();
+          
+          const observerCallback = (entries) => {
+            // 找出当前视口中可见的所有标题
+            entries.forEach(entry => {
+              const li = catalogContent.querySelector(`li[data-id="${entry.target.id}"]`);
+              if (!li) return;
+  
+              if (entry.isIntersecting) {
+                li.classList.add('active');
+              } else {
+                li.classList.remove('active');
+              }
+            });
+            
+            // 处理高亮逻辑：如果多个 active，取最上面的一个；处理父级 has-active
+            const activeLis = catalogContent.querySelectorAll('li.active');
+            // 实际业务中，Intersecting 可能有多个，这里简单处理：
+            // 更精确的做法是计算距离顶部最近的 header。
+            // 为简化，我们这里结合 scroll 事件做简单的“可视区域”高亮
+            // 实际上 IntersectionObserver 已经够用，但为了模拟 blog-v3 的 hasActiveChild
+            
+            // 清除所有 has-active
+            catalogContent.querySelectorAll('.has-active').forEach(el => el.classList.remove('has-active'));
+            
+            // 重新计算 has-active (父级高亮)
+            // 这里我们只取第一个 active 的作为主激活点
+            let currentActive = catalogContent.querySelector('li.active');
+             // 如果有多个 active，通常取第一个或者根据 intersectionRatio
+             // 这里的简单实现可能不够完美，但基本可用
+            
+             if (currentActive) {
+               let parent = currentActive.parentElement.closest('li');
+               while (parent) {
+                 parent.classList.add('has-active');
+                 parent = parent.parentElement.closest('li');
+               }
+             }
+          };
+  
+          // 使用 IntersectionObserver 监听标题
+          window.tocObserver = new IntersectionObserver(observerCallback, {
+            rootMargin: '-80px 0px -70% 0px' // 调整触发区域，偏向屏幕顶部
+          });
+          headers.forEach(h => window.tocObserver.observe(h));
+        }
+  
+        generateCatalog();
+        document.addEventListener('swup:contentReplaced', generateCatalog);
+      })();
+    </script>
   </th:block>
-</aside>
+
+  <!-- 2. 根据配置动态渲染小组件 (通常用于首页) -->
+  <th:block th:unless="${post != null or singlePage != null}">
+    <th:block th:each="item : ${theme.config.aside.widgets.index}">
 
 <!-- ==================== -->
 <!-- 小组件片段定义 -->
@@ -129,10 +273,9 @@
   </section>
 </th:block>
 
-<!-- ==================== -->
-<!-- 右侧栏脚本 -->
-<!-- ==================== -->
-<th:block th:fragment="aside-scripts">
+  </th:block>
+
+  <!-- 侧边栏脚本 (放在 aside 内部以随 Swup 更新) -->
   <script th:inline="javascript">
     (function () {
       // 计算运营时长
@@ -178,4 +321,4 @@
       });
     })();
   </script>
-</th:block>
+</aside>
