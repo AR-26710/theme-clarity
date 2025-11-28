@@ -1,0 +1,78 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true)}">
+  <th:block th:fragment="content">
+    <!-- 归档页面 -->
+    <div class="archive proper-height">
+      <!-- 工具栏：分类筛选 + 排序 -->
+      <th:block th:replace="~{modules/order-toggle :: toolbar}" />
+
+      <!-- 按年份分组 -->
+      <th:block th:each="yearGroup,yearStat : ${archives.items}">
+        <section class="archive-group">
+          <!-- 年份标题区 -->
+          <div class="archive-title">
+            <h2 class="archive-year" th:text="${yearGroup.year}"></h2>
+
+            <!-- 右侧年份标签（前端计算） -->
+            <div class="archive-age" 
+                 th:data-year="${yearGroup.year}"
+                 th:data-start-year="${theme.config.aside.basic.site_start_time}">
+              <span class="age-num">-</span>
+              <span class="age-label">岁</span>
+            </div>
+
+            <!-- 统计信息 -->
+            <div class="archive-info">
+              <span th:text="${#lists.size(yearGroup.months)} + '月'"></span>
+            </div>
+          </div>
+
+          <!-- 文章列表（扁平化月份） -->
+          <menu class="archive-list">
+            <th:block th:each="monthGroup : ${yearGroup.months}">
+              <li th:each="post,postStat : ${monthGroup.posts}" class="article-item" th:style="'--delay: ' + ${postStat.index * 0.03} + 's'">
+                <time th:text="${#temporals.format(post.spec.publishTime, 'MM/dd')}"></time>
+                <a th:href="${post.status.permalink}" class="article-link gradient-card" th:title="${post.status.excerpt}">
+                  <span class="article-title" th:text="${post.spec.title}"></span>
+                  <img th:if="${post.spec.cover}" th:src="${post.spec.cover}" class="article-cover" loading="lazy" th:alt="${post.spec.title}" />
+                </a>
+              </li>
+            </th:block>
+          </menu>
+        </section>
+      </th:block>
+
+      <!-- 分页 -->
+      <div class="pagination-wrapper" th:if="${archives.totalPages > 1}">
+        <div class="pagination">
+          <a th:href="${archives.prevUrl}" class="page-btn" th:classappend="${!archives.hasPrevious} ? 'disabled'">
+            <span class="icon-[ph--caret-left-bold]"></span>
+          </a>
+          <span class="page-info">
+            <span th:text="${archives.page}"></span> / <span th:text="${archives.totalPages}"></span>
+          </span>
+          <a th:href="${archives.nextUrl}" class="page-btn" th:classappend="${!archives.hasNext} ? 'disabled'">
+            <span class="icon-[ph--caret-right-bold]"></span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 计算年龄脚本 -->
+      <script>
+        (function() {
+          document.querySelectorAll('.archive-age').forEach(el => {
+            const currentYear = parseInt(el.dataset.year);
+            const startStr = el.dataset.startYear;
+            if (startStr && startStr.length >= 4) {
+              const startYear = parseInt(startStr.substring(0, 4));
+              const age = currentYear - startYear;
+              el.querySelector('.age-num').textContent = age < 0 ? 0 : age;
+            } else {
+              el.style.display = 'none'; // 没配置建站时间则隐藏
+            }
+          });
+        })();
+      </script>
+    </div>
+  </th:block>
+</html>
