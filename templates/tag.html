@@ -1,0 +1,55 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true)}">
+  <th:block th:fragment="content">
+    <!-- 标签归档页面（单个标签的文章列表） -->
+    <div class="tag-archive proper-height">
+      <!-- 标签信息头部 -->
+      <header class="tag-header">
+        <a href="/tags" class="tag-back" title="返回标签云">
+          <span class="icon-[ph--arrow-left-bold]"></span>
+          <span>标签云</span>
+        </a>
+        <div class="tag-info">
+          <h1 class="tag-name">
+            <span class="tag-hash">#</span><span th:text="${tag.spec.displayName}"></span>
+          </h1>
+          <p class="tag-meta">
+            共 <strong th:text="${posts.total}">0</strong> 篇文章
+          </p>
+        </div>
+      </header>
+
+      <!-- 文章列表 -->
+      <menu class="tag-posts">
+        <li th:each="post,postStat : ${posts.items}" class="article-item" th:style="'--delay: ' + ${postStat.index * 0.03} + 's'">
+          <time th:text="${#temporals.format(post.spec.publishTime, 'yyyy/MM/dd')}"></time>
+          <a th:href="${post.status.permalink}" class="article-link gradient-card" th:title="${post.status.excerpt}">
+            <span class="article-title" th:text="${post.spec.title}"></span>
+            <img th:if="${post.spec.cover}" th:src="${post.spec.cover}" class="article-cover" loading="lazy" th:alt="${post.spec.title}" />
+          </a>
+        </li>
+      </menu>
+
+      <!-- 空状态 -->
+      <div th:if="${#lists.isEmpty(posts.items)}" class="tag-empty">
+        <span class="icon-[ph--article-bold]"></span>
+        <p>该标签下暂无文章</p>
+      </div>
+
+      <!-- 分页 -->
+      <div class="pagination-wrapper" th:if="${posts.totalPages > 1}">
+        <div class="pagination">
+          <a th:href="${posts.prevUrl}" class="page-btn" th:classappend="${!posts.hasPrevious} ? 'disabled'">
+            <span class="icon-[ph--caret-left-bold]"></span>
+          </a>
+          <span class="page-info">
+            <span th:text="${posts.page}"></span> / <span th:text="${posts.totalPages}"></span>
+          </span>
+          <a th:href="${posts.nextUrl}" class="page-btn" th:classappend="${!posts.hasNext} ? 'disabled'">
+            <span class="icon-[ph--caret-right-bold]"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </th:block>
+</html>

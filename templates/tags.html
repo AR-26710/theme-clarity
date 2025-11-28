@@ -1,0 +1,36 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true)}">
+  <th:block th:fragment="content">
+    <!-- 标签归档页面 -->
+    <div class="tags-archive proper-height">
+      <!-- 页面标题 -->
+      <header class="tags-header">
+        <h1 class="tags-title">
+          <span class="icon-[ph--tag-bold]"></span>
+          <span>标签云</span>
+        </h1>
+        <p class="tags-count">
+          共 <strong th:text="${#lists.size(tags)}">0</strong> 个标签
+        </p>
+      </header>
+
+      <!-- 标签列表 -->
+      <div class="tags-cloud">
+        <a th:each="tag,tagStat : ${tags}" 
+           th:href="${tag.status.permalink}" 
+           class="tag-item"
+           th:style="'--delay: ' + ${tagStat.index * 0.02} + 's'"
+           th:title="${tag.spec.displayName} + ' (' + ${tag.postCount} + ' 篇文章)'">
+          <span class="tag-name">#<span th:text="${tag.spec.displayName}"></span></span>
+          <span class="tag-count" th:text="${tag.postCount}"></span>
+        </a>
+      </div>
+
+      <!-- 空状态 -->
+      <div th:if="${#lists.isEmpty(tags)}" class="tags-empty">
+        <span class="icon-[ph--tag-simple-bold]"></span>
+        <p>暂无标签</p>
+      </div>
+    </div>
+  </th:block>
+</html>
