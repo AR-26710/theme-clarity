@@ -15,6 +15,7 @@ $breakpoint-widescreen: 1080px;
 );
 
 @use "./scss/components/layout" with (
+  $breakpoint-mobile: $breakpoint-mobile,
   $breakpoint-widescreen: $breakpoint-widescreen
 );
 @use "./scss/components/header";

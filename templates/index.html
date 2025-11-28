@@ -1,8 +1,8 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true)}">
   <th:block th:fragment="content">
-    <!-- Mobile Header (ZhiluHeader) -->
-    <div class="zhilu-header mobile-only">
+    <!-- Mobile Header -->
+    <div class="clarity-header mobile-only">
       <!-- Emoji 尾巴漂浮效果 -->
       <div th:if="${theme.config.header.emoji_tail}" class="emoji-tail">
         <span
@@ -19,14 +19,14 @@
         <img
           th:if="${theme.config.header.logo}"
           th:src="${theme.config.header.logo}"
-          class="zhilu-logo"
+          class="clarity-logo"
           th:classappend="${theme.config.header.show_title} ? 'circle' : ''"
           th:alt="${site.title}"
         />
       </a>
 
       <!-- 标题文字 -->
-      <div th:if="${theme.config.header.show_title}" class="zhilu-text">
+      <div th:if="${theme.config.header.show_title}" class="clarity-text">
         <div class="header-title">
           <span
             th:each="char,iterStat : ${#strings.arraySplit(site.title, '')}"
