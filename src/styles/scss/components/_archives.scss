@@ -117,23 +117,23 @@
 	&:hover {
 		background-color: var(--c-bg-soft);
 	}
-}
 
-// 文章封面（悬浮显示）
-.article-cover {
-	position: absolute;
-	opacity: 0.8;
-	top: 0;
-	inset-inline-end: 0;
-	width: min(50%, 180px);
-	height: 100%;
-	margin: 0;
-	mask-image: linear-gradient(to var(--end, right), transparent, rgba(255, 255, 255, 0.5));
-	transition: all 0.2s;
-	object-fit: cover;
-	z-index: -1;
+	// 文章封面（悬浮显示）
+	.article-cover {
+		position: absolute;
+		opacity: 0.8;
+		top: 0;
+		inset-inline-end: 0;
+		width: min(50%, 180px);
+		height: 100%;
+		margin: 0;
+		mask-image: linear-gradient(to var(--end, right), transparent, rgba(255, 255, 255, 0.5));
+		transition: all 0.2s;
+		object-fit: cover;
+		z-index: -1;
+	}
 
-	.article-link:hover > & {
+	&:hover .article-cover {
 		opacity: 1;
 		width: 50%;
 		object-position: center 43.5%;
