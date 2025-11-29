@@ -17,14 +17,17 @@
 
         <!-- 文章元信息 -->
         <div class="post-info">
+          <!-- Author -->
+          <th:block th:replace="~{modules/author-capsule :: capsule(author=${post.owner})}" />
+
           <span th:if="${post.spec.publishTime}">
             <span class="icon-[ph--calendar-dots-bold]"></span>
             <time th:text="${#temporals.format(post.spec.publishTime, 'yyyy-MM-dd')}"></time>
           </span>
 
-          <span th:if="${post.status.lastModifyTime != null and post.status.lastModifyTime != post.spec.publishTime}">
-            <span class="icon-[ph--calendar-plus-bold]"></span>
-            <time th:text="${#temporals.format(post.status.lastModifyTime, 'yyyy-MM-dd')}"></time>
+          <span th:if="${post.stats.comment != null}">
+            <span class="icon-[ph--chat-circle-dots-bold]"></span>
+            <span th:text="${post.stats.comment}"></span> 评论
           </span>
 
           <span th:if="${not #lists.isEmpty(post.categories)}">

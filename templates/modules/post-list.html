@@ -41,6 +41,9 @@
               <span class="icon-[ph--eye-bold]"></span>
               <span th:text="${post.stats.visit}">0</span>
             </span>
+
+            <!-- Author -->
+            <th:block th:replace="~{modules/author-capsule :: capsule(author=${post.owner})}" />
           </div>
         </div>
       </article>

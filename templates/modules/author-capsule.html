@@ -1,0 +1,9 @@
+<a
+  th:fragment="capsule(author)"
+  th:if="${author != null}"
+  th:href="${author.permalink}"
+  class="author-capsule"
+>
+  <img th:src="${author.avatar}" th:alt="${author.displayName}" loading="lazy" />
+  <span th:text="${author.displayName}"></span>
+</a>
