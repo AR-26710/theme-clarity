@@ -48,13 +48,80 @@ spec:
           name: primary
           label: 主导航菜单
     - group: footer
-      label: 页脚
+      label: 页脚 & 社交
       formSchema:
-        - $formkit: textarea
-          name: copyright
-          label: 版权信息
-          value: "© 2025 Powered by Halo"
-          validation: required
+        - $formkit: group
+          name: explore
+          label: 探索
+          help: 配置页脚左侧"探索"栏目
+          children:
+            - $formkit: checkbox
+              name: show_rss
+              label: 显示 RSS 订阅
+              value: true
+            - $formkit: text
+              name: rss_url
+              label: RSS 地址
+              value: /rss.xml
+              placeholder: /rss.xml
+            - $formkit: checkbox
+              name: show_travellings
+              label: 显示开往
+              value: true
+              help: 开往是一个友链接力项目
+        
+        - $formkit: group
+          name: links
+          label: 页脚链接
+          help: 配置页脚中间自定义栏目
+          children:
+            - $formkit: text
+              name: title
+              label: 栏目标题
+              value: 链接
+            - $formkit: repeater
+              name: items
+              label: 链接列表
+              value: []
+              children:
+                - $formkit: text
+                  name: icon
+                  label: 图标
+                  help: "Iconfont: 'iconfont icon-xxx' | Iconify: 'icon-[ph--link-bold]'"
+                  placeholder: icon-[ph--link-bold]
+                - $formkit: text
+                  name: text
+                  label: 文本
+                  placeholder: 我的链接
+                - $formkit: url
+                  name: url
+                  label: 链接
+                  placeholder: https://example.com
+
+        - $formkit: group
+          name: social
+          label: 侧边栏社交
+          help: 配置侧边栏底部的社交图标
+          children:
+            - $formkit: repeater
+              name: items
+              label: 社交图标
+              value: []
+              children:
+                - $formkit: text
+                  name: icon
+                  label: 图标
+                  help: "Iconfont: 'iconfont icon-xxx' | Iconify: 'icon-[ph--github-logo-bold]'"
+                  placeholder: icon-[ph--github-logo-bold]
+                - $formkit: text
+                  name: text
+                  label: 描述
+                  placeholder: GitHub
+                - $formkit: url
+                  name: url
+                  label: 链接
+                  placeholder: https://github.com
+
         - $formkit: text
           name: beian
           label: ICP 备案号
@@ -63,24 +130,6 @@ spec:
           name: gongan_beian
           label: 公安备案号
           placeholder: 陕公网安备61010302001234号
-        - $formkit: repeater
-          name: social_links
-          label: 社交链接
-          value: []
-          children:
-            - $formkit: text
-              name: icon
-              label: 图标
-              help: "Iconfont 类名，如：iconfont icon-github"
-              placeholder: iconfont icon-github
-            - $formkit: text
-              name: text
-              label: 文本
-              placeholder: GitHub
-            - $formkit: url
-              name: url
-              label: 链接
-              placeholder: https://github.com
     - group: aside
       label: 右侧边栏
       formSchema:
@@ -218,6 +267,75 @@ spec:
             <p>我会尽快审核并添加你的友链。</p>
           rows: 8
           help: 支持 HTML 格式
+    - group: music
+      label: 音乐播放器
+      formSchema:
+        - $formkit: checkbox
+          name: enabled
+          label: 启用音乐播放器
+          value: false
+          help: 在左侧边栏底部显示音乐胶囊播放器
+        - $formkit: select
+          name: server
+          label: 音乐平台
+          value: netease
+          options:
+            - value: netease
+              label: 网易云音乐
+            - value: tencent
+              label: QQ音乐
+            - value: kugou
+              label: 酷狗音乐
+            - value: xiami
+              label: 虾米音乐
+            - value: baidu
+              label: 百度音乐
+          help: 选择歌单所属的音乐平台
+        - $formkit: select
+          name: type
+          label: 资源类型
+          value: playlist
+          options:
+            - value: playlist
+              label: 歌单
+            - value: album
+              label: 专辑
+            - value: artist
+              label: 歌手热门
+            - value: song
+              label: 单曲
+          help: 选择要播放的资源类型
+        - $formkit: text
+          name: id
+          label: 资源 ID
+          placeholder: "3778678"
+          help: 歌单/专辑/歌手/歌曲的 ID，可从分享链接中获取
+        - $formkit: select
+          name: order
+          label: 播放顺序
+          value: list
+          options:
+            - value: list
+              label: 列表循环
+            - value: random
+              label: 随机播放
+        - $formkit: number
+          name: volume
+          label: 默认音量
+          value: 70
+          min: 0
+          max: 100
+          help: 默认音量百分比 (0-100)
+        - $formkit: checkbox
+          name: autoplay
+          label: 自动播放
+          value: false
+          help: 页面加载后自动播放（部分浏览器可能阻止）
+        - $formkit: checkbox
+          name: show_lrc
+          label: 显示歌词
+          value: true
+          help: 在播放器展开时显示滚动歌词
     - group: custom
       label: 自定义
       formSchema:

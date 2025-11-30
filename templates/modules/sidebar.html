@@ -98,7 +98,7 @@
       <!-- 已登录 -->
       <div x-show="currentUser" class="user-entry" @click="handleClick()">
         <div class="avatar-wrapper">
-          <img :src="currentUser?.avatar || '/assets/images/default-avatar.png'" :alt="currentUser?.name" class="user-avatar" />
+          <img :src="currentUser?.avatar" :alt="currentUser?.name" class="user-avatar" />
         </div>
         <div class="user-info">
           <span class="user-name" x-text="currentUser?.name"></span>
@@ -137,16 +137,21 @@
       </button>
     </div>
 
+    <!-- 音乐播放器容器 -->
+    <div class="music-player-container" style="position: relative; min-height: 50px; margin: 0.5rem 0;">
+      <th:block th:replace="~{modules/music-player :: player}" />
+    </div>
+
     <!-- 社交图标 -->
-    <div class="social-icons" th:if="${theme.config.footer.social_links != null}">
+    <div class="social-icons" th:if="${theme.config.footer.social?.items != null and !theme.config.footer.social.items.isEmpty()}">
       <a
-        th:each="link : ${theme.config.footer.social_links}"
+        th:each="link : ${theme.config.footer.social.items}"
         th:href="${link.url}"
         th:title="${link.text}"
         target="_blank"
         rel="noopener noreferrer"
       >
-        <span th:class="'iconfont ' + ${link.icon}"></span>
+        <span th:class="${link.icon}"></span>
       </a>
     </div>
   </footer>

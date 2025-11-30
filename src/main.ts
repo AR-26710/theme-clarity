@@ -1,6 +1,7 @@
 import "./styles/tailwind.css";
 import "./styles/style.scss";
 import Alpine from "alpinejs";
+// @ts-ignore
 import collapse from "@alpinejs/collapse";
 import Swup from "swup";
 import SwupHeadPlugin from "@swup/head-plugin";
@@ -10,9 +11,11 @@ import SwupScriptsPlugin from "@swup/scripts-plugin";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
-import type { ThemeConfig } from "./types/config";
-
 import { mountCounter } from "./preact";
+import { musicPlayer } from "./plugins/musicPlayer";
+
+// 注册音乐播放器组件
+Alpine.data("musicPlayer", musicPlayer);
 
 /* Alpine.js 主题切换组件 */
 Alpine.data("themeToggle", () => ({
@@ -220,18 +223,6 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-function getThemeConfig(): ThemeConfig | undefined {
-  const el = document.querySelector<HTMLScriptElement>("#theme-config");
-  if (!el?.textContent) return undefined;
-
-  try {
-    return JSON.parse(el.textContent) as ThemeConfig;
-  } catch (e) {
-    console.error("解析 theme-config 失败:", e);
-    return undefined;
-  }
-}
-
 export function count(x: number, y: number) {
   return x + y;
 }
@@ -335,7 +326,7 @@ function initBackToTop() {
     }
   };
 
-  const onPointerUp = (e: Event) => {
+  const onPointerUp = () => {
     // 若未达到长按阈值，则作为点击处理
     if (!longPressed) {
       window.scrollTo({ top: 0, behavior: "smooth" });
