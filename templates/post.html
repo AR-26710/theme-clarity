@@ -43,7 +43,7 @@
       </div>
       <h1 class="post-title text-creative" th:text="${post.spec.title}"></h1>
     </div>
-    <div th:if="${post.status.excerpt != null and post.status.excerpt != ''}" class="md-excerpt gradient-card">
+    <div th:if="${theme.config.post.show_excerpt != false and post.status.excerpt != null and post.status.excerpt != ''}" class="md-excerpt gradient-card">
       <span class="icon-[ph--highlighter-bold]"></span>
       <span id="excerpt-text" th:text="${post.status.excerpt}"></span>
     </div>
