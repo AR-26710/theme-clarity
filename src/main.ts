@@ -140,9 +140,7 @@ Alpine.data("pagination", (page: number, total: number) => ({
   pageArr: [] as (number | string)[],
 
   init() {
-    console.log("Pagination init:", this.page, this.total);
     this.generatePageArr();
-    console.log("Page array:", this.pageArr);
   },
 
   generatePageArr() {
@@ -208,7 +206,6 @@ export function count(x: number, y: number) {
   return x + y;
 }
 function mountWidgets() {
-  console.log("Mounting widgets...");
   const counterContainer = document.querySelector("#counter");
   if (counterContainer) {
     mountCounter(counterContainer as HTMLElement);

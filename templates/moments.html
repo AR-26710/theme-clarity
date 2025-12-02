@@ -137,7 +137,6 @@
                   if (this.loading || this.liked) return;
                   this.loading = true;
                   try {
-                    console.log('Upvoting moment:', $el.dataset.name);
                     const res = await fetch('/apis/api.halo.run/v1alpha1/trackers/upvote', { 
                       method: 'POST',
                       headers: {
@@ -153,7 +152,6 @@
                       this.liked = true;
                       this.count++;
                       localStorage.setItem('moment-liked-' + $el.dataset.name, 'true');
-                      console.log('Upvote success');
                     } else {
                       console.error('Upvote failed:', res.status, await res.text());
                     }
