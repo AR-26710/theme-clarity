@@ -4,7 +4,7 @@ import { Fancybox } from "@fancyapps/ui";
  * 初始化 Fancybox 灯箱
  */
 export function initFancybox() {
-  // 销毁之前的绑定（避免 swup 切换页面后重复绑定）
+  // 销毁之前的绑定（避免重复绑定）
   Fancybox.destroy();
 
   // 全站通用绑定选择器

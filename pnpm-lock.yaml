@@ -14,27 +14,12 @@ importers:
       '@fancyapps/ui':
         specifier: ^6.1.6
         version: 6.1.6
-      '@swup/head-plugin':
-        specifier: ^2.3.1
-        version: 2.3.1(swup@4.8.2)
-      '@swup/preload-plugin':
-        specifier: ^3.2.11
-        version: 3.2.11(swup@4.8.2)
-      '@swup/scripts-plugin':
-        specifier: ^2.1.0
-        version: 2.1.0(swup@4.8.2)
-      '@swup/scroll-plugin':
-        specifier: ^4.0.0
-        version: 4.0.0
       alpinejs:
         specifier: ^3.15.1
         version: 3.15.1
       preact:
         specifier: ^10.27.2
         version: 10.27.2
-      swup:
-        specifier: ^4.8.2
-        version: 4.8.2
     devDependencies:
       '@halo-dev/theme-package-cli':
         specifier: ^1.0.0
@@ -717,27 +702,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@swup/head-plugin@2.3.1':
-    resolution: {integrity: sha512-kdv60fO9c0/3+K40f7Fj/uV34nSuuPeCsld83J5uVVFizOmoovA737C5M1Iqac5Spf2GLU7q+mhN6AbohSIBjA==}
-    peerDependencies:
-      swup: ^4.6.0
-
-  '@swup/plugin@4.0.0':
-    resolution: {integrity: sha512-3Kq31BJxnzoPg643YxGoWQggoU6VPKZpdE5CqqmP7wwkpCYTzkRmrfcQ29mGhsSS7xfS7D33iZoBiwY+wPoo2A==}
-
-  '@swup/preload-plugin@3.2.11':
-    resolution: {integrity: sha512-dq50u+d8L+63/pU6dUDnypuBoF49ubjRzRJqitGem2K7wRn7xccxRSvdyeGKdA2vNvzGDAmLfwVTZdSotvvDrw==}
-    peerDependencies:
-      swup: ^4.0.0
-
-  '@swup/scripts-plugin@2.1.0':
-    resolution: {integrity: sha512-JSMFsFCN9gn4q3m1Ccv0gq3gwRoZl6UGALOQO3OeQ8wOIq9vPC5dcUD3CMBuaPanksjR4GC8ZoukIjHrlT52fg==}
-    peerDependencies:
-      swup: ^4.2.0
-
-  '@swup/scroll-plugin@4.0.0':
-    resolution: {integrity: sha512-13cR7zVGanAVgdJwszTPuyZxJ8cVo0ylGgVsf2OF/hZUzEpvmrd0pMdo3d4v8O6c+bB/np6hpCHPDLxkmL40xg==}
-
   '@tailwindcss/node@4.1.17':
     resolution: {integrity: sha512-csIkHIgLb3JisEFQ0vxr2Y57GUNYh447C8xzwj89U/8fdW8LhProdxvnVH6U8M2Y73QKiTIH+LWbK3V2BBZsAg==}
 
@@ -1111,9 +1075,6 @@ packages:
     resolution: {integrity: sha512-6FqVXeETqWPoGcfzrXb37E50NP0LXT8kAMu5ooZayhWWdgEY4lBEEcbQNXtkuKQsGduxiIcI4gOTsxTmuq/bSg==}
     engines: {node: '>= 14'}
 
-  compute-scroll-into-view@3.1.1:
-    resolution: {integrity: sha512-VRhuHOLoKYOy4UbilLbUzbYg93XLjv2PncJC50EuTWPA3gaja1UjBsUP/D/9/juV3vQFr6XBEzn9KCAHdUvOHw==}
-
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
@@ -1184,9 +1145,6 @@ packages:
   delayed-stream@1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
-
-  delegate-it@6.3.0:
-    resolution: {integrity: sha512-WAa6cA61M5mfDR31PBgMNQQ3LY1q++TxnZzcm7E9XV8ODBPxDutxH0toTR/BXqIkLaVuU7ntFe1uOqDllhA22A==}
 
   detect-libc@1.0.3:
     resolution: {integrity: sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg==}
@@ -1864,10 +1822,6 @@ packages:
     resolution: {integrity: sha512-VXJjc87FScF88uafS3JllDgvAm+c/Slfz06lorj2uAY34rlUu0Nt+v8wreiImcrgAjjIHp1rXpTDlLOGw29WwQ==}
     engines: {node: '>=18'}
 
-  opencollective-postinstall@2.0.3:
-    resolution: {integrity: sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==}
-    hasBin: true
-
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
@@ -1910,9 +1864,6 @@ packages:
   path-scurry@1.11.1:
     resolution: {integrity: sha512-Xa4Nw17FS9ApQFJ9umLiJS4orGjm7ZzwUrwamcGQuHSzDyth9boKDaycYdDcZDuqYATXw4HFXgaqWTctW/v1HA==}
     engines: {node: '>=16 || 14 >=14.18'}
-
-  path-to-regexp@6.3.0:
-    resolution: {integrity: sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ==}
 
   path@0.12.7:
     resolution: {integrity: sha512-aXXC6s+1w7otVF9UletFkFcDsJeO7lSZBPUQhtb5O0xJe8LtYhj/GxldoL09bBj9+ZmE2hNoHqQSFMN5fikh4Q==}
@@ -2197,9 +2148,6 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
 
-  swup@4.8.2:
-    resolution: {integrity: sha512-Art2vB4idZ7EFZQhhA47ZifkmZMPgcAwE6z28BhorbTYCO8jcovcc5MasX49GGdXYJWO43DTut7iZb5yrQdEfA==}
-
   synckit@0.11.11:
     resolution: {integrity: sha512-MeQTA1r0litLUf0Rp/iisCaL8761lKAZHaimlbGK4j0HysC4PLfqygQj9srcs0m2RdtDYnF8UuYyKpbjHYp7Jw==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -2242,9 +2190,6 @@ packages:
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
-
-  typed-query-selector@2.12.0:
-    resolution: {integrity: sha512-SbklCd1F0EiZOyPiW192rrHZzZ5sBijB6xM+cpmrwDqObvdtunOHHIk9fCGsoK5JVIYXoyEp4iEdE3upFH3PAg==}
 
   typescript@5.9.3:
     resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
@@ -2927,30 +2872,6 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.53.1':
     optional: true
 
-  '@swup/head-plugin@2.3.1(swup@4.8.2)':
-    dependencies:
-      '@swup/plugin': 4.0.0
-      swup: 4.8.2
-
-  '@swup/plugin@4.0.0':
-    dependencies:
-      swup: 4.8.2
-
-  '@swup/preload-plugin@3.2.11(swup@4.8.2)':
-    dependencies:
-      '@swup/plugin': 4.0.0
-      swup: 4.8.2
-
-  '@swup/scripts-plugin@2.1.0(swup@4.8.2)':
-    dependencies:
-      '@swup/plugin': 4.0.0
-      swup: 4.8.2
-
-  '@swup/scroll-plugin@4.0.0':
-    dependencies:
-      '@swup/plugin': 4.0.0
-      compute-scroll-into-view: 3.1.1
-
   '@tailwindcss/node@4.1.17':
     dependencies:
       '@jridgewell/remapping': 2.3.5
@@ -3341,8 +3262,6 @@ snapshots:
       normalize-path: 3.0.0
       readable-stream: 4.7.0
 
-  compute-scroll-into-view@3.1.1: {}
-
   concat-map@0.0.1: {}
 
   confbox@0.1.8: {}
@@ -3401,10 +3320,6 @@ snapshots:
   deep-is@0.1.4: {}
 
   delayed-stream@1.0.0: {}
-
-  delegate-it@6.3.0:
-    dependencies:
-      typed-query-selector: 2.12.0
 
   detect-libc@1.0.3:
     optional: true
@@ -4058,8 +3973,6 @@ snapshots:
     dependencies:
       mimic-function: 5.0.1
 
-  opencollective-postinstall@2.0.3: {}
-
   optionator@0.9.4:
     dependencies:
       deep-is: 0.1.4
@@ -4106,8 +4019,6 @@ snapshots:
     dependencies:
       lru-cache: 10.4.3
       minipass: 7.1.2
-
-  path-to-regexp@6.3.0: {}
 
   path@0.12.7:
     dependencies:
@@ -4356,12 +4267,6 @@ snapshots:
       csso: 5.0.5
       picocolors: 1.1.1
 
-  swup@4.8.2:
-    dependencies:
-      delegate-it: 6.3.0
-      opencollective-postinstall: 2.0.3
-      path-to-regexp: 6.3.0
-
   synckit@0.11.11:
     dependencies:
       '@pkgr/core': 0.2.9
@@ -4412,8 +4317,6 @@ snapshots:
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
-
-  typed-query-selector@2.12.0: {}
 
   typescript@5.9.3: {}
 

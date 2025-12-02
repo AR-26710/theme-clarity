@@ -5,11 +5,6 @@ import { Fancybox } from "@fancyapps/ui";
 import Alpine from "alpinejs";
 // @ts-ignore
 import collapse from "@alpinejs/collapse";
-import Swup from "swup";
-import SwupHeadPlugin from "@swup/head-plugin";
-import SwupPreloadPlugin from "@swup/preload-plugin";
-import SwupScrollPlugin from "@swup/scroll-plugin";
-import SwupScriptsPlugin from "@swup/scripts-plugin";
 
 import { mountCounter } from "./preact";
 import { musicPlayer } from "./plugins/musicPlayer";
@@ -198,50 +193,6 @@ Alpine.data("pagination", (page: number, total: number) => ({
 Alpine.plugin(collapse);
 
 window.Alpine = Alpine;
-const swup = new Swup({
-  plugins: [
-    new SwupHeadPlugin({
-      // 使用函数判断哪些标签需要保留（不更新）
-      persistTags: (el: Element) => {
-        const tag = el.tagName.toLowerCase();
-        
-        // link 标签：只保留样式表和图标
-        if (tag === 'link') {
-          const rel = el.getAttribute('rel');
-          if (rel === 'stylesheet' || rel === 'icon' || rel === 'apple-touch-icon') {
-            return true;
-          }
-          return false;
-        }
-        
-        // style 标签：保留
-        if (tag === 'style') return true;
-        
-        // script 标签：只保留主题 JS，插件 JS 需要重新执行
-        if (tag === 'script') {
-          const src = el.getAttribute('src') || '';
-          // 保留主题的 main.js 和 vite 开发脚本
-          if (src.includes('/assets/dist/main.js') || 
-              src.includes('localhost:5173') ||
-              !src) {  // 内联脚本也保留
-            return true;
-          }
-          // 插件脚本（如 /plugins/）不保留，让它重新加载执行
-          return false;
-        }
-        
-        return false;
-      },
-    }),
-    new SwupPreloadPlugin(),
-    new SwupScrollPlugin(),
-    new SwupScriptsPlugin({
-      head: true,  // 执行 head 中新添加的脚本（插件）
-      body: true,
-    }),
-  ],
-  containers: ["#swup", "#z-aside"],
-});
 
 Alpine.start();
 
@@ -267,14 +218,6 @@ function mountWidgets() {
     mountCounter(counterContainer as HTMLElement);
   }
 }
-// Swup 页面切换后重新初始化
-swup.hooks.on("content:replace", () => {
-  initFancybox();
-  initBackToTop();
-  
-  // 触发自定义事件，让插件重新初始化
-  window.dispatchEvent(new Event('swup:content-replaced'));
-});
 
 
 // 页面初始加载
@@ -287,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // 初始化下拉菜单交互
 function initDropdownMenus() {
-  // 使用事件委托处理点击事件，支持 Swup 页面切换
+  // 使用事件委托处理点击事件
   document.addEventListener("click", (e) => {
     const target = e.target as HTMLElement;
     const trigger = target.closest(".has-dropdown");
