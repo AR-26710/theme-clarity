@@ -19,7 +19,8 @@
 
 		@media (max-width: $breakpoint-mobile) {
 			display: flex;
-			margin: 0.75rem 1rem 0.5rem;
+			margin: 0 1rem 0.5rem;
+			padding-top: max(0.5rem, env(safe-area-inset-top, 0));
 		}
 	}
 
