@@ -41,6 +41,12 @@ spec:
           value: "#60a5fa"
           help: 用于次要高亮、悬停状态等
           validation: required
+        - $formkit: code
+          name: logo_font_css
+          label: Logo 字体样式
+          language: css
+          height: 150px
+          help: 填写 @font-face 代码，font-family 必须改为 "Logo Font"（如阿里妈妈方圆体需将原 font-family 值替换），留空则使用系统字体（苹方/微软雅黑）
     - group: nav
       label: 导航菜单
       formSchema:

@@ -1,9 +1,11 @@
 :root {
 	--font-basic: "InterVariable", "Noto Sans SC-Local", ui-sans-serif, "sans-serif", "Noto Sans SC", system-ui, sans-serif;
 	--font-serif: "Noto Serif SC-Local", "Noto Serif SC", serif;
-	--font-creative: "Alimama FangYuanTi VF", "InterVariable", "Noto Sans SC-Local", "Noto Sans SC", system-ui, sans-serif;
-	--font-logo: "Alimama FangYuanTi VF", "InterVariable", "Noto Sans SC-Local", "Noto Sans SC", system-ui, sans-serif;
-	--font-stroke-free: "Alimama FangYuanTi VF", "Inter", "Microsoft YaHei", "MiSans", system-ui, sans-serif;
+	// 标题字体：快看世界体 -> 苹方(macOS) / 微软雅黑(Windows)
+	--font-creative: "快看世界体", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+	// Logo 字体：自定义字体(需在主题设置中配置) -> 回退到系统字体
+	--font-logo: "Logo Font", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+	--font-stroke-free: "Logo Font", "PingFang SC", "Microsoft YaHei", "MiSans", system-ui, sans-serif;
 	--font-monospace: ui-monospace, "JetBrains Mono", "Cascadia Code", "Consolas", "monospace", var(--font-basic), monospace;
 
 	@media (max-resolution: 1.2dppx) {

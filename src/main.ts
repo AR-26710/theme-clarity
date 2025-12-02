@@ -1,5 +1,6 @@
 import "./styles/tailwind.css";
 import "./styles/style.scss";
+import "@chinese-fonts/kksjt/dist/kuaikanshijieti20231213/result.css";
 
 import { Fancybox } from "@fancyapps/ui";
 import Alpine from "alpinejs";

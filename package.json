@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@alpinejs/collapse": "^3.15.2",
+    "@chinese-fonts/kksjt": "^3.0.0",
     "@fancyapps/ui": "^6.1.6",
     "alpinejs": "^3.15.1",
     "preact": "^10.27.2"

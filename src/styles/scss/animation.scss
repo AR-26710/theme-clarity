@@ -48,6 +48,12 @@
 	transition-timing-function: var(--max-bezier-to-collapse);
 }
 
+.collapse-enter-to,
+.collapse-leave-from {
+	max-height: 50vh;
+	transition-timing-function: var(--max-bezier-to-full);
+}
+
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
