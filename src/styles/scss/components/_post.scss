@@ -754,14 +754,29 @@ $breakpoint-mobile: 768px !default;
 		font-size: 0.9rem;
 
 		a {
+			margin: -0.1em -0.2em;
+			padding: 0.1em 0.2em;
+			border-radius: 0.25em;
+			background: linear-gradient(var(--c-primary-soft), var(--c-primary-soft)) no-repeat center bottom / 100% 0.1em;
 			color: var(--c-primary);
-			text-decoration: underline;
-			text-decoration-color: transparent;
-			transition: text-decoration-color 0.2s;
+			text-decoration: none;
+			transition: all 0.2s ease;
+
+			svg {
+				transition: transform 0.2s ease;
+			}
 
 			&:hover {
-				text-decoration-color: var(--c-primary);
+				background-size: 100% 100%;
+
+				svg {
+					transform: scale(1.1) rotate(-5deg);
+				}
 			}
+		}
+
+		p {
+			margin: 0;
 		}
 	}
 }

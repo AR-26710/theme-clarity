@@ -82,9 +82,7 @@
     <!-- 主内容区域 -->
     <div id="content">
       <main id="main-content">
-        <div id="swup" class="transition-main">
-          <th:block th:replace="${content}" />
-        </div>
+        <th:block th:replace="${content}" />
 
         <!-- 页脚 -->
         <th:block th:replace="~{modules/footer :: footer}" />

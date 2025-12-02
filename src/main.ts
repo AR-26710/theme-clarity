@@ -7,12 +7,8 @@ import Alpine from "alpinejs";
 import collapse from "@alpinejs/collapse";
 
 import { mountCounter } from "./preact";
-import { musicPlayer } from "./plugins/musicPlayer";
 import { initFancybox } from "./utils/fancybox";
 (window as any).Fancybox = Fancybox;
-
-// 注册音乐播放器组件
-Alpine.data("musicPlayer", musicPlayer);
 
 /* Alpine.js 主题切换组件 */
 Alpine.data("themeToggle", () => ({

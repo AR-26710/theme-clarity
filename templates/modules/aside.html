@@ -158,7 +158,6 @@
         }
   
         generateCatalog();
-        document.addEventListener('swup:contentReplaced', generateCatalog);
       })();
     </script>
   </th:block>
@@ -270,7 +269,7 @@
     </th:block>
   </th:block>
 
-  <!-- 侧边栏脚本 (放在 aside 内部以随 Swup 更新) -->
+  <!-- 侧边栏脚本 -->
   <script th:inline="javascript">
     (function () {
       // 计算运营时长

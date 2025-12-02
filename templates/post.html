@@ -66,17 +66,7 @@
       <!-- 许可协议 -->
       <section class="license">
         <div class="title text-creative">许可协议</div>
-        <div class="content">
-          <p>
-            本文采用
-            <a
-              th:href="${theme.config.aside.license == 'CC BY-NC-SA 4.0'} ? 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans' : '#'"
-              target="_blank"
-              th:text="${theme.config.aside.license ?: 'CC BY-NC-SA 4.0'}"
-            ></a>
-            许可协议，转载请注明出处。
-          </p>
-        </div>
+        <div class="content">本文采用 <a th:href="${theme.config.aside.basic.license_url ?: 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans'}" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" style="vertical-align: -0.125em; display: inline;"><path fill="currentColor" d="M9 8c1.104 0 2.105.448 2.829 1.173l-1.414 1.413a2 2 0 1 0 0 2.828l1.413 1.414A4.001 4.001 0 0 1 5 12c0-2.208 1.792-4 4-4m9.829 1.173A4.001 4.001 0 0 0 12 12a4.001 4.001 0 0 0 6.828 2.828l-1.414-1.414a2 2 0 1 1 0-2.828zM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12m10-8a8 8 0 1 0 0 16a8 8 0 0 0 0-16"/></svg> <span th:text="${theme.config.aside.basic.license ?: '署名-非商业性使用-相同方式共享 4.0 国际'}"></span></a> 许可协议，转载请注明出处。</div>
       </section>
     </div>
 
@@ -90,30 +80,30 @@
       "
     >
       <div th:if="${prevPost != null or nextPost != null}" class="surround-post">
-        <!-- 上一篇 (较新) -->
-        <a th:if="${nextPost != null}" th:href="${nextPost.status.permalink}" class="surround-link">
+        <!-- 上一篇 -->
+        <a th:if="${prevPost != null}" th:href="${prevPost.status.permalink}" class="surround-link">
           <span class="icon-[solar--rewind-back-bold-duotone] rtl-flip"></span>
           <div class="surround-text">
-            <strong class="title text-creative" th:text="${nextPost.spec.title}"></strong>
-            <span class="date" th:text="${#temporals.format(nextPost.spec.publishTime, 'yyyy-MM-dd')}"></span>
+            <strong class="title text-creative" th:text="${prevPost.spec.title}"></strong>
+            <span class="date" th:text="${#temporals.format(prevPost.spec.publishTime, 'yyyy-MM-dd')}"></span>
           </div>
         </a>
-        <div th:unless="${nextPost != null}" class="surround-link no-link">
+        <div th:unless="${prevPost != null}" class="surround-link no-link">
           <span class="icon-[solar--document-add-bold-duotone]"></span>
           <div class="surround-text">
             <strong class="title">新故事即将发生</strong>
           </div>
         </div>
 
-        <!-- 下一篇 (较旧) -->
-        <a th:if="${prevPost != null}" th:href="${prevPost.status.permalink}" class="surround-link align-end">
+        <!-- 下一篇 -->
+        <a th:if="${nextPost != null}" th:href="${nextPost.status.permalink}" class="surround-link align-end">
           <span class="icon-[solar--rewind-forward-bold-duotone] rtl-flip"></span>
           <div class="surround-text">
-            <strong class="title text-creative" th:text="${prevPost.spec.title}"></strong>
-            <span class="date" th:text="${#temporals.format(prevPost.spec.publishTime, 'yyyy-MM-dd')}"></span>
+            <strong class="title text-creative" th:text="${nextPost.spec.title}"></strong>
+            <span class="date" th:text="${#temporals.format(nextPost.spec.publishTime, 'yyyy-MM-dd')}"></span>
           </div>
         </a>
-        <div th:unless="${prevPost != null}" class="surround-link align-end no-link">
+        <div th:unless="${nextPost != null}" class="surround-link align-end no-link">
           <span class="icon-[solar--reel-bold-duotone]"></span>
           <div class="surround-text">
             <strong class="title">已抵达博客尽头</strong>

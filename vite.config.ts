@@ -9,8 +9,6 @@ export default ({ mode }: { mode: string }) => {
   // 定义多个入口
   const entries = {
     main: path.resolve(__dirname, "src/main.ts"),
-    plugins: path.resolve(__dirname, "src/plugins/index.ts"),
-    // photo: path.resolve(__dirname, "photo.ts"),
     // 可继续添加，如：'profile': 'src/profile.ts'
   };
 

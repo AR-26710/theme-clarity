@@ -76,7 +76,6 @@ $breakpoint-phone: 528px !default;
 	color: var(--cg-color);
 }
 
-// CSR 前空 category 产生 double gap，同时需避免误伤 iconify
 span:not([class]):empty {
 	display: none;
 }

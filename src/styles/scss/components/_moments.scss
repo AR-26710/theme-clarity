@@ -597,9 +597,7 @@
 .moment-comment {
 	display: none;
 	margin-top: 0.75rem;
-	padding: 0.75rem;
-	border-radius: 0.5rem;
-	background: var(--c-bg-2);
+	padding: 0.75rem 0;
 	animation: slide-down 0.25s ease;
 
 	&.show {
@@ -918,10 +916,7 @@
 // 详情页评论区
 .moment-comment-section {
 	margin: 1.5rem 1rem 2rem;
-	padding: 1.5rem;
-	border-radius: 1rem;
-	background-color: var(--ld-bg-card);
-	box-shadow: 0 2px 12px var(--ld-shadow);
+	padding: 1.5rem 0;
 
 	// 继承评论变量
 	--halo-cw-primary-1-color: var(--c-primary);
