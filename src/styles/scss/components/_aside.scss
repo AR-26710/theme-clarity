@@ -157,6 +157,15 @@ $breakpoint-widescreen: 1080px !default;
 			color: var(--c-text-2);
 		}
 	}
+
+	// 链接悬浮效果
+	a {
+		transition: color 0.2s;
+
+		&:hover {
+			color: var(--c-primary);
+		}
+	}
 }
 
 // Small 尺寸 (水平排列)
@@ -196,6 +205,8 @@ $breakpoint-widescreen: 1080px !default;
 
 // 域名文字溢出处理
 .domain-text {
+	min-width: 0; // 网格布局中必须设置才能截断
+	max-width: 100%;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;

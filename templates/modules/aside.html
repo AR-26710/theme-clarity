@@ -210,11 +210,16 @@
               </div>
               <div>
                 <dt>文章许可</dt>
-                <dd th:text="${theme.config.aside.basic.license}">CC BY-NC-SA 4.0</dd>
+                <dd>
+                  <a th:href="${theme.config.aside.basic.license_url}" 
+                     th:text="${theme.config.aside.basic.license}" 
+                     target="_blank" 
+                     rel="noopener noreferrer">CC BY-NC-SA 4.0</a>
+                </dd>
               </div>
               <div>
                 <dt>规范域名</dt>
-                <dd class="domain-text" th:text="${site.url}"></dd>
+                <dd class="domain-text" th:title="${site.url}" th:text="${site.url}"></dd>
               </div>
             </dl>
 

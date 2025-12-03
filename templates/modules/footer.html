@@ -2,7 +2,7 @@
   <nav class="footer-nav">
     <!-- 探索 -->
     <div class="footer-nav-group" th:if="${theme.config.footer.explore?.show_rss != false or theme.config.footer.explore?.show_travellings != false or (theme.config.footer.explore?.links != null and !theme.config.footer.explore.links.isEmpty())}">
-      <h3 th:text="${theme.config.footer.explore?.title} ?: '探索'"></h3>
+      <h3 th:text="${theme.config.footer.explore?.title ?: '探索'}"></h3>
       <menu>
         <li th:if="${theme.config.footer.explore?.show_rss != false}">
           <a th:href="${theme.config.footer.explore?.rss_url} ?: '/rss.xml'" target="_blank">
@@ -19,7 +19,8 @@
         <!-- 自定义探索链接 -->
         <li th:each="link : ${theme.config.footer.explore?.links}">
           <a th:href="${link.url}" target="_blank">
-            <span th:class="${link.icon}"></span>
+            <iconify-icon th:if="${#strings.contains(link.icon, ':')}" th:icon="${link.icon}"></iconify-icon>
+            <span th:unless="${#strings.contains(link.icon, ':')}" th:class="${link.icon}"></span>
             <span class="nav-text" th:text="${link.text}"></span>
           </a>
         </li>
@@ -32,7 +33,8 @@
       <menu>
         <li th:each="link : ${theme.config.footer.links.items}">
           <a th:href="${link.url}" target="_blank">
-            <span th:class="${link.icon}"></span>
+            <iconify-icon th:if="${#strings.contains(link.icon, ':')}" th:icon="${link.icon}"></iconify-icon>
+            <span th:unless="${#strings.contains(link.icon, ':')}" th:class="${link.icon}"></span>
             <span class="nav-text" th:text="${link.text}"></span>
           </a>
         </li>

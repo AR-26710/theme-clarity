@@ -23,16 +23,11 @@
         >
           <th:block th:if="${menuItem.children != null and not #lists.isEmpty(menuItem.children)}">
             <div class="sidebar-nav-item has-dropdown">
-              <span
-                th:if="${not #strings.isEmpty(menuItem.metadata?.annotations?.get('icon'))}"
-                th:class="'iconfont ' + ${menuItem.metadata.annotations.get('icon')}"
-              >
-              </span>
-              <span
-                th:unless="${not #strings.isEmpty(menuItem.metadata?.annotations?.get('icon'))}"
-                class="iconfont icon-file"
-              >
-              </span>
+              <th:block th:if="${not #strings.isEmpty(menuItem.metadata?.annotations?.get('icon'))}">
+                <iconify-icon th:if="${#strings.contains(menuItem.metadata.annotations.get('icon'), ':')}" th:icon="${menuItem.metadata.annotations.get('icon')}"></iconify-icon>
+                <span th:unless="${#strings.contains(menuItem.metadata.annotations.get('icon'), ':')}" th:class="${menuItem.metadata.annotations.get('icon')}"></span>
+              </th:block>
+              <span th:unless="${not #strings.isEmpty(menuItem.metadata?.annotations?.get('icon'))}" class="iconfont icon-file"></span>
               <span class="nav-text" th:text="${menuItem.status.displayName}"></span>
               <span class="icon-[ph--caret-down-bold] dropdown-arrow"></span>
             </div>
@@ -45,11 +40,10 @@
                 class="dropdown-item"
                 th:attr="target=${(child.spec.target == '_blank' or child.spec.target == 'BLANK') ? '_blank' : ((child.spec.target == '_parent' or child.spec.target == 'PARENT') ? '_parent' : ((child.spec.target == '_top' or child.spec.target == 'TOP') ? '_top' : null))}"
               >
-                <span
-                  th:if="${not #strings.isEmpty(child.metadata?.annotations?.get('icon'))}"
-                  th:class="'iconfont ' + ${child.metadata.annotations.get('icon')}"
-                >
-                </span>
+                <th:block th:if="${not #strings.isEmpty(child.metadata?.annotations?.get('icon'))}">
+                  <iconify-icon th:if="${#strings.contains(child.metadata.annotations.get('icon'), ':')}" th:icon="${child.metadata.annotations.get('icon')}"></iconify-icon>
+                  <span th:unless="${#strings.contains(child.metadata.annotations.get('icon'), ':')}" th:class="${child.metadata.annotations.get('icon')}"></span>
+                </th:block>
                 <span class="nav-text" th:text="${child.status.displayName}"></span>
               </a>
             </div>
@@ -60,16 +54,11 @@
             class="sidebar-nav-item"
             th:attr="target=${(menuItem.spec.target == '_blank' or menuItem.spec.target == 'BLANK') ? '_blank' : ((menuItem.spec.target == '_parent' or menuItem.spec.target == 'PARENT') ? '_parent' : ((menuItem.spec.target == '_top' or menuItem.spec.target == 'TOP') ? '_top' : null))}"
           >
-            <span
-              th:if="${not #strings.isEmpty(menuItem.metadata?.annotations?.get('icon'))}"
-              th:class="'iconfont ' + ${menuItem.metadata.annotations.get('icon')}"
-            >
-            </span>
-            <span
-              th:unless="${not #strings.isEmpty(menuItem.metadata?.annotations?.get('icon'))}"
-              class="iconfont icon-file"
-            >
-            </span>
+            <th:block th:if="${not #strings.isEmpty(menuItem.metadata?.annotations?.get('icon'))}">
+              <iconify-icon th:if="${#strings.contains(menuItem.metadata.annotations.get('icon'), ':')}" th:icon="${menuItem.metadata.annotations.get('icon')}"></iconify-icon>
+              <span th:unless="${#strings.contains(menuItem.metadata.annotations.get('icon'), ':')}" th:class="${menuItem.metadata.annotations.get('icon')}"></span>
+            </th:block>
+            <span th:unless="${not #strings.isEmpty(menuItem.metadata?.annotations?.get('icon'))}" class="iconfont icon-file"></span>
             <span class="nav-text" th:text="${menuItem.status.displayName}"></span>
             <span th:if="${menuItem.spec.target == '_blank'}" class="iconfont icon-link external-tip"></span>
           </a>
@@ -135,7 +124,7 @@
       </button>
     </div>
 
-    <!-- 社交图标 -->
+    <!-- 社交图标（支持 iconfont 和 Iconify） -->
     <div class="social-icons" th:if="${theme.config.footer.social?.items != null and !theme.config.footer.social.items.isEmpty()}">
       <a
         th:each="link : ${theme.config.footer.social.items}"
@@ -144,7 +133,10 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        <span th:class="${link.icon}"></span>
+        <!-- Iconify 格式（包含冒号，如 ph:home） -->
+        <iconify-icon th:if="${#strings.contains(link.icon, ':')}" th:icon="${link.icon}"></iconify-icon>
+        <!-- iconfont 格式（如 iconfont icon-qq） -->
+        <span th:unless="${#strings.contains(link.icon, ':')}" th:class="${link.icon}"></span>
       </a>
     </div>
   </footer>

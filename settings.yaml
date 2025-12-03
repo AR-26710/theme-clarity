@@ -75,6 +75,28 @@ spec:
               label: 显示开往
               value: true
               help: 开往是一个友链接力项目
+            - $formkit: text
+              name: title
+              label: 栏目标题
+              value: 探索
+            - $formkit: repeater
+              name: links
+              label: 自定义探索链接
+              value: []
+              children:
+                - $formkit: text
+                  name: icon
+                  label: 图标
+                  help: "Iconfont: iconfont icon-xxx | Iconify: ph:star-bold（在 iconify.design 搜索）"
+                  placeholder: ph:star-bold
+                - $formkit: text
+                  name: text
+                  label: 文本
+                  placeholder: 我的链接
+                - $formkit: url
+                  name: url
+                  label: 链接
+                  placeholder: https://example.com
         
         - $formkit: group
           name: links
@@ -93,8 +115,8 @@ spec:
                 - $formkit: text
                   name: icon
                   label: 图标
-                  help: "Iconfont: 'iconfont icon-xxx' | Iconify: 'icon-[ph--link-bold]'"
-                  placeholder: icon-[ph--link-bold]
+                  help: "Iconfont: iconfont icon-xxx | Iconify: ph:link-bold（在 iconify.design 搜索）"
+                  placeholder: ph:link-bold
                 - $formkit: text
                   name: text
                   label: 文本
@@ -117,8 +139,8 @@ spec:
                 - $formkit: text
                   name: icon
                   label: 图标
-                  help: "Iconfont: 'iconfont icon-xxx' | Iconify: 'icon-[ph--github-logo-bold]'"
-                  placeholder: icon-[ph--github-logo-bold]
+                  help: "Iconfont: iconfont icon-xxx | Iconify: simple-icons:github（在 iconify.design 搜索）"
+                  placeholder: simple-icons:github
                 - $formkit: text
                   name: text
                   label: 描述
