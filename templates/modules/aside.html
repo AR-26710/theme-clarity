@@ -177,12 +177,24 @@
                 <dt>运营时长</dt>
                 <dd id="site-runtime" th:title="'博客于' + ${theme.config.aside.basic.site_start_time} + '上线'">-</dd>
               </div>
-              <th:block th:with="latestPosts = ${postFinder.list(1, 1)}">
-                <div th:if="${not #lists.isEmpty(latestPosts.items)}">
-                  <dt>上次更新</dt>
-                  <dd class="time-ago" th:data-time="${latestPosts.items[0].spec.publishTime}">-</dd>
-                </div>
-              </th:block>
+              <div>
+                <dt>上次更新</dt>
+                <dd class="time-ago" id="latest-update-time" data-time="">-</dd>
+                <script th:inline="javascript">
+                  (function() {
+                    var posts = /*[[${postFinder.listAll()}]]*/ [];
+                    if (posts && posts.length > 0) {
+                      var latest = posts.reduce(function(max, post) {
+                        var time = post.spec && post.spec.publishTime;
+                        return time && time > max ? time : max;
+                      }, '');
+                      if (latest) {
+                        document.getElementById('latest-update-time').dataset.time = latest;
+                      }
+                    }
+                  })();
+                </script>
+              </div>
               <div>
                 <dt>文章数目</dt>
                 <dd th:text="${postFinder.archives(1, 1).total}">0</dd>
@@ -219,7 +231,11 @@
               </div>
               <div>
                 <dt>规范域名</dt>
-                <dd class="domain-text" th:title="${site.url}" th:text="${site.url}"></dd>
+                <dd class="domain-text" 
+                    th:title="${site.url}" 
+                    th:with="tempUrl=${#strings.replace(#strings.replace(#strings.replace(site.url, 'https://', ''), 'http://', ''), 'www.', '')},
+                            cleanUrl=${#strings.endsWith(tempUrl, '/') ? #strings.substring(tempUrl, 0, #strings.length(tempUrl) - 1) : tempUrl}"
+                    th:text="${cleanUrl}"></dd>
               </div>
             </dl>
 
