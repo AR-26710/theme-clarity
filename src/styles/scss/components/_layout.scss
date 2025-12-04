@@ -126,3 +126,87 @@ $breakpoint-widescreen: 1080px !default;
 		}
 	}
 }
+
+// PC 端返回顶部按钮 (Uiverse Style)
+.pc-back-to-top {
+	position: fixed;
+	right: 2.5rem;
+	bottom: 2.5rem;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background-color: var(--ld-bg-card);
+	border: 1px solid var(--c-border);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	cursor: pointer;
+	transition-duration: 0.3s;
+	overflow: hidden;
+	z-index: 99;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(20px);
+
+	// 移动端隐藏
+	@media (max-width: $breakpoint-mobile) {
+		display: none;
+	}
+
+	// 图标样式
+	.svgIcon {
+		width: 12px;
+		transition-duration: 0.3s;
+		path {
+			fill: var(--c-text);
+		}
+	}
+
+	// 文字提示
+	&::before {
+		position: absolute;
+		bottom: -20px;
+		content: "返回顶部";
+		color: white;
+		font-size: 0px;
+		white-space: nowrap;
+	}
+
+	// 悬停效果
+	&:hover {
+		width: 120px; // 展开宽度
+		border-radius: 50px;
+		background-color: var(--c-primary);
+		border-color: var(--c-primary);
+		box-shadow: 0 8px 20px rgba(var(--c-primary-rgb), 0.3);
+		transition-duration: 0.3s;
+		transform: translateY(-4px);
+
+		.svgIcon {
+			transition-duration: 0.3s;
+			transform: translateY(-200%); // 图标飞走
+			path {
+				fill: white; // 确保飞走过程如果还能看见是白色的
+			}
+		}
+
+		&::before {
+			font-size: 13px;
+			opacity: 1;
+			bottom: unset;
+			transition-duration: 0.3s;
+		}
+	}
+
+	// 显示状态
+	&.show {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0);
+
+		&:hover {
+			transform: translateY(-4px);
+		}
+	}
+}

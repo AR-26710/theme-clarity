@@ -9,7 +9,7 @@
 ### 接口定义
 
 ```javascript
-LinksSubmit.submit(data, verifyCode)
+LinksSubmit.submit(data, verifyCode, verifyCodeType)
 ```
 
 ### 参数说明
@@ -18,6 +18,7 @@ LinksSubmit.submit(data, verifyCode)
 | :--- | :--- | :--- | :--- |
 | `data` | Object | 是 | 包含友链信息的对象 |
 | `verifyCode` | String | 是 | 验证码 |
+| `verifyCodeType` | String | 否 | 验证码类型，可选值：`email`（邮箱验证码）、`captcha`（图形验证码），默认为 `email` |
 
 **`data` 对象结构：**
 
@@ -34,6 +35,8 @@ LinksSubmit.submit(data, verifyCode)
 
 ### 示例代码
 
+**使用邮箱验证码（默认）：**
+
 ```javascript
 const formData = {
     displayName: "我的博客",
@@ -43,15 +46,47 @@ const formData = {
     description: "这是一个示例博客",
     groupName: "group-id-123" // 可选
 };
-const verifyCode = "123456"; // 用户输入的验证码
+const verifyCode = "123456"; // 用户输入的邮箱验证码
 
+// 方式1：不传 verifyCodeType，默认使用邮箱验证码
 LinksSubmit.submit(formData, verifyCode)
     .then(response => {
         if (response.code === 200) {
             console.log("提交成功", response.msg);
-            // 处理成功逻辑
-        } else {
-            console.error("提交失败", response.msg);
+        }
+    })
+    .catch(error => {
+        console.error("请求出错", error.msg || "网络错误");
+    });
+
+// 方式2：显式指定使用邮箱验证码
+LinksSubmit.submit(formData, verifyCode, 'email')
+    .then(response => {
+        if (response.code === 200) {
+            console.log("提交成功", response.msg);
+        }
+    })
+    .catch(error => {
+        console.error("请求出错", error.msg || "网络错误");
+    });
+```
+
+**使用图形验证码：**
+
+```javascript
+const formData = {
+    displayName: "我的博客",
+    url: "https://example.com",
+    logo: "https://example.com/logo.png",
+    email: "test@example.com",
+    description: "这是一个示例博客"
+};
+const captchaCode = "ABCD"; // 用户输入的图形验证码
+
+LinksSubmit.submit(formData, captchaCode, 'captcha')
+    .then(response => {
+        if (response.code === 200) {
+            console.log("提交成功", response.msg);
         }
     })
     .catch(error => {
@@ -61,7 +96,94 @@ LinksSubmit.submit(formData, verifyCode)
 
 ---
 
-## 2. 获取友链分组
+## 2. 修改友链
+
+修改已存在的友链信息。需要提供原网站地址 `oldUrl` 和验证邮箱。
+
+### 接口定义
+
+```javascript
+LinksSubmit.update(data, verifyCode, verifyCodeType)
+```
+
+### 参数说明
+
+| 参数名 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `data` | Object | 是 | 包含友链信息的对象 |
+| `verifyCode` | String | 是 | 验证码 |
+| `verifyCodeType` | String | 否 | 验证码类型，可选值：`email`（邮箱验证码）、`captcha`（图形验证码），默认为 `email` |
+
+**`data` 对象结构：**
+
+| 属性名 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `oldUrl` | String | **是** | 原网站地址 (用于定位要修改的链接) |
+| `url` | String | 是 | 新网站地址 |
+| `displayName` | String | 是 | 网站名称 |
+| `email` | String | **是** | 联系邮箱 (必须与原链接绑定的邮箱一致) |
+| `logo` | String | 否 | 网站图标 URL |
+| `description` | String | 否 | 网站描述 |
+| `linkPageUrl` | String | 否 | 友链页面地址 |
+| `groupName` | String | 否 | 分组 ID |
+| `rssUrl` | String | 否 | RSS 地址 |
+
+### 示例代码
+
+**使用邮箱验证码（默认）：**
+
+```javascript
+const updateData = {
+    oldUrl: "https://old-example.com",     // 原网站地址
+    url: "https://new-example.com",        // 新网站地址
+    displayName: "新的博客名称",
+    email: "original@example.com",         // 必须与原链接邮箱一致
+    logo: "https://new-example.com/logo.png",
+    description: "更新后的描述"
+};
+const verifyCode = "123456";
+
+// 默认使用邮箱验证码
+LinksSubmit.update(updateData, verifyCode)
+    .then(response => {
+        if (response.code === 200) {
+            console.log("修改成功", response.msg);
+        }
+    })
+    .catch(error => {
+        console.error("修改失败", error.msg);
+    });
+```
+
+**使用图形验证码：**
+
+```javascript
+const updateData = {
+    oldUrl: "https://old-example.com",
+    url: "https://new-example.com",
+    displayName: "新的博客名称",
+    email: "original@example.com",
+    logo: "https://new-example.com/logo.png",
+    description: "更新后的描述"
+};
+const captchaCode = "ABCD";
+
+LinksSubmit.update(updateData, captchaCode, 'captcha')
+    .then(response => {
+        if (response.code === 200) {
+            console.log("修改成功", response.msg);
+        }
+    })
+    .catch(error => {
+        console.error("修改失败", error.msg);
+    });
+```
+
+> **注意**：修改操作需要验证邮箱与原链接绑定的邮箱一致，否则会返回错误。
+
+---
+
+## 3. 获取友链分组
 
 获取后台配置的友链分组列表。
 
@@ -88,7 +210,7 @@ LinksSubmit.getLinkGroups()
 
 ---
 
-## 3. 发送验证码
+## 4. 发送验证码
 
 向指定邮箱发送验证码。
 
@@ -123,7 +245,7 @@ LinksSubmit.sendVerifyCode(email)
 
 ---
 
-## 4. 获取网站详情 (自动填写)
+## 5. 获取网站详情 (自动填写)
 
 根据输入的 URL 自动抓取网站标题、描述、Logo 等信息。
 
@@ -162,7 +284,7 @@ LinksSubmit.getLinkDetail(url)
 
 ---
 
-## 5. 获取验证码图片 URL
+## 6. 获取验证码图片 URL
 
 获取图形验证码的 URL 地址。通常用于刷新验证码图片。
 
@@ -182,6 +304,67 @@ LinksSubmit.getCaptchaUrl()
 const imgElement = document.getElementById('captcha-img');
 imgElement.src = LinksSubmit.getCaptchaUrl();
 ```
+
+---
+
+## 7. 刷新验证码图片 (便捷方法)
+
+自动刷新指定图片元素的验证码。
+
+### 接口定义
+
+```javascript
+LinksSubmit.refreshCaptcha(element)
+```
+
+### 参数说明
+
+| 参数名 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `element` | String \| HTMLElement | 是 | 图片元素的 ID 或 DOM 对象 |
+
+### 示例代码
+
+**方式 1：直接在 HTML 中使用 (推荐)**
+
+```html
+<!-- 初始加载使用静态路径，点击时调用 refreshCaptcha -->
+<img 
+  src="/apis/linkssubmit.muyin.site/v1alpha1/captcha" 
+  onclick="LinksSubmit.refreshCaptcha(this)" 
+  title="点击刷新验证码"
+  style="cursor: pointer;"
+>
+```
+
+**方式 2：传入元素 ID**
+
+```javascript
+// 假设图片元素 id="my-captcha"
+LinksSubmit.refreshCaptcha('my-captcha');
+```
+
+**注意：** HTML 的 `src` 属性不支持直接写 JS 代码（如 `src="LinksSubmit.getCaptchaUrl()"` 是无效的），请使用上述方式。
+
+---
+
+## 验证码类型说明
+
+插件支持两种验证码类型：
+
+### 邮箱验证码 (email)
+
+- 需要先调用 `sendVerifyCode()` 发送验证码到用户邮箱
+- 用户输入收到的 6 位数字验证码
+- 适合需要验证邮箱真实性的场景
+
+### 图形验证码 (captcha)
+
+- 通过 `getCaptchaUrl()` 或 `refreshCaptcha()` 显示图形验证码
+- 用户输入图片中显示的字符
+- 适合快速验证、防止机器人提交的场景
+
+根据实际需求选择合适的验证码类型。
 
 ---
 

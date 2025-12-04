@@ -265,59 +265,69 @@ function initDropdownMenus() {
 
 // 返回顶部按钮：滚动 300px 后显示；点击回顶；长按返回上一页
 function initBackToTop() {
-  const btn = document.getElementById("back-to-top") as HTMLButtonElement | null;
-  if (!btn) return;
+  const mobileBtn = document.getElementById("back-to-top") as HTMLButtonElement | null;
+  const pcBtn = document.getElementById("pc-back-to-top") as HTMLButtonElement | null;
+  
+  if (!mobileBtn && !pcBtn) return;
 
-  // 避免重复绑定：标记已初始化
-  if ((btn as any)._inited) {
-    // 仅更新可见性
-    const y = window.scrollY || document.documentElement.scrollTop || 0;
-    btn.style.display = y > 300 ? "" : "none";
-    return;
-  }
-  (btn as any)._inited = true;
+  // 避免重复绑定
+  if ((mobileBtn as any)?._inited) return;
+  if (mobileBtn) (mobileBtn as any)._inited = true;
 
   const updateVisibility = () => {
     const y = window.scrollY || document.documentElement.scrollTop || 0;
-    btn.style.display = y > 300 ? "" : "none";
+    const showMobile = y > 300;
+    
+    if (mobileBtn) mobileBtn.style.display = showMobile ? "" : "none";
+    
+    if (pcBtn) {
+      if (showMobile) { 
+        pcBtn.classList.add("show");
+      } else {
+        pcBtn.classList.remove("show");
+      }
+    }
   };
 
   // 初始与滚动时更新
   updateVisibility();
   window.addEventListener("scroll", updateVisibility, { passive: true });
 
-  // 长按返回上一页，点击回到顶部
-  let pressTimer: number | null = null;
-  let longPressed = false;
-  const pressDuration = 600; // ms
+  // 移动端按钮保留长按逻辑
+  if (mobileBtn) {
+    let pressTimer: number | null = null;
+    let longPressed = false;
+    const pressDuration = 600; // ms
 
-  const onPointerDown = () => {
-    longPressed = false;
-    pressTimer = window.setTimeout(() => {
-      longPressed = true;
-      if (history.length > 1) {
-        history.back();
-      } else {
+    const onPointerDown = () => {
+      longPressed = false;
+      pressTimer = window.setTimeout(() => {
+        longPressed = true;
+        if (history.length > 1) {
+          history.back();
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }, pressDuration);
+    };
+
+    const clearTimer = () => {
+      if (pressTimer !== null) {
+        clearTimeout(pressTimer);
+        pressTimer = null;
+      }
+    };
+
+    mobileBtn.addEventListener("mousedown", onPointerDown);
+    mobileBtn.addEventListener("touchstart", onPointerDown);
+    mobileBtn.addEventListener("mouseup", clearTimer);
+    mobileBtn.addEventListener("mouseleave", clearTimer);
+    mobileBtn.addEventListener("touchend", clearTimer);
+
+    mobileBtn.addEventListener("click", () => {
+      if (!longPressed) {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
-    }, pressDuration);
-  };
-
-  const clearTimer = () => {
-    if (pressTimer !== null) {
-      clearTimeout(pressTimer);
-      pressTimer = null;
-    }
-  };
-
-  const onPointerUp = () => {
-    // 若未达到长按阈值，则作为点击处理
-    if (!longPressed) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-    clearTimer();
-  };
-  btn.addEventListener("pointerdown", onPointerDown);
-  btn.addEventListener("pointerup", onPointerUp);
-  btn.addEventListener("pointerleave", clearTimer);
+    });
+  }
 }
