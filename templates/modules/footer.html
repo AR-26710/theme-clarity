@@ -19,10 +19,7 @@
         <!-- 自定义探索链接 -->
         <li th:each="link : ${theme.config.footer.explore?.links}">
           <a th:href="${link.url}" target="_blank">
-            <th:block th:if="${not #strings.isEmpty(link.icon)}">
-              <iconify-icon th:if="${#strings.contains(link.icon, ':')}" th:icon="${link.icon}"></iconify-icon>
-              <span th:unless="${#strings.contains(link.icon, ':')}" th:class="'iconfont ' + ${link.icon}"></span>
-            </th:block>
+            <span th:if="${not #strings.isEmpty(link.icon)}" th:class="'iconfont ' + ${link.icon}"></span>
             <span class="nav-text" th:text="${link.text}"></span>
           </a>
         </li>
@@ -35,10 +32,7 @@
       <menu>
         <li th:each="link : ${theme.config.footer.links.items}">
           <a th:href="${link.url}" target="_blank">
-            <th:block th:if="${not #strings.isEmpty(link.icon)}">
-              <iconify-icon th:if="${#strings.contains(link.icon, ':')}" th:icon="${link.icon}"></iconify-icon>
-              <span th:unless="${#strings.contains(link.icon, ':')}" th:class="'iconfont ' + ${link.icon}"></span>
-            </th:block>
+            <span th:if="${not #strings.isEmpty(link.icon)}" th:class="'iconfont ' + ${link.icon}"></span>
             <span class="nav-text" th:text="${link.text}"></span>
           </a>
         </li>

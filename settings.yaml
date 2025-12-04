@@ -92,8 +92,8 @@ spec:
                 - $formkit: text
                   name: icon
                   label: 图标
-                  help: "Iconfont: iconfont icon-xxx | Iconify: ph:star-bold（在 iconify.design 搜索）"
-                  placeholder: ph:star-bold
+                  help: "填写 Iconfont 类名，如：icon-home（需先配置 Iconfont CSS 链接）"
+                  placeholder: icon-home
                 - $formkit: text
                   name: text
                   label: 文本
@@ -123,8 +123,8 @@ spec:
                 - $formkit: text
                   name: icon
                   label: 图标
-                  help: "Iconfont: iconfont icon-xxx | Iconify: ph:link-bold（在 iconify.design 搜索）"
-                  placeholder: ph:link-bold
+                  help: "填写 Iconfont 类名，如：icon-link（需先配置 Iconfont CSS 链接）"
+                  placeholder: icon-link
                 - $formkit: text
                   name: text
                   label: 文本
@@ -149,8 +149,8 @@ spec:
                 - $formkit: text
                   name: icon
                   label: 图标
-                  help: "Iconfont: iconfont icon-xxx | Iconify: simple-icons:github（在 iconify.design 搜索）"
-                  placeholder: simple-icons:github
+                  help: "填写 Iconfont 类名，如：icon-github（需先配置 Iconfont CSS 链接）"
+                  placeholder: icon-github
                   validation: required
                 - $formkit: text
                   name: text
@@ -195,6 +195,8 @@ spec:
                       label: 博客统计
                     - value: "tech-info"
                       label: 技术信息
+                    - value: "weather"
+                      label: 天气预报
                     - value: "moments"
                       label: 微语
                     - value: "community"
@@ -299,6 +301,15 @@ spec:
               label: 描述
               value: "提供云计算服务"
               help: "显示在名称下方的说明文字"
+        - $formkit: group
+          name: weather
+          label: 天气组件配置
+          children:
+            - $formkit: text
+              name: seniverse_key
+              label: 心知天气 API Key
+              placeholder: 请输入心知天气 API Key
+              help: "前往 https://www.seniverse.com 注册获取，免费版即可，自动根据访客 IP 定位"
     - group: post
       label: 文章
       formSchema:

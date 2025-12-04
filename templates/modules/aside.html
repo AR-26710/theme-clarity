@@ -265,6 +265,39 @@
           </div>
         </section>
 
+        <!-- 天气预报 -->
+        <section th:case="'weather'" class="widget" th:if="${not #strings.isEmpty(theme.config.aside.weather?.seniverse_key)}">
+          <hgroup class="widget-title text-creative">天气预报</hgroup>
+          <div class="widget-body widget-card" 
+               id="weather-container"
+               th:data-key="${theme.config.aside.weather.seniverse_key}"
+               th:data-icon-base="@{/assets/images}">
+            <!-- 初始加载状态 -->
+            <div class="weather-init" style="display: flex; align-items: center; justify-content: center; gap: 0.5em; padding: 0.75rem 1rem; font-size: 0.9em; color: var(--c-text-3);">
+              <span class="icon-[ph--spinner] animate-spin"></span>
+              <span>加载中...</span>
+            </div>
+          </div>
+          <script>
+            (function initWeather() {
+              const container = document.getElementById('weather-container');
+              if (!container) return;
+              
+              if (window.mountWeather) {
+                container.innerHTML = '';
+                window.mountWeather(container, container.dataset.key, container.dataset.iconBase);
+              } else {
+                window.addEventListener('load', function() {
+                  if (window.mountWeather) {
+                    container.innerHTML = '';
+                    window.mountWeather(container, container.dataset.key, container.dataset.iconBase);
+                  }
+                });
+              }
+            })();
+          </script>
+        </section>
+
         <!-- 微语 -->
         <section th:case="'moments'" class="widget">
           <hgroup class="widget-title">

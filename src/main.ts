@@ -9,11 +9,12 @@ import collapse from "@alpinejs/collapse";
 import html2canvas from "html2canvas";
 import QRCode from "qrcode";
 
-import { mountPhotoGallery } from "./preact";
+import { mountPhotoGallery, mountWeather } from "./preact";
 import { initFancybox } from "./utils/fancybox";
 import { initLinkSubmit } from "./links-submit";
 (window as any).Fancybox = Fancybox;
 (window as any).mountPhotoGallery = mountPhotoGallery;
+(window as any).mountWeather = mountWeather;
 
 // 海报生成函数
 (window as any).generateQRCode = async (container: HTMLElement, url: string) => {
