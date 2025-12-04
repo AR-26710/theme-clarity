@@ -6,11 +6,40 @@ import { Fancybox } from "@fancyapps/ui";
 import Alpine from "alpinejs";
 // @ts-ignore
 import collapse from "@alpinejs/collapse";
+import html2canvas from "html2canvas";
+import QRCode from "qrcode";
 
 import { mountPhotoGallery } from "./preact";
 import { initFancybox } from "./utils/fancybox";
 (window as any).Fancybox = Fancybox;
 (window as any).mountPhotoGallery = mountPhotoGallery;
+
+// 海报生成函数
+(window as any).generateQRCode = async (container: HTMLElement, url: string) => {
+  try {
+    const dataUrl = await QRCode.toDataURL(url, { width: 160, margin: 1 });
+    const img = document.createElement("img");
+    img.src = dataUrl;
+    img.alt = "QR Code";
+    container.innerHTML = "";
+    container.appendChild(img);
+  } catch (err) {
+    console.error("二维码生成失败:", err);
+  }
+};
+
+(window as any).generatePoster = async (element: HTMLElement, title: string) => {
+  const canvas = await html2canvas(element, {
+    scale: 2,
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: "#fff",
+  });
+  const link = document.createElement("a");
+  link.download = `${title || "海报"}.png`;
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+};
 
 /* Alpine.js 主题切换组件 */
 Alpine.data("themeToggle", () => ({
@@ -65,6 +94,7 @@ Alpine.data("themeToggle", () => ({
 Alpine.data("userAuth", () => ({
   currentUser: null as { name: string; avatar?: string; isAdmin: boolean } | null,
   showMenu: false,
+  ready: false,
 
   init() {
     this.checkLoginStatus();
@@ -94,6 +124,8 @@ Alpine.data("userAuth", () => ({
       }
     } catch {
       this.currentUser = null;
+    } finally {
+      this.ready = true;
     }
   },
 
