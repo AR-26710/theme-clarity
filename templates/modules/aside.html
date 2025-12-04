@@ -265,6 +265,42 @@
           </div>
         </section>
 
+        <!-- 微语 -->
+        <section th:case="'moments'" class="widget">
+          <hgroup class="widget-title">
+            <span class="title-text text-creative" th:text="${item.moments_title ?: '微语'}">微语</span>
+            <a href="/moments" aria-label="查看全部" title="查看全部">
+              <span class="icon-[ph--arrow-right-bold]"></span>
+            </a>
+          </hgroup>
+          <div class="widget-body widget-card moments-widget" th:data-count="${item.count ?: 3}">
+            <th:block th:with="momentCount = ${item.count ?: 3}">
+              <th:block th:each="moment : ${momentFinder.list(1, momentCount * 3).items}">
+                <article class="moment-item" th:if="${not #strings.isEmpty(moment.spec.content.html)}">
+                  <div class="moment-content" th:utext="${moment.spec.content.html}"></div>
+                  <time class="moment-time" th:datetime="${moment.spec.releaseTime}">
+                    <span class="icon-[ph--clock-bold]"></span>
+                    <span th:text="${#temporals.format(moment.spec.releaseTime, 'MM-dd HH:mm')}"></span>
+                  </time>
+                </article>
+              </th:block>
+              <div th:if="${momentFinder.list(1, 1).items.isEmpty()}" class="empty-tip">
+                <span class="icon-[ph--shooting-star-bold]"></span>
+                暂无微语
+              </div>
+            </th:block>
+            <script>
+              (function() {
+                const widget = document.querySelector('.moments-widget');
+                if (!widget) return;
+                const count = parseInt(widget.dataset.count) || 3;
+                const items = widget.querySelectorAll('.moment-item');
+                items.forEach((item, i) => { if (i >= count) item.style.display = 'none'; });
+              })();
+            </script>
+          </div>
+        </section>
+
         <!-- 社区群组 -->
         <section th:case="'community'" class="widget dim" th:if="${not #strings.isEmpty(theme.config.aside.community.image)}">
           <hgroup class="widget-title text-creative" th:text="${theme.config.aside.community.title}">

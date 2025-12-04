@@ -195,12 +195,27 @@ spec:
                       label: 博客统计
                     - value: "tech-info"
                       label: 技术信息
+                    - value: "moments"
+                      label: 微语
                     - value: "community"
                       label: 社区群组
                     - value: "sponsor"
                       label: 云计算支持
                     - value: "custom"
                       label: 自定义
+                - $formkit: text
+                  name: moments_title
+                  label: 标题
+                  value: "微语"
+                  placeholder: 微语
+                  if: "$value.widget === 'moments'"
+                - $formkit: number
+                  name: count
+                  label: 显示条数
+                  value: 3
+                  min: 1
+                  max: 10
+                  if: "$value.widget === 'moments'"
                 - $formkit: text
                   name: title
                   label: 自定义标题
@@ -235,7 +250,7 @@ spec:
               name: license_url
               label: 许可协议链接
               value: "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans"
-              validation: required|url
+              validation: required
         - $formkit: group
           name: community
           label: 社区群组卡片
@@ -301,9 +316,34 @@ spec:
           validation: required
         - $formkit: checkbox
           name: show_excerpt
+          id: show_excerpt
           label: 显示文章摘要框
           value: true
           help: 关闭后文章页顶部不再显示摘要框
+        - $formkit: group
+          name: excerpt
+          label: 摘要动画
+          if: "$get(show_excerpt).value === true"
+          children:
+            - $formkit: checkbox
+              name: animation
+              id: excerpt_animation
+              label: 启用打字机效果
+              value: true
+            - $formkit: number
+              name: speed
+              label: 打字速度（毫秒/字）
+              value: 50
+              min: 10
+              max: 200
+              help: 数值越小打字越快，建议 30-80
+              if: "$get(excerpt_animation).value === true"
+            - $formkit: text
+              name: caret
+              label: 光标字符
+              value: "_"
+              help: 打字时显示的光标符号
+              if: "$get(excerpt_animation).value === true"
         - $formkit: group
           name: outdated_notice
           label: 过时文章提示

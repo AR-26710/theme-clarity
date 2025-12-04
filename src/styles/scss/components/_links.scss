@@ -188,6 +188,10 @@ $breakpoint-phone: 528px !default;
   z-index: 100;
   overflow: hidden;
 
+  @media (max-width: 640px) {
+    display: none;
+  }
+
   // 箭头
   &::after {
     content: "";
@@ -958,9 +962,5 @@ $breakpoint-phone: 528px !default;
       background: var(--c-bg-2);
       color: var(--c-text);
     }
-  }
-
-  .submit-btn {
-    min-width: 120px;
   }
 }

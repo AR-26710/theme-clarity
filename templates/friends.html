@@ -7,9 +7,15 @@
         <span class="icon-[ph--rss-bold]"></span>
         <h1 class="text-creative">朋友圈</h1>
       </div>
-      <span class="friends-count" th:if="${friends.total > 0}">
-        共 <strong th:text="${friends.total}"></strong> 篇订阅
-      </span>
+      <div class="friends-actions">
+        <span class="friends-count" th:if="${friends.total > 0}">
+          共 <strong th:text="${friends.total}"></strong> 篇订阅
+        </span>
+        <a th:if="${theme.config.links?.enable_submit}" href="/links#add" class="apply-link" title="申请友链">
+          <span class="icon-[ph--handshake-bold]"></span>
+          申请友链
+        </a>
+      </div>
     </div>
 
     <!-- 朋友圈列表 -->
