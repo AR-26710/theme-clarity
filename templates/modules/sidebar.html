@@ -15,7 +15,7 @@
     </div>
 
     <!-- 从 Halo 后台读取的菜单 -->
-    <th:block th:with="menu = ${menuFinder.getByName(theme.config.nav.primary)}">
+    <th:block th:if="${not #strings.isEmpty(theme.config.header.primary_menu)}" th:with="menu = ${menuFinder.getByName(theme.config.header.primary_menu)}">
       <menu th:if="${menu != null and menu.menuItems != null}">
         <li
           th:each="menuItem : ${menu.menuItems}"

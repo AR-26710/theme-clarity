@@ -26,6 +26,10 @@ spec:
           label: Emoji 尾巴
           value: "📄,🦌,🙌,🐟,🏖️"
           help: 使用英文逗号分隔，例如：📄,🦌,🙌,🐟,🏖️
+        - $formkit: menuRadio
+          name: primary_menu
+          label: 主导航菜单
+          help: 不选择则不显示导航菜单
     - group: style
       label: 样式设置
       formSchema:
@@ -47,12 +51,6 @@ spec:
           language: css
           height: 150px
           help: 填写 @font-face 代码，font-family 必须改为 "Logo Font"（如阿里妈妈方圆体需将原 font-family 值替换），留空则使用系统字体（苹方/微软雅黑）
-    - group: nav
-      label: 导航菜单
-      formSchema:
-        - $formkit: menuRadio
-          name: primary
-          label: 主导航菜单
     - group: footer
       label: 页脚 & 社交
       formSchema:
@@ -288,6 +286,27 @@ spec:
           label: 显示文章摘要框
           value: true
           help: 关闭后文章页顶部不再显示摘要框
+        - $formkit: group
+          name: outdated_notice
+          label: 过时文章提示
+          help: 当文章发布时间超过设定天数时，显示过时提醒
+          children:
+            - $formkit: checkbox
+              name: enabled
+              label: 启用过时提示
+              value: true
+            - $formkit: number
+              name: days
+              label: 过时天数
+              value: 180
+              min: 1
+              max: 3650
+              help: 文章发布超过此天数后显示过时提示
+            - $formkit: text
+              name: message
+              label: 提示文案
+              value: "本文发布于 {days} 天前，内容可能已过时，请注意甄别。"
+              help: 使用 {days} 作为实际天数的占位符
     - group: links
       label: 友链页面
       formSchema:
