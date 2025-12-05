@@ -3,8 +3,8 @@ import { PhotoGallery } from './components/PhotoGallery'
 import { Weather } from './components/Weather'
 import {
   Alert, Tab, Copy, Folding, Tip, Blur, Timeline, Quote, 
-  Chat, Key, Badge, LinkBanner, VideoEmbed, CardList, Pic,
-  LinkCard, Progress, EmojiClock, Split, Stepper, Note
+  Chat, Key, CardList, Pic,
+  Progress, EmojiClock, Split, Stepper, Note
 } from './components/ContentComponents'
 
 export function mountPhotoGallery(container: HTMLElement, groups: any[]) {
@@ -146,48 +146,6 @@ function mountCustomElements() {
     render(<Key {...props} />, wrapper)
   })
 
-  // c-badge（行内元素）
-  document.querySelectorAll<HTMLElement>('c-badge').forEach(el => {
-    const props = parseProps(el)
-    const content = el.innerHTML
-    const wrapper = document.createElement('span')
-    el.replaceWith(wrapper)
-    render(
-      <Badge img={props.img} link={props.link} round={props.round}>
-        <span dangerouslySetInnerHTML={{ __html: content }} />
-      </Badge>,
-      wrapper
-    )
-  })
-
-  // c-link-banner
-  document.querySelectorAll<HTMLElement>('c-link-banner').forEach(el => {
-    const props = parseProps(el)
-    mount(el,
-      <LinkBanner 
-        banner={props.banner} 
-        title={props.title} 
-        description={props.description} 
-        link={props.link} 
-      />
-    )
-  })
-
-  // c-video
-  document.querySelectorAll<HTMLElement>('c-video').forEach(el => {
-    const props = parseProps(el)
-    mount(el,
-      <VideoEmbed 
-        type={props.type} 
-        id={props.id} 
-        autoplay={props.autoplay}
-        ratio={props.ratio}
-        width={props.width}
-        height={props.height}
-      />
-    )
-  })
-
   // c-card-list
   document.querySelectorAll<HTMLElement>('c-card-list').forEach(el => {
     const content = el.innerHTML
@@ -204,11 +162,6 @@ function mountCustomElements() {
     mount(el, <Pic src={props.src} caption={props.caption} width={props.width} height={props.height} />)
   })
 
-  // c-link-card
-  document.querySelectorAll<HTMLElement>('c-link-card').forEach(el => {
-    const props = parseProps(el)
-    mount(el, <LinkCard link={props.link} title={props.title} description={props.description} icon={props.icon} />)
-  })
 
   // c-progress
   document.querySelectorAll<HTMLElement>('c-progress').forEach(el => {
@@ -234,10 +187,12 @@ function mountCustomElements() {
   // c-split
   document.querySelectorAll<HTMLElement>('c-split').forEach(el => {
     const props = parseProps(el)
-    const content = el.innerHTML
+    const children = Array.from(el.children).map((child, i) => (
+      <div key={i} dangerouslySetInnerHTML={{ __html: child.innerHTML }} />
+    ))
     mount(el,
       <Split cols={props.cols} gap={props.gap}>
-        <div dangerouslySetInnerHTML={{ __html: content }} />
+        {children}
       </Split>
     )
   })

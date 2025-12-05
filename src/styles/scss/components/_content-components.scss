@@ -3,19 +3,20 @@
   margin: 1em 0;
   padding: 0.2em 0.8em;
   border-radius: 0.5em;
-  background-color: var(--c-bg-2);
   font-size: 0.9em;
+  background-color: var(--ld-bg-card);
+  background-image:
+    radial-gradient(circle at 4em -25em, var(--c-primary), transparent 30em),
+    linear-gradient(var(--c-primary) -2000%, transparent);
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--c-primary) 20%, transparent);
+  }
 
   @supports (color: color-mix(in srgb, transparent, transparent)) {
     --c-primary-soft: color-mix(in srgb, var(--c-primary) 15%, transparent);
-    --c-bg-2: color-mix(in srgb, var(--c-primary) 8%, transparent);
-  }
-
-  &.card {
-    background-color: var(--ld-bg-card);
-    background-image:
-      radial-gradient(circle at 4em -25em, var(--c-primary), transparent 30em),
-      linear-gradient(var(--c-primary) -2000%, transparent);
   }
 
   .c-alert-title {
@@ -105,7 +106,11 @@
 
   .c-tab-panel {
     display: none;
+    text-align: center;
     &.active { display: block; }
+
+    // 有复杂内容时左对齐
+    &:has(ul, ol, pre, table, blockquote) { text-align: left; }
   }
 }
 
@@ -415,99 +420,6 @@
 }
 
 // ========================================
-// Badge 徽章
-// ========================================
-.c-badge {
-  display: inline-flex;
-  align-items: baseline;
-  margin: 0.1em;
-  border: 1px solid var(--c-border);
-  border-radius: 4px;
-  box-sizing: content-box;
-  background-color: var(--c-bg-2);
-  font-size: 0.875em;
-  text-decoration: none;
-  transition: color 0.2s;
-
-  @supports (color: color-mix(in srgb, transparent, transparent)) {
-    border-color: color-mix(in srgb, currentcolor 10%, transparent);
-    background-color: color-mix(in srgb, currentcolor 5%, transparent);
-    color: color-mix(in srgb, currentcolor 80%, transparent);
-  }
-
-  &[href]:hover { color: var(--c-text); }
-
-  &.round, &.round > .c-badge-icon {
-    border-radius: 0.8em;
-  }
-
-  .c-badge-icon {
-    align-self: normal;
-    height: 1.6em;
-    border-radius: 3.5px;
-
-    + .c-badge-text { margin-inline-start: -0.1em; }
-  }
-
-  .c-badge-text {
-    padding: 0.2em 0.4em;
-    line-height: 1.2;
-
-    &:empty { display: none; }
-  }
-}
-
-// ========================================
-// LinkBanner 链接横幅
-// ========================================
-.c-link-banner {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  max-width: 480px;
-  margin: 2rem auto;
-  line-height: 1.4;
-  text-decoration: none;
-  color: inherit;
-
-  .c-link-banner-bg {
-    aspect-ratio: 2.4;
-    margin-bottom: -5%;
-    mask-image: linear-gradient(#FFF 50%, transparent);
-    object-fit: cover;
-  }
-
-  .c-link-banner-info { padding: 0.5em 1em; }
-
-  .c-link-banner-title {
-    font-size: 1.2em;
-    color: var(--c-text);
-  }
-
-  .c-link-banner-desc {
-    margin-top: 0.5em;
-    font-size: 0.8em;
-    color: var(--c-text-2);
-  }
-}
-
-// ========================================
-// VideoEmbed 视频嵌入
-// ========================================
-.c-video {
-  overflow: hidden;
-  margin: 2rem auto;
-  border-radius: 0.8rem;
-  box-shadow: 0 2px 0.5rem var(--ld-shadow);
-
-  iframe, video {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-// ========================================
 // CardList 卡片列表
 // ========================================
 .c-card-list {
@@ -553,60 +465,6 @@
   }
 }
 
-// ========================================
-// LinkCard 链接卡片
-// ========================================
-.c-link-card {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  width: 20rem;
-  max-width: 90%;
-  margin: 1.5rem auto;
-  padding: 0.8em 1em;
-  font-size: 0.9em;
-  line-height: 1.4;
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.2s, box-shadow 0.2s;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--ld-shadow);
-  }
-
-  .c-link-card-info {
-    flex-grow: 1;
-    overflow: hidden;
-  }
-
-  .c-link-card-title {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    font-weight: 500;
-    color: var(--c-text);
-  }
-
-  .c-link-card-desc {
-    overflow: hidden;
-    opacity: 0.6;
-    margin-top: 0.3em;
-    font-size: 0.85em;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  .c-link-card-icon {
-    flex-shrink: 0;
-    height: 3rem;
-    max-width: 5rem;
-    border-radius: 0.5rem;
-    object-fit: cover;
-  }
-}
 
 // ========================================
 // Progress 进度条
@@ -665,8 +523,13 @@
   display: grid;
   margin: 1em 0;
 
-  > div > * {
-    margin: 0;
+  > div {
+    padding: 0.8em 1em;
+    border-radius: 0.5em;
+    background-color: var(--c-bg-2);
+
+    > *:first-child { margin-top: 0; }
+    > *:last-child { margin-bottom: 0; }
   }
 }
 

@@ -245,101 +245,6 @@ export const Key: FunctionComponent<KeyProps> = ({ text, code, cmd, ctrl, shift,
   return <kbd class="c-key">{display}</kbd>
 }
 
-// ========================================
-// Badge 徽章
-// ========================================
-interface BadgeProps {
-  img?: string
-  link?: string
-  round?: boolean
-  children?: ComponentChildren
-}
-
-export const Badge: FunctionComponent<BadgeProps> = ({ img, link, round, children }) => {
-  const content = (
-    <>
-      {img && <img class="c-badge-icon" src={img} alt="" />}
-      <span class="c-badge-text">{children}</span>
-    </>
-  )
-  
-  const className = `c-badge ${round || img ? 'round' : ''}`
-  
-  return link ? (
-    <a class={className} href={link} target="_blank" rel="noopener noreferrer">{content}</a>
-  ) : (
-    <span class={className}>{content}</span>
-  )
-}
-
-// ========================================
-// LinkBanner 链接横幅
-// ========================================
-interface LinkBannerProps {
-  banner?: string
-  title: string
-  description?: string
-  link: string
-}
-
-export const LinkBanner: FunctionComponent<LinkBannerProps> = ({ banner, title, description, link }) => {
-  let domain = ''
-  try { domain = new URL(link).hostname } catch {}
-  return (
-    <a class="c-link-banner card" href={link} target="_blank" rel="noopener noreferrer">
-      {banner && <img class="c-link-banner-bg" src={banner} alt="" />}
-      <div class="c-link-banner-info">
-        <div class="c-link-banner-title">{title}</div>
-        <div class="c-link-banner-desc">{description || domain}</div>
-      </div>
-    </a>
-  )
-}
-
-// ========================================
-// VideoEmbed 视频嵌入
-// ========================================
-interface VideoEmbedProps {
-  type?: 'raw' | 'bilibili' | 'youtube'
-  id: string
-  autoplay?: boolean
-  ratio?: string | number
-  width?: string
-  height?: string
-}
-
-export const VideoEmbed: FunctionComponent<VideoEmbedProps> = ({ 
-  type = 'raw', 
-  id, 
-  autoplay, 
-  ratio,
-  width,
-  height = '80vh'
-}) => {
-  let src = id
-  let aspectRatio = ratio
-  
-  switch (type) {
-    case 'bilibili':
-      src = `https://player.bilibili.com/player.html?bvid=${id}&autoplay=${autoplay ? 1 : 0}`
-      aspectRatio = aspectRatio || '16 / 9'
-      break
-    case 'youtube':
-      src = `https://www.youtube.com/embed/${id}?rel=0&autoplay=${autoplay ? 1 : 0}`
-      aspectRatio = aspectRatio || '16 / 9'
-      break
-  }
-  
-  return (
-    <div class="c-video" style={{ aspectRatio, maxWidth: width, maxHeight: height }}>
-      {type === 'raw' ? (
-        <video src={src} controls />
-      ) : (
-        <iframe src={src} scrolling="no" frameBorder="0" allowFullScreen />
-      )}
-    </div>
-  )
-}
 
 // ========================================
 // CardList 卡片列表
@@ -371,30 +276,6 @@ export const Pic: FunctionComponent<PicProps> = ({ src, caption, width, height }
   )
 }
 
-// ========================================
-// LinkCard 链接卡片
-// ========================================
-interface LinkCardProps {
-  link: string
-  title: string
-  description?: string
-  icon?: string
-}
-
-export const LinkCard: FunctionComponent<LinkCardProps> = ({ link, title, description, icon }) => {
-  let domain = ''
-  try { domain = new URL(link).hostname } catch {}
-  
-  return (
-    <a class="c-link-card card" href={link} target="_blank" rel="noopener noreferrer" title={`${title} - ${description || domain}`}>
-      <div class="c-link-card-info">
-        <div class="c-link-card-title">{title}</div>
-        <div class="c-link-card-desc">{description || domain}</div>
-      </div>
-      {icon && <img class="c-link-card-icon" src={icon} alt="" />}
-    </a>
-  )
-}
 
 // ========================================
 // Progress 进度条
