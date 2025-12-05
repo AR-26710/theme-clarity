@@ -62,7 +62,7 @@ spec:
                       children: "复制群号"
             - $el: a
               attrs:
-                href: "https://docs.xhhao.com"
+                href: "https://docs.lik.cc"
                 target: "_blank"
                 style: |
                   display: inline-flex;
