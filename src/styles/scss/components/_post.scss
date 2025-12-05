@@ -489,17 +489,14 @@ $breakpoint-mobile: 768px !default;
 		}
 	}
 
-	// ==========================================
-	// 引用块
-	// ==========================================
 	blockquote {
-		margin: 1em 0;
-		padding: 0.5rem 1rem;
-		border-inline-start: 4px solid var(--c-primary);
-		border-radius: 4px;
+		position: relative;
+		margin: 1.5em 0;
+		padding: 0.75rem 1rem 0.75rem 1.25rem;
+		border-radius: 0 0.5rem 0.5rem 0;
 		background-color: var(--c-bg-2);
-		font-size: 0.95rem;
 		color: var(--c-text-2);
+		border-inline-start: 3px solid var(--c-primary);
 
 		p:first-child {
 			margin-top: 0;

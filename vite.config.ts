@@ -6,10 +6,8 @@ import preact from "@preact/preset-vite";
 
 export default ({ mode }: { mode: string }) => {
   const isProduction = mode === "production";
-  // 定义多个入口
   const entries = {
     main: path.resolve(__dirname, "src/main.ts"),
-    // 可继续添加，如：'profile': 'src/profile.ts'
   };
 
   return defineConfig({
@@ -25,7 +23,16 @@ export default ({ mode }: { mode: string }) => {
     },
     build: {
       manifest: isProduction,
-      minify: isProduction ? "esbuild" : false,
+      minify: isProduction ? "terser" : false,
+      terserOptions: {
+        format: {
+          comments: false,
+        },
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+        },
+      },
       rollupOptions: {
         input: entries,
         output: {
@@ -33,7 +40,6 @@ export default ({ mode }: { mode: string }) => {
             if (id.includes("node_modules")) {
               if (id.includes("lodash-es")) return "lodash";
               if (id.includes("preact")) return "preact";
-              // 其他第三方库可归到 vendor
               return "vendor";
             }
             return undefined;

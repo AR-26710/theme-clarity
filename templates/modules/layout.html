@@ -96,7 +96,7 @@
         aria-label="切换菜单"
         onclick="(function(btn){var sb=document.getElementById('z-sidebar'),mk=document.getElementById('z-sidebar-bgmask');sb.classList.toggle('show');mk.classList.toggle('hidden');btn.classList.toggle('active')})(this)"
       >
-        <span class="icon-[ph--sidebar-duotone] rtl-flip"></span>
+        <span class="icon-[ph--sidebar-duotone] rtl-flip" style="display: block;"></span>
       </button>
       <button
         th:if="${showAside == null or showAside}"
@@ -104,14 +104,14 @@
         aria-label="切换侧边栏"
         onclick="(function(btn){var as=document.getElementById('z-aside'),mk=document.getElementById('z-aside-bgmask');as.classList.toggle('show');mk.classList.toggle('hidden');btn.classList.toggle('active')})(this)"
       >
-        <span class="icon-[ph--align-right-duotone] rtl-flip"></span>
+        <span class="icon-[ph--align-right-duotone] rtl-flip" style="display: block;"></span>
       </button>
       <button
         id="back-to-top"
         aria-label="返回顶部"
         style="display: none"
       >
-        <span class="icon-[ph--arrow-up-bold]"></span>
+        <span class="icon-[ph--arrow-up-bold]" style="display: block;"></span>
       </button>
     </div>
 
