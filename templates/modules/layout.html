@@ -1,10 +1,8 @@
 <!doctype html>
 <html lang="zh-CN" th:fragment="html (content, showAside, pageTitle)">
   <head>
-    <!-- SEO 标准化模板（Open Graph / Twitter Card / JSON-LD） -->
     <th:block th:replace="~{modules/seo :: seo(pageTitle=${pageTitle})}" />
 
-    <!-- Fonts -->
     <link
       rel="stylesheet"
       th:href="@{/assets/fonts/JetBrainsMono-Regular/jetBrainsMonoRegular.css?v={version}(version=${theme.spec.version})}"
@@ -18,17 +16,14 @@
       onload="this.media='all'"
     />
 
-    <!-- Logo 自定义字体 -->
     <th:block th:if="${theme.config.style?.logo_font_css}">
       <style th:utext="${theme.config.style.logo_font_css}"></style>
     </th:block>
 
-    <!-- 友链标题自定义字体 -->
     <th:block th:if="${theme.config.links?.title_font_css}">
       <style th:utext="${theme.config.links.title_font_css}"></style>
     </th:block>
 
-    <!-- Custom Iconfont -->
     <link
       th:if="${not #strings.isEmpty(theme.config.custom.iconfont_url)}"
       rel="stylesheet"
@@ -66,33 +61,27 @@
     </script>
   </head>
   <body id="clarity-root">
-    <!-- 左侧边栏背景遮罩（移动端） -->
     <div
       id="z-sidebar-bgmask"
       class="hidden"
       onclick="document.getElementById('z-sidebar').classList.remove('show'); this.classList.add('hidden'); document.getElementById('toggle-sidebar')?.classList.remove('active')"
     ></div>
 
-    <!-- 右侧边栏背景遮罩（平板端） -->
     <div
       id="z-aside-bgmask"
       class="hidden"
       onclick="document.getElementById('z-aside').classList.remove('show'); this.classList.add('hidden'); document.getElementById('toggle-aside')?.classList.remove('active')"
     ></div>
 
-    <!-- 左侧边栏 -->
     <th:block th:replace="~{modules/sidebar :: sidebar}" />
 
-    <!-- 主内容区域 -->
     <div id="content">
       <main id="main-content">
         <th:block th:replace="${content}" />
 
-        <!-- 页脚 -->
         <th:block th:replace="~{modules/footer :: footer}" />
       </main>
 
-      <!-- 右侧边栏 -->
       <th:block th:if="${showAside == null or showAside}">
         <th:block th:replace="~{modules/aside :: aside}" />
       </th:block>
@@ -101,7 +90,6 @@
       </th:block>
     </div>
 
-    <!-- 底部浮动面板 (ZPanel) -->
     <div id="z-panel">
       <button
         id="toggle-sidebar"
@@ -127,7 +115,6 @@
       </button>
     </div>
 
-    <!-- PC 端返回顶部按钮 -->
     <button
       id="pc-back-to-top"
       class="pc-back-to-top"

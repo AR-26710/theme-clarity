@@ -1,4 +1,3 @@
-<!-- 右侧边栏背景遮罩（移动端） -->
 <div
   th:fragment="aside-bgmask"
   id="z-aside-bgmask"
@@ -7,7 +6,6 @@
 ></div>
 
 <aside th:fragment="aside" id="z-aside">
-  <!-- 1. 文章/页面目录 (仅在文章页或独立页面显示) -->
   <th:block th:if="${post != null or singlePage != null}">
     <section class="widget toc-widget" id="catalog-widget" style="display: none;">
       <hgroup class="widget-title">
@@ -22,13 +20,11 @@
       
       <div class="widget-body widget-card toc-body">
         <nav id="catalog-content" class="toc-nav">
-          <!-- 目录内容由 JS 生成 -->
-        </nav>
+          </nav>
         <p id="no-toc-tip" class="no-toc" style="display: none;">暂无目录信息</p>
       </div>
     </section>
     
-    <!-- 目录生成脚本 -->
     <script>
       (function() {
         function generateCatalog() {
@@ -171,13 +167,10 @@
     </script>
   </th:block>
 
-  <!-- 2. 根据配置动态渲染小组件 (通常用于首页) -->
   <th:block th:unless="${post != null or singlePage != null}">
     <th:block th:each="item : ${theme.config.aside.widgets.index}">
-      <!-- 根据 item.widget 选择渲染对应组件 -->
       <th:block th:switch="${item.widget}">
 
-        <!-- 博客统计 -->
         <section th:case="'stats'" class="widget">
           <hgroup class="widget-title text-creative">博客统计</hgroup>
           <div class="widget-body widget-card">
@@ -212,7 +205,6 @@
           </div>
         </section>
 
-        <!-- 技术信息 -->
         <section th:case="'tech-info'" class="widget">
           <hgroup class="widget-title text-creative">技术信息</hgroup>
           <div class="widget-body widget-card">
@@ -248,7 +240,6 @@
               </div>
             </dl>
 
-            <!-- 可展开的构建信息 -->
             <div class="z-expand" x-data="{ expand: false }">
               <div class="expand-content" x-show="expand" x-collapse>
                 <dl class="dl-group small build-info">
@@ -274,14 +265,12 @@
           </div>
         </section>
 
-        <!-- 天气预报 -->
         <section th:case="'weather'" class="widget" th:if="${not #strings.isEmpty(theme.config.aside.weather?.seniverse_key)}">
           <hgroup class="widget-title text-creative">天气预报</hgroup>
           <div class="widget-body widget-card" 
                id="weather-container"
                th:data-key="${theme.config.aside.weather.seniverse_key}"
                th:data-icon-base="@{/assets/images}">
-            <!-- 初始加载状态 -->
             <div class="weather-init" style="display: flex; align-items: center; justify-content: center; gap: 0.5em; padding: 0.75rem 1rem; font-size: 0.9em; color: var(--c-text-3);">
               <span class="icon-[ph--spinner] animate-spin"></span>
               <span>加载中...</span>
@@ -307,7 +296,6 @@
           </script>
         </section>
 
-        <!-- 微语 -->
         <section th:case="'moments'" class="widget">
           <hgroup class="widget-title">
             <span class="title-text text-creative" th:text="${item.moments_title ?: '微语'}">微语</span>
@@ -377,7 +365,6 @@
           </div>
         </section>
 
-        <!-- 社区群组 -->
         <section th:case="'community'" class="widget dim" th:if="${not #strings.isEmpty(theme.config.aside.community.image)}">
           <hgroup class="widget-title text-creative" th:text="${theme.config.aside.community.title}">
             博客/技术社区
@@ -392,7 +379,6 @@
           </div>
         </section>
 
-        <!-- 云计算支持 -->
         <section th:case="'sponsor'" class="widget dim">
           <hgroup class="widget-title text-creative" th:text="${theme.config.aside.sponsor?.title} ?: '云计算支持'">云计算支持</hgroup>
           <a th:href="${theme.config.aside.sponsor?.url}" target="_blank" rel="noopener noreferrer" class="widget-body widget-card with-bg sponsor-card">
@@ -405,7 +391,6 @@
           </a>
         </section>
 
-        <!-- 自定义组件 -->
         <section th:case="'custom'" class="widget">
           <hgroup class="widget-title text-creative" th:text="${item.title}">自定义</hgroup>
           <div class="widget-body widget-card" th:utext="${item.content}"></div>
@@ -415,7 +400,6 @@
     </th:block>
   </th:block>
 
-  <!-- 侧边栏脚本 -->
   <script th:inline="javascript">
     (function () {
       // 计算运营时长

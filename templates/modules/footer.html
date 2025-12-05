@@ -1,6 +1,5 @@
 <footer th:fragment="footer" class="z-footer">
   <nav class="footer-nav">
-    <!-- 探索 -->
     <div class="footer-nav-group" th:if="${theme.config.footer.explore?.show_rss != false or theme.config.footer.explore?.show_travellings != false or (theme.config.footer.explore?.links != null and !theme.config.footer.explore.links.isEmpty())}">
       <h3 th:text="${theme.config.footer.explore?.title ?: '探索'}"></h3>
       <menu>
@@ -16,7 +15,6 @@
             <span class="nav-text">开往</span>
           </a>
         </li>
-        <!-- 自定义探索链接 -->
         <li th:each="link : ${theme.config.footer.explore?.links}">
           <a th:href="${link.url}" target="_blank">
             <span th:if="${not #strings.isEmpty(link.icon)}" th:class="'iconfont ' + ${link.icon}"></span>
@@ -26,7 +24,6 @@
       </menu>
     </div>
 
-    <!-- 自定义链接 -->
     <div class="footer-nav-group" th:if="${theme.config.footer.links?.items != null and !theme.config.footer.links.items.isEmpty()}">
       <h3 th:text="${theme.config.footer.links?.title} ?: '链接'"></h3>
       <menu>
@@ -39,7 +36,6 @@
       </menu>
     </div>
 
-    <!-- 信息 -->
     <div class="footer-nav-group">
       <h3>信息</h3>
       <menu>
@@ -55,7 +51,6 @@
             <span class="nav-text" th:text="'驱动 Clarity ' + ${theme.spec.version}"></span>
           </a>
         </li>
-        <!-- 备案信息 -->
         <li th:if="${not #strings.isEmpty(theme.config.footer.beian)}">
           <a href="https://beian.miit.gov.cn/" target="_blank">
             <img th:src="@{/assets/images/icp.webp}" alt="ICP" class="beian-icon" />
@@ -85,12 +80,10 @@
     </div>
   </nav>
 
-  <!-- 自定义页脚注入区域 -->
   <div class="footer-inject">
     <halo:footer />
   </div>
 
-  <!-- 版权信息 -->
   <p>© <span th:text="${#temporals.year(#temporals.createNow())}"></span> <span th:text="${site.title}"></span></p>
 
 </footer>

@@ -1,9 +1,7 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = null)}">
   <th:block th:fragment="content">
-    <!-- 作者页面 -->
     <div class="archive proper-height">
-      <!-- 作者信息卡片 -->
       <section class="author-profile">
         <div class="author-avatar-wrapper">
           <img 
@@ -43,7 +41,6 @@
         </div>
       </section>
 
-      <!-- 复用归档页的文章列表 -->
       <menu class="archive-list">
         <li th:each="post,iterStat : ${posts.items}" class="article-item" th:style="'--delay: ' + ${iterStat.index * 0.03} + 's'">
           <time th:text="${#temporals.format(post.spec.publishTime, 'MM/dd')}"></time>
@@ -54,13 +51,11 @@
         </li>
       </menu>
 
-      <!-- 空状态 -->
       <div th:if="${#lists.isEmpty(posts.items)}" class="empty-state">
         <span class="icon-[ph--note-blank-bold]"></span>
         <p>该作者暂无文章</p>
       </div>
 
-      <!-- 分页 -->
       <div class="pagination-wrapper" th:if="${posts.totalPages > 1}">
         <div class="pagination">
           <a th:href="${posts.prevUrl}" class="page-btn rtl-flip" th:classappend="${!posts.hasPrevious} ? 'disabled'">

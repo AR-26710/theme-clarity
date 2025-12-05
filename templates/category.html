@@ -5,7 +5,6 @@
 >
   <th:block th:fragment="content">
     <div class="category-page">
-      <!-- Category Header -->
       <header class="category-header card">
         <div class="category-info">
           <h1 class="category-title text-creative">
@@ -29,7 +28,6 @@
              th:alt="${category.spec.displayName}" />
       </header>
 
-      <!-- Post List -->
       <th:block th:replace="~{modules/post-list :: list(posts=${posts})}" />
     </div>
   </th:block>

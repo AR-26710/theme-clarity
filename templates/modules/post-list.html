@@ -1,8 +1,6 @@
 <div class="post-list" th:fragment="list(posts)">
-  <!-- Toolbar (排序与分类) -->
   <th:block th:replace="~{modules/order-toggle :: toolbar}" />
 
-  <!-- Posts Container -->
   <menu class="posts-container proper-height">
     <th:block th:each="post,iterStat : ${posts.items}">
       <article class="article-card card" th:style="'--delay: ' + ${iterStat.index * 0.05} + 's'">
@@ -42,7 +40,6 @@
               <span th:text="${post.stats.visit}">0</span>
             </span>
 
-            <!-- Author -->
             <th:block th:replace="~{modules/author-capsule :: capsule(author=${post.owner})}" />
           </div>
         </div>
@@ -50,19 +47,16 @@
     </th:block>
   </menu>
 
-  <!-- Pagination -->
   <div
     class="pagination-wrapper"
     th:if="${posts.totalPages > 1}"
     th:attr="x-data=|pagination(${posts.page ?: 1}, ${posts.totalPages ?: 1})|"
   >
     <div class="pagination">
-      <!-- 上一页 -->
       <a :href="getPageUrl(page - 1)" class="page-btn rtl-flip" :class="{ 'disabled': page <= 1 }">
         <span class="icon-[ph--arrow-fat-left-duotone]"></span>
       </a>
 
-      <!-- 数字页码 -->
       <template x-for="p in pageArr" :key="p">
         <a
           :href="p === '...' ? 'javascript:void(0)' : getPageUrl(p)"
@@ -73,7 +67,6 @@
         </a>
       </template>
 
-      <!-- 下一页 -->
       <a :href="getPageUrl(page + 1)" class="page-btn rtl-flip" :class="{ 'disabled': page >= total }">
         <span class="icon-[ph--arrow-fat-right-duotone]"></span>
       </a>

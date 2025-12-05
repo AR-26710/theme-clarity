@@ -1,9 +1,7 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = false, pageTitle = (${theme.config.links?.title} ?: '友链'))}">
   <th:block th:fragment="content">
-    <!-- Mobile Header -->
     <div class="clarity-header mobile-only">
-      <!-- Emoji 尾巴漂浮效果 -->
       <div th:if="${theme.config.header.emoji_tail}" class="emoji-tail">
         <span
           th:each="emoji,iterStat : ${#strings.arraySplit(theme.config.header.emoji_tail, ',')}"
@@ -14,7 +12,6 @@
         </span>
       </div>
 
-      <!-- Logo -->
       <a href="/">
         <img
           th:if="${theme.config.header.logo}"
@@ -25,7 +22,6 @@
         />
       </a>
 
-      <!-- 标题文字 -->
       <div th:if="${theme.config.header.show_title}" class="clarity-text">
         <div class="header-title">
           <span
@@ -40,12 +36,10 @@
       </div>
     </div>
 
-    <!-- 友链分组列表 -->
     <div class="links-page">
       <th:block th:each="group,groupStat : ${groups}">
         <section class="feed-group">
           <h3 class="feed-title" th:text="${group.spec.displayName}"></h3>
-          <!-- 分组描述通过 annotations 获取 -->
           <p th:if="${group.metadata.annotations?.get('description')}" class="feed-desc" th:text="${group.metadata.annotations.get('description')}"></p>
           
           <menu class="feed-list">
@@ -67,7 +61,6 @@
                   <span class="author" th:text="${link.spec.displayName}"></span>
                 </a>
                 
-                <!-- Tooltip 悬浮卡片 -->
                 <div class="feed-tooltip">
                   <div class="site-content">
                     <img 
@@ -90,9 +83,7 @@
         </section>
       </th:block>
 
-      <!-- 我的博客信息 / 申请友链 Tab -->
       <div class="custom-tabs-container" id="link-tabs">
-        <!-- Tab 导航 -->
         <div class="custom-tabs-header">
           <div class="custom-tabs-nav">
             <button class="custom-tab-item active" data-tab="tab-info" onclick="switchTab(this)">
@@ -104,9 +95,7 @@
           </div>
         </div>
         
-        <!-- Tab 内容 -->
         <div class="custom-tabs-content">
-          <!-- Tab 1: 我的博客信息 -->
           <div id="tab-info" class="custom-tab-pane active">
             <div class="link-tab"
               th:with="
@@ -129,7 +118,6 @@
                 </div>
               </div>
               
-              <!-- 复制信息 -->
               <div class="copy-fields">
                 <div class="copy-item">
                   <span class="prompt">名称</span>
@@ -170,7 +158,6 @@
             </div>
           </div>
           
-          <!-- Tab 2: 申请友链 -->
           <div id="tab-apply" class="custom-tab-pane">
             <div class="link-tab">
               <div class="apply-content article">
@@ -187,7 +174,6 @@
                 </th:block>
               </div>
               
-              <!-- 自主提交按钮 -->
               <th:block th:if="${theme.config.links?.enable_submit}">
                 <div class="link-submit-actions">
                   <div id="link-submit-entry" class="link-submit-entry" style="display: none;">
@@ -196,14 +182,12 @@
                       <span>在线提交</span>
                     </button>
                   </div>
-                  <!-- 修改友链按钮 -->
                   <div th:if="${theme.config.links?.enable_update}" id="link-update-entry" class="link-submit-entry" style="display: none;">
                     <button type="button" class="z-btn" onclick="openLinkUpdateModal()">
                       <span class="icon-[ph--pencil-bold]"></span>
                       <span>修改友链</span>
                     </button>
                   </div>
-                  <!-- 插件未安装提示 -->
                   <div id="link-submit-unavailable" class="link-submit-unavailable" style="display: none;">
                     <span class="icon-[ph--warning-circle-bold]"></span>
                     <span>自主提交插件未安装</span>
@@ -215,7 +199,6 @@
         </div>
       </div>
 
-      <!-- 友链自主提交弹窗 -->
       <div th:if="${theme.config.links?.enable_submit}" id="link-submit-modal" class="link-submit-modal">
         <div class="link-submit-overlay" onclick="closeLinkSubmitModal()"></div>
         <div class="link-submit-content">
@@ -232,11 +215,9 @@
             </button>
           </div>
           
-          <!-- 提示信息（移到顶部） -->
           <div id="submit-message" class="submit-message" style="display: none;"></div>
           
           <form id="link-submit-form" class="link-submit-form">
-            <!-- 网站地址 + 自动获取 -->
             <div class="form-section">
               <div class="section-title">
                 <span class="icon-[ph--globe-bold]"></span>
@@ -273,7 +254,6 @@
               </div>
             </div>
             
-            <!-- 可选信息 -->
             <div class="form-section collapsible" x-data="{ open: true }">
               <button type="button" class="section-title clickable" @click="open = !open">
                 <span class="icon-[ph--dots-three-circle-bold]"></span>
@@ -303,7 +283,6 @@
               </div>
             </div>
             
-            <!-- 验证信息 -->
             <div class="form-section">
               <div class="section-title">
                 <span class="icon-[ph--shield-check-bold]"></span>
@@ -316,7 +295,6 @@
                 <p class="form-hint">用于接收审核结果通知</p>
               </div>
               
-              <!-- 邮箱验证码 -->
               <div th:if="${theme.config.links?.verify_type == 'email' or theme.config.links?.verify_type == null}" class="form-group" id="email-verify-group">
                 <label for="link-code">邮箱验证码 <span class="required">*</span></label>
                 <div class="input-with-btn">
@@ -328,7 +306,6 @@
                 </div>
               </div>
               
-              <!-- 图形验证码 -->
               <div th:if="${theme.config.links?.verify_type == 'captcha'}" class="form-group" id="captcha-group">
                 <label for="link-captcha">图形验证码 <span class="required">*</span></label>
                 <div class="captcha-row">
@@ -340,7 +317,6 @@
             
           </form>
           
-          <!-- 提交按钮（固定在底部） -->
           <div class="form-actions">
             <button type="button" class="z-btn cancel-btn" onclick="closeLinkSubmitModal()">取消</button>
             <button type="submit" form="link-submit-form" class="z-btn primary submit-btn" id="submit-btn">
@@ -351,7 +327,6 @@
         </div>
       </div>
 
-      <!-- 友链修改弹窗 -->
       <div th:if="${theme.config.links?.enable_submit and theme.config.links?.enable_update}" id="link-update-modal" class="link-submit-modal">
         <div class="link-submit-overlay" onclick="closeLinkUpdateModal()"></div>
         <div class="link-submit-content link-update-content">
@@ -368,11 +343,9 @@
             </button>
           </div>
           
-          <!-- 提示信息 -->
           <div id="update-submit-message" class="submit-message" style="display: none;"></div>
           
           <form id="link-update-form" class="link-submit-form">
-            <!-- 原网站地址（定位用） -->
             <div class="form-section">
               <div class="section-title">
                 <span class="icon-[ph--magnifying-glass-bold]"></span>
@@ -386,7 +359,6 @@
               </div>
             </div>
 
-            <!-- 新网站信息 -->
             <div class="form-section">
               <div class="section-title">
                 <span class="icon-[ph--globe-bold]"></span>
@@ -431,7 +403,6 @@
               </div>
             </div>
             
-            <!-- 验证信息 -->
             <div class="form-section">
               <div class="section-title">
                 <span class="icon-[ph--shield-check-bold]"></span>
@@ -444,7 +415,6 @@
                 <p class="form-hint">必须与原友链邮箱一致</p>
               </div>
               
-              <!-- 邮箱验证码 -->
               <div th:if="${theme.config.links?.verify_type == 'email' or theme.config.links?.verify_type == null}" class="form-group" id="update-email-verify-group">
                 <label for="update-link-code">邮箱验证码 <span class="required">*</span></label>
                 <div class="input-with-btn">
@@ -456,7 +426,6 @@
                 </div>
               </div>
               
-              <!-- 图形验证码 -->
               <div th:if="${theme.config.links?.verify_type == 'captcha'}" class="form-group" id="update-captcha-group">
                 <label for="update-link-captcha">图形验证码 <span class="required">*</span></label>
                 <div class="captcha-row">
@@ -468,7 +437,6 @@
             
           </form>
           
-          <!-- 提交按钮（固定在底部） -->
           <div class="form-actions">
             <button type="button" class="z-btn cancel-btn" onclick="closeLinkUpdateModal()">取消</button>
             <button type="submit" form="link-update-form" class="z-btn primary submit-btn" id="update-submit-btn">
@@ -479,7 +447,6 @@
         </div>
       </div>
 
-      <!-- 评论区 -->
       <h3 th:if="${haloCommentEnabled}" class="comment-title">
         <span class="icon-[ph--chat-circle-text-bold]"></span>
         评论区
@@ -489,7 +456,6 @@
       </section>
     </div>
 
-    <!-- 友链页面脚本 -->
     <script th:inline="javascript">
       /*<![CDATA[*/
       // 配置传递给 JS 模块

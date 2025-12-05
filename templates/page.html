@@ -1,14 +1,10 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = false, pageTitle = null)}">
   <th:block th:fragment="content">
-    <!-- 页面头部 -->
     <div class="post-header" th:classappend="${singlePage.spec.cover != null and singlePage.spec.cover != ''} ? 'has-cover' : ''">
-      <!-- 封面图 -->
       <img th:if="${singlePage.spec.cover}" th:src="${singlePage.spec.cover}" class="post-cover" th:alt="${singlePage.spec.title}" />
 
-      <!-- 页面信息栏 -->
       <div class="post-nav">
-        <!-- 分享按钮 -->
         <div class="operations">
           <button class="z-btn" id="share-btn" title="复制分享文本">
             <span class="icon-[ph--share-bold]"></span>
@@ -16,9 +12,7 @@
           </button>
         </div>
 
-        <!-- 页面元信息 -->
         <div class="post-info">
-          <!-- Author -->
           <th:block th:replace="~{modules/author-capsule :: capsule(author=${singlePage.owner})}" />
 
           <span th:if="${singlePage.spec.publishTime}">
@@ -38,13 +32,11 @@
         </div>
       </div>
       
-      <!-- 页面标题 -->
       <h1 class="post-title text-creative" th:text="${singlePage.spec.title}"></h1>
     </div>
 
     <article class="article" th:utext="${singlePage.content.content}"></article>
 
-    <!-- 评论区 -->
     <h3 th:if="${haloCommentEnabled}" class="comment-title">
       <span class="icon-[ph--chat-circle-text-bold]"></span>
       评论区
@@ -53,7 +45,6 @@
       <halo:comment group="content.halo.run" kind="SinglePage" th:attr="name=${singlePage.metadata.name}" />
     </section>
 
-    <!-- 分享脚本 -->
     <script th:inline="javascript">
       (function () {
         const shareBtn = document.getElementById("share-btn");

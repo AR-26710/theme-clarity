@@ -1,9 +1,7 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = ${tag.spec.displayName})}">
   <th:block th:fragment="content">
-    <!-- 标签归档页面 -->
     <div class="archive proper-height">
-      <!-- 标签信息头部 -->
       <header class="tag-header">
         <a href="/tags" class="tag-back" title="返回标签云">
           <span class="icon-[ph--arrow-left-bold]"></span>
@@ -19,7 +17,6 @@
         </div>
       </header>
 
-      <!-- 复用归档页的文章列表 -->
       <menu class="archive-list">
         <li th:each="post,postStat : ${posts.items}" class="article-item" th:style="'--delay: ' + ${postStat.index * 0.03} + 's'">
           <time th:text="${#temporals.format(post.spec.publishTime, 'MM/dd')}"></time>
@@ -30,13 +27,11 @@
         </li>
       </menu>
 
-      <!-- 空状态 -->
       <div th:if="${#lists.isEmpty(posts.items)}" class="empty-state">
         <span class="icon-[ph--article-bold]"></span>
         <p>该标签下暂无文章</p>
       </div>
 
-      <!-- 分页 -->
       <div class="pagination-wrapper" th:if="${posts.totalPages > 1}">
         <div class="pagination">
           <a th:href="${posts.prevUrl}" class="page-btn rtl-flip" th:classappend="${!posts.hasPrevious} ? 'disabled'">

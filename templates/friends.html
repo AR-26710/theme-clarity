@@ -1,7 +1,6 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = '朋友圈')}">
   <th:block th:fragment="content">
-    <!-- 页面标题 -->
     <div class="friends-header">
       <div class="friends-title">
         <span class="icon-[ph--rss-bold]"></span>
@@ -18,7 +17,6 @@
       </div>
     </div>
 
-    <!-- 朋友圈列表 -->
     <div class="friends-list proper-height">
       <article 
         th:each="friend,iterStat : ${friends.items}" 
@@ -26,7 +24,6 @@
         class="friend-card"
         th:style="'--delay: ' + ${iterStat.index * 0.03} + 's'"
       >
-        <!-- 作者信息 -->
         <header class="friend-header">
           <a th:href="${spec.authorUrl}" target="_blank" rel="noopener" class="author-info">
             <img 
@@ -49,13 +46,11 @@
           ></time>
         </header>
 
-        <!-- 文章内容 -->
         <a th:href="${spec.postLink}" target="_blank" rel="noopener" class="friend-content">
           <h2 class="friend-title" th:text="${spec.title}">文章标题</h2>
           <p th:if="${spec.description != null and spec.description != ''}" class="friend-desc" th:text="${spec.description}"></p>
         </a>
 
-        <!-- 底部操作 -->
         <footer class="friend-footer">
           <a th:href="${spec.postLink}" target="_blank" rel="noopener" class="read-more">
             <span>阅读原文</span>
@@ -64,7 +59,6 @@
         </footer>
       </article>
 
-      <!-- 空状态 -->
       <div th:if="${#lists.isEmpty(friends.items)}" class="friends-empty">
         <span class="icon-[ph--rss-bold]"></span>
         <p>暂无订阅内容</p>
@@ -72,7 +66,6 @@
       </div>
     </div>
 
-    <!-- 分页 -->
     <nav th:if="${friends.hasPrevious() or friends.hasNext()}" class="friends-pagination">
       <a 
         th:if="${friends.hasPrevious()}"

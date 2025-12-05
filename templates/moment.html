@@ -1,7 +1,6 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = null)}">
   <th:block th:fragment="content">
-    <!-- 返回链接 -->
     <div class="moment-back">
       <a href="/moments" class="back-link">
         <span class="icon-[ph--arrow-left-bold]"></span>
@@ -9,9 +8,7 @@
       </a>
     </div>
 
-    <!-- 瞬间详情 -->
     <article th:with="content=${moment.spec.content}" class="moment-detail">
-      <!-- 头部：作者 + 时间 -->
       <header class="moment-header">
         <div th:if="${moment.owner != null}" class="author-info">
           <img 
@@ -32,23 +29,19 @@
         </time>
       </header>
 
-      <!-- 瞬间内容 -->
       <div class="moment-body">
-        <!-- 文本内容 -->
         <div 
           th:if="${not #strings.isEmpty(content.html)}" 
           class="moment-text"
           th:utext="${content.html}"
         ></div>
 
-        <!-- 媒体内容 -->
         <div 
           th:if="${not #lists.isEmpty(content.medium)}" 
           class="moment-media"
           th:classappend="${#lists.size(content.medium) == 1} ? 'single' : (#lists.size(content.medium) == 2 ? 'double' : 'grid')"
         >
           <th:block th:each="mediaItem : ${content.medium}">
-            <!-- 图片 -->
             <figure th:if="${mediaItem.type.name == 'PHOTO'}" class="media-item photo">
               <img 
                 th:src="${mediaItem.url}" 
@@ -57,7 +50,6 @@
               />
             </figure>
             
-            <!-- 视频 -->
             <figure th:if="${mediaItem.type.name == 'VIDEO'}" class="media-item video">
               <video 
                 th:src="${mediaItem.url}" 
@@ -66,7 +58,6 @@
               ></video>
             </figure>
             
-            <!-- 音频 -->
             <figure th:if="${mediaItem.type.name == 'AUDIO'}" class="media-item audio">
               <audio 
                 th:src="${mediaItem.url}" 
@@ -77,10 +68,8 @@
         </div>
       </div>
 
-      <!-- 底部操作栏 -->
       <footer class="moment-footer">
         <div class="moment-actions">
-          <!-- 点赞按钮 -->
           <button 
             class="action-btn like"
             title="点赞"
@@ -123,12 +112,10 @@
             <span class="icon-[ph--heart-fill]" x-show="liked" style="display: none; color: #ef4444;"></span>
             <span x-text="count"></span>
           </button>
-          <!-- 评论数 -->
           <span class="action-btn comment">
             <span class="icon-[ph--chat-circle-bold]"></span>
             <span th:text="${moment.stats.approvedComment ?: 0}"></span>
           </span>
-          <!-- 分享按钮 -->
           <button 
             class="action-btn share" 
             title="复制链接"
@@ -140,7 +127,6 @@
       </footer>
     </article>
 
-    <!-- 评论区 -->
     <section th:if="${haloCommentEnabled}" class="moment-comment-section">
       <h3 class="comment-title">
         <span class="icon-[ph--chat-circle-text-bold]"></span>

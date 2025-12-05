@@ -12,7 +12,6 @@
   </div>
 
   <div class="z-slide-body">
-    <!-- Scroll Container -->
     <div class="slide-list" id="slide-scroll-container">
       <th:block th:each="postName : ${theme.config.post.featured_posts}">
         <th:block th:with="post = ${postFinder.getByName(postName)}">
@@ -29,7 +28,6 @@
               loading="lazy"
               th:alt="${post.spec.title}"
             />
-            <!-- Fallback bg if no cover -->
             <div
               th:unless="${post.spec.cover}"
               class="cover flex items-center justify-center bg-gray-200 dark:bg-gray-700"
@@ -49,7 +47,6 @@
       </th:block>
     </div>
 
-    <!-- Navigation Buttons -->
     <button
       class="carousel-action prev at-slide-hover"
       aria-label="上一页"
@@ -66,7 +63,6 @@
     </button>
   </div>
 
-  <!-- Scroll Script for Shift+Wheel -->
   <script>
     (function () {
       const container = document.getElementById("slide-scroll-container");

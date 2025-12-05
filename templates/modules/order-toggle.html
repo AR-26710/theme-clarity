@@ -1,11 +1,7 @@
-<!--
-  order-toggle toolbar - 分类筛选
--->
 <div class="toolbar" th:fragment="toolbar">
   <div></div>
 
   <div class="order-toggle">
-    <!-- DaisyUI Dropdown -->
     <div class="dropdown dropdown-end">
       <div tabindex="0" role="button" class="dropdown-trigger">
         <th:block th:with="catIcon = ${category?.metadata?.annotations != null ? category.metadata.annotations['categoryIicon'] : null}">

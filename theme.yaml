@@ -5,17 +5,17 @@ metadata:
 spec:
   displayName: Clarity
   author:
-    name: Halo
+    name: Handsome&纸鹿
     website: https:/www.xhhao.com
-  description: A clean and modern theme for Halo
-  logo: https://www.halo.run/logo
+  description: 一款注重阅读体验的三栏博客主题，用清晰的设计让阅读回归本真
+  logo: /themes/theme-clarity/assets/images/logo.svg
   homepage: https:/www.xhhao.com
   repo: https://github.com/halo-dev/theme-clarity
   issues: https://github.com/halo-dev/theme-clarity/issues
   settingName: "theme-clarity-setting"
   configMapName: "theme-clarity-configMap"
   version: "1.0.0"
-  requires: "2.0.0"
+  requires: ">=2.21.0"
   license:
     - name: "GPL-3.0"
       url: "https://github.com/halo-dev/theme-clarity/blob/main/LICENSE"

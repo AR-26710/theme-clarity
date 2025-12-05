@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="clarity_pro" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/> <!-- Blue 400: 明亮 -->
+      <stop offset="100%" stop-color="#2563EB"/> <!-- Blue 600: 深邃 -->
+    </linearGradient>
+  </defs>
+
+  <!-- 1. 背景: 更清透、明亮的蓝色渐变 -->
+  <rect x="0" y="0" width="64" height="64" rx="16" fill="url(#clarity_pro)"/>
+
+  <!-- 2. 主体图形: 居中 -->
+  <g transform="translate(32 32)">
+    <!-- C 环: 纯白，高透明度，保持纯净感 -->
+    <path d="M14 -14 A 20 20 0 1 0 14 14" 
+          stroke="white" 
+          stroke-width="6" 
+          stroke-linecap="round"
+          fill="none"/>
+    
+    <!-- 3. 内部布局: 卡片式设计 (Card UI) -->
+    
+    <!-- 左侧边栏 (Aside): 半透明白色 -->
+    <rect x="-11" y="-8" width="3" height="16" rx="1.5" fill="white" fill-opacity="0.5"/>
+    
+    <!-- 主内容区 (Main): 纯白高亮 -->
+    <rect x="-4" y="-12" width="10" height="24" rx="2" fill="white"/>
+    
+    <!-- 右侧边栏 (Extra): 半透明白色 -->
+    <rect x="10" y="-8" width="3" height="16" rx="1.5" fill="white" fill-opacity="0.5"/>
+  </g>
+</svg>

@@ -1,9 +1,7 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = '标签云')}">
   <th:block th:fragment="content">
-    <!-- 标签归档页面 -->
     <div class="tags-archive proper-height">
-      <!-- 页面标题 -->
       <header class="tags-header">
         <h1 class="tags-title">
           <span class="icon-[ph--tag-bold]"></span>
@@ -14,7 +12,6 @@
         </p>
       </header>
 
-      <!-- 标签列表 -->
       <div class="tags-cloud">
         <a th:each="tag,tagStat : ${tags}" 
            th:href="${tag.status.permalink}" 
@@ -26,7 +23,6 @@
         </a>
       </div>
 
-      <!-- 空状态 -->
       <div th:if="${#lists.isEmpty(tags)}" class="tags-empty">
         <span class="icon-[ph--tag-simple-bold]"></span>
         <p>暂无标签</p>
