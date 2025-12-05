@@ -442,6 +442,12 @@ spec:
           value: false
           help: 开启后已提交的友链可凭邮箱验证修改信息
           if: "$get(enable_submit).value === true"
+        - $formkit: code
+          name: title_font_css
+          label: 友链标题字体样式
+          language: css
+          height: 150px
+          help: 填写 @font-face 代码，font-family 必须改为 "Links Title Font"（如阿里妈妈方圆体），留空则使用系统字体（苹方/微软雅黑）
         - $formkit: textarea
           name: apply_content
           label: 申请友链说明

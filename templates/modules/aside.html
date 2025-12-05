@@ -328,7 +328,41 @@
                 if (!widget) return;
                 const count = parseInt(widget.dataset.count) || 3;
                 const items = widget.querySelectorAll('.moment-item');
-                items.forEach((item, i) => { if (i >= count) item.style.display = 'none'; });
+                
+                // 过滤内容：移除标签、图片等，只保留纯文本
+                items.forEach((item, i) => {
+                  if (i >= count) {
+                    item.style.display = 'none';
+                    return;
+                  }
+                  const content = item.querySelector('.moment-content');
+                  if (content) {
+                    // 移除图片、视频、iframe 等媒体元素
+                    content.querySelectorAll('img, video, iframe, audio, embed, object').forEach(el => el.remove());
+                    // 移除标签链接 (通常是 #tag 格式)
+                    content.querySelectorAll('a[href*="/tags/"], a[href*="/tag/"], a.tag, a.moment-tag').forEach(el => el.remove());
+                    // 移除空的段落
+                    content.querySelectorAll('p, div, span').forEach(el => {
+                      if (!el.textContent.trim()) el.remove();
+                    });
+                    // 如果内容为空则隐藏整个条目
+                    if (!content.textContent.trim()) {
+                      item.style.display = 'none';
+                    }
+                  }
+                });
+                
+                // 重新计算显示数量，确保显示足够的条目
+                let visibleCount = 0;
+                items.forEach(item => {
+                  if (item.style.display !== 'none') {
+                    if (visibleCount >= count) {
+                      item.style.display = 'none';
+                    } else {
+                      visibleCount++;
+                    }
+                  }
+                });
               })();
             </script>
           </div>

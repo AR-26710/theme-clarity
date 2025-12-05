@@ -5,6 +5,8 @@
 	--font-creative: "快看世界体", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
 	// Logo 字体：自定义字体(需在主题设置中配置) -> 回退到系统字体
 	--font-logo: "Logo Font", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+	// 友链标题字体：自定义字体(需在主题设置中配置) -> 回退到系统字体
+	--font-links-title: "Links Title Font", "PingFang SC", "Microsoft YaHei", "MiSans", system-ui, sans-serif;
 	--font-stroke-free: "Logo Font", "PingFang SC", "Microsoft YaHei", "MiSans", system-ui, sans-serif;
 	--font-monospace: ui-monospace, "JetBrains Mono", "Cascadia Code", "Consolas", "monospace", var(--font-basic), monospace;
 

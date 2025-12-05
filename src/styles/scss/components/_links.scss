@@ -33,7 +33,8 @@ $breakpoint-phone: 528px !default;
   top: 0;
   margin-bottom: -0.3em;
   mask-image: linear-gradient(#fff 50%, transparent);
-  font-family: var(--font-stroke-free, var(--font-creative));
+  // 优先使用友链标题字体，回退到 Logo 字体或系统字体
+  font-family: var(--font-links-title, var(--font-stroke-free, var(--font-creative)));
   font-size: 5em;
   font-weight: 800;
   line-height: 1;

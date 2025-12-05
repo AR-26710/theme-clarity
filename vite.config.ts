@@ -19,9 +19,13 @@ export default ({ mode }: { mode: string }) => {
     define: {
       "process.env.NODE_ENV": JSON.stringify(mode),
     },
+    esbuild: {
+      drop: isProduction ? ["console", "debugger"] : [],
+      legalComments: "none",
+    },
     build: {
       manifest: isProduction,
-      minify: isProduction,
+      minify: isProduction ? "esbuild" : false,
       rollupOptions: {
         input: entries,
         output: {

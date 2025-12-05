@@ -22,16 +22,17 @@ LinksSubmit.submit(data, verifyCode, verifyCodeType)
 
 **`data` 对象结构：**
 
-| 属性名 | 类型 | 必填 | 说明 |
-| :--- | :--- | :--- | :--- |
-| `displayName` | String | 是 | 网站名称 |
-| `url` | String | 是 | 网站地址 |
-| `logo` | String | 否 | 网站图标 URL |
-| `email` | String | 是 | 联系邮箱 |
-| `description` | String | 否 | 网站描述 |
-| `linkPageUrl` | String | 否 | 友链页面地址 |
-| `groupName` | String | 否 | 分组 ID (注意：虽然字段名叫 groupName，实际传的是 groupId) |
-| `rssUrl` | String | 否 | RSS 地址 |
+| 属性名 | 类型 | 必填 | 说明                                                                         |
+| :--- | :--- | :--- |:---------------------------------------------------------------------------|
+| `displayName` | String | 是 | 网站名称                                                                       |
+| `url` | String | 是 | 网站地址                                                                       |
+| `logo` | String | 否 | 网站图标 URL                                                                   |
+| `email` | String | 是 | 联系邮箱                                                                       |
+| `description` | String | 否 | 网站描述                                                                       |
+| `linkPageUrl` | String | 否 | 友链页面地址                                                                     |
+| `groupName` | String | 否 | 分组 ID (注意：虽然字段名叫 groupName，实际传的是 groupId)                                  |
+| `rssUrl` | String | 否 | RSS 地址                                                                     |
+| `submitType` | String | 否 | 提交类型，可选值：`CREATE`（新增，默认）、`UPDATE`（修改）。调用 `submit` 方法时自动设置为 `CREATE`，无需手动传递 |
 
 ### 示例代码
 
@@ -116,17 +117,18 @@ LinksSubmit.update(data, verifyCode, verifyCodeType)
 
 **`data` 对象结构：**
 
-| 属性名 | 类型 | 必填 | 说明 |
-| :--- | :--- | :--- | :--- |
-| `oldUrl` | String | **是** | 原网站地址 (用于定位要修改的链接) |
-| `url` | String | 是 | 新网站地址 |
-| `displayName` | String | 是 | 网站名称 |
-| `email` | String | **是** | 联系邮箱 (必须与原链接绑定的邮箱一致) |
-| `logo` | String | 否 | 网站图标 URL |
-| `description` | String | 否 | 网站描述 |
-| `linkPageUrl` | String | 否 | 友链页面地址 |
-| `groupName` | String | 否 | 分组 ID |
-| `rssUrl` | String | 否 | RSS 地址 |
+| 属性名 | 类型 | 必填 | 说明                                      |
+| :--- | :--- | :--- |:----------------------------------------|
+| `oldUrl` | String | **是** | 原网站地址 (用于定位要修改的链接)                      |
+| `url` | String | 是 | 新网站地址                                   |
+| `displayName` | String | 是 | 网站名称                                    |
+| `email` | String | **是** | 联系邮箱 (必须与原链接绑定的邮箱一致)                    |
+| `logo` | String | 否 | 网站图标 URL                                |
+| `description` | String | 否 | 网站描述                                    |
+| `linkPageUrl` | String | 否 | 友链页面地址                                  |
+| `groupName` | String | 否 | 分组 ID                                   |
+| `rssUrl` | String | 否 | RSS 地址                                  |
+| `submitType` | String | 否 | 提交类型，调用 `update` 方法时自动设置为 `UPDATE`，无需手动传递 |
 
 ### 示例代码
 

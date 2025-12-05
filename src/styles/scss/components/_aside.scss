@@ -12,7 +12,11 @@ $breakpoint-widescreen: 1080px !default;
 	width: 280px;
 	height: 100vh;
 	height: 100dvh;
-	scrollbar-width: thin;
+	// 隐藏滚动条但保持可滚动
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
 
 	// 宽屏以下：默认隐藏，通过 .show 类显示
 	@media (max-width: $breakpoint-widescreen) {

@@ -23,6 +23,11 @@
       <style th:utext="${theme.config.style.logo_font_css}"></style>
     </th:block>
 
+    <!-- 友链标题自定义字体 -->
+    <th:block th:if="${theme.config.links?.title_font_css}">
+      <style th:utext="${theme.config.links.title_font_css}"></style>
+    </th:block>
+
     <!-- Custom Iconfont -->
     <link
       th:if="${not #strings.isEmpty(theme.config.custom.iconfont_url)}"
