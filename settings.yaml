@@ -243,6 +243,40 @@ spec:
           name: gongan_beian
           label: 公安备案号
           placeholder: 陕公网安备61010302001234号
+        - $formkit: checkbox
+          name: enable_uptime_kuma
+          id: enable_uptime_kuma
+          label: 启用 Uptime Kuma 状态监控
+          value: false
+          help: 在页脚显示站点状态监控
+        - $el: div
+          if: "$get(enable_uptime_kuma).value === true"
+          attrs:
+            class: "text-sm"
+            style: |
+              display: inline-block;
+              margin-top: 0.5rem;
+              padding: 0.5rem 0.75rem;
+              background: #fffbeb;
+              border-radius: 0.375rem;
+              border: 1px solid #fcd34d;
+          children:
+            - $el: span
+              attrs:
+                style: "color: #92400e;"
+              children: "⚠️ 需要安装 "
+            - $el: a
+              attrs:
+                href: "https://www.halo.run/store/apps/app-rtnbbgfk"
+                target: "_blank"
+                style: |
+                  color: #d97706;
+                  text-decoration: underline;
+              children: "数据看板插件"
+            - $el: span
+              attrs:
+                style: "color: #92400e;"
+              children: " 并配置 Uptime Kuma"
     - group: aside
       label: 右侧边栏
       formSchema:
@@ -494,7 +528,31 @@ spec:
           id: enable_submit
           label: 启用自主提交
           value: false
-          help: 开启后需安装友链自主提交插件（LinksSubmit），访客可自助提交友链申请
+          help: 开启后访客可自助提交友链申请
+        - $el: div
+          if: "$get(enable_submit).value === true"
+          attrs:
+            class: "text-sm"
+            style: |
+              display: inline-block;
+              margin-top: 0.5rem;
+              padding: 0.5rem 0.75rem;
+              background: #fffbeb;
+              border-radius: 0.375rem;
+              border: 1px solid #fcd34d;
+          children:
+            - $el: span
+              attrs:
+                style: "color: #92400e;"
+              children: "⚠️ 需要安装 "
+            - $el: a
+              attrs:
+                href: "https://auth.muyin.site/archives/LinksSubmit"
+                target: "_blank"
+                style: |
+                  color: #d97706;
+                  text-decoration: underline;
+              children: "友链自主提交插件"
         - $formkit: select
           name: verify_type
           label: 验证方式

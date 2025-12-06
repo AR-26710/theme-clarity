@@ -22,8 +22,8 @@
   <link rel="canonical" th:if="${singlePage != null and post == null}" th:href="${site.url + singlePage.status.permalink}" />
   <link rel="canonical" th:if="${author != null and post == null and singlePage == null}" th:href="${site.url + author.status.permalink}" />
   <link rel="canonical" th:if="${post == null and singlePage == null and author == null}" th:href="${site.url}" />
-  <link rel="icon" th:href="${site.logo}" />
-  <link rel="apple-touch-icon" th:href="${site.logo}" />
+  <link rel="icon" th:href="${site.favicon ?: site.logo}" />
+  <link rel="apple-touch-icon" th:href="${site.favicon ?: site.logo}" />
   <link rel="alternate" type="application/rss+xml" th:href="${site.url + '/rss.xml'}" th:title="${site.title + ' - RSS Feed'}" />
   <meta property="og:site_name" th:content="${site.title}" />
   <meta property="og:locale" content="zh_CN" />
