@@ -53,12 +53,11 @@
           ></p>
 
           <menu class="feed-list">
-            <li th:each="link,linkStat : ${group.links}">
-              <div
-                class="feed-card-wrapper"
-                th:data-link="${link.spec.url}"
-                th:if="${#annotations.getOrDefault(link, 'hide','false') == 'false'}"
-              >
+            <li
+              th:each="link,linkStat : ${group.links}"
+              th:if="${#annotations.getOrDefault(link, 'hide','false') == 'false'}"
+            >
+              <div class="feed-card-wrapper" th:data-link="${link.spec.url}">
                 <a th:href="${link.spec.url}" class="feed-card gradient-card" target="_blank" rel="noopener noreferrer">
                   <div class="avatar">
                     <img th:src="${link.spec.logo}" th:alt="${link.spec.displayName}" loading="lazy" />
