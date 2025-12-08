@@ -44,6 +44,8 @@ spec:
       help: 显示在分组标题下方的描述文字
     - $formkit: checkbox
       name: hide
+      id: hide
+      key: hide
       label: 隐藏
       value: false
 
@@ -59,5 +61,7 @@ spec:
   formSchema:
     - $formkit: checkbox
       name: hide
+      id: hide
+      key: hide
       label: 隐藏
       value: false
