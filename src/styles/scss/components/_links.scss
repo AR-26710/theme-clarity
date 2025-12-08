@@ -149,6 +149,10 @@ $breakpoint-phone: 528px !default;
 
   .author {
     flex-grow: 1;
+    max-width: 10em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .title {
@@ -225,11 +229,13 @@ $breakpoint-phone: 528px !default;
         margin: 0;
         font-size: 1em;
         color: var(--c-text);
+        overflow-wrap: break-word;
+        word-break: break-word;
       }
 
       .domain {
-        font-size: 0.9em;
-        color: var(--c-text-3);
+        font-size: 0.85em;
+        color: var(--c-text-2);
       }
     }
   }
@@ -394,6 +400,10 @@ $breakpoint-phone: 528px !default;
 
   .author {
     font-weight: 600;
+    max-width: 12em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .title {
