@@ -39,7 +39,10 @@ $breakpoint-widescreen: 1080px;
 @use "./scss/components/categories";
 @use "./scss/components/error";
 @use "./scss/components/author";
-@use "./scss/components/links";
+@use "./scss/components/links" with (
+  $breakpoint-mobile: $breakpoint-mobile,
+  $breakpoint-phone: $breakpoint-phone
+);
 @use "./scss/components/moments";
 @use "./scss/components/friends";
 // 直接引入 Fancybox 基础样式，并指定命名空间防止冲突

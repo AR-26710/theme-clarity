@@ -4,6 +4,7 @@
 // ========================================
 
 $breakpoint-phone: 528px !default;
+$breakpoint-mobile: 768px !default;
 
 // ========================================
 // 友链页面容器
@@ -77,14 +78,21 @@ $breakpoint-phone: 528px !default;
       .avatar {
         margin: 0 0 0.2rem;
       }
+      
+      .author {
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 
-  @media (max-width: $breakpoint-phone) {
+  @media (max-width: $breakpoint-mobile) {
     @include feed-narrow;
   }
 
-  @container (max-width: #{$breakpoint-phone}) {
+  @container (max-width: #{$breakpoint-mobile}) {
     @include feed-narrow;
   }
 }
