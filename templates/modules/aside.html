@@ -10,10 +10,25 @@
     <section class="widget toc-widget" id="catalog-widget" style="display: none;">
       <hgroup class="widget-title">
         <span class="title-text">文章目录</span>
-        <a href="#content" aria-label="返回开头" title="返回开头" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
+        <a 
+          onclick="return false;" 
+          aria-label="点赞文章" 
+          x-data="postLike()"
+          x-init="init()"
+          @click="toggleLike()"
+          :data-title="liked ? '已点赞' : '点赞'"
+          :class="{ 'liked': liked }"
+          th:data-count="${post?.stats?.upvote ?: 0}"
+          th:data-name="${post?.metadata?.name}"
+        >
+          <span class="icon-[ph--heart-bold]" x-show="!liked"></span>
+          <span class="icon-[ph--heart-fill]" x-show="liked"></span>
+          <span class="like-count" x-show="count > 0" x-text="count"></span>
+        </a>
+        <a href="#content" aria-label="返回顶部" data-title="返回顶部" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
           <span class="icon-[ph--arrow-circle-up-bold]"></span>
         </a>
-        <a href="#comment" aria-label="评论区" title="评论区" onclick="document.getElementById('comment').scrollIntoView({behavior: 'smooth'}); return false;">
+        <a href="#comment" aria-label="评论区" data-title="评论区" onclick="document.getElementById('comment').scrollIntoView({behavior: 'smooth'}); return false;">
           <span class="icon-[ph--chat-circle-text-bold]"></span>
         </a>
       </hgroup>

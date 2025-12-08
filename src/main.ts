@@ -169,6 +169,56 @@ Alpine.data("sidebarControl", () => ({
   },
 }));
 
+/* Alpine.js 文章点赞组件 */
+Alpine.data("postLike", () => ({
+  count: 0,
+  liked: false,
+  loading: false,
+  postName: "",
+
+  init() {
+    // 从当前元素获取数据
+    const el = this.$el as HTMLElement;
+    this.postName = el.dataset.name || "";
+    this.count = parseInt(el.dataset.count || "0", 10);
+
+    // 检查本地存储的点赞状态
+    if (this.postName) {
+      const likedPosts = JSON.parse(localStorage.getItem("liked_posts") || "{}");
+      this.liked = !!likedPosts[this.postName];
+    }
+  },
+
+  async toggleLike() {
+    if (this.loading || !this.postName || this.liked) return;
+
+    this.loading = true;
+    try {
+      const res = await fetch("/apis/api.halo.run/v1alpha1/trackers/upvote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          group: "content.halo.run",
+          plural: "posts",
+          name: this.postName,
+        }),
+      });
+
+      if (res.ok) {
+        const likedPosts = JSON.parse(localStorage.getItem("liked_posts") || "{}");
+        likedPosts[this.postName] = true;
+        localStorage.setItem("liked_posts", JSON.stringify(likedPosts));
+        this.liked = true;
+        this.count++;
+      }
+    } catch (err) {
+      console.error("点赞失败:", err);
+    } finally {
+      this.loading = false;
+    }
+  },
+}));
+
 /* Alpine.js 分页组件 (DaisyUI) */
 Alpine.data("pagination", (page: number, total: number) => ({
   page: Number(page) || 1,
