@@ -47,7 +47,9 @@ spec:
       id: hide
       key: hide
       label: 隐藏
-      value: false
+      value: "false"
+      on-value: "true"
+      off-value: "false"
 
 ---
 apiVersion: v1alpha1
@@ -64,4 +66,6 @@ spec:
       id: hide
       key: hide
       label: 隐藏
-      value: false
+      value: "false"
+      on-value: "true"
+      off-value: "false"
