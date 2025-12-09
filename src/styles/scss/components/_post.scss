@@ -116,6 +116,10 @@ $breakpoint-mobile: 768px !default;
 	height: 100%;
 	object-fit: cover;
 	border-radius: 1rem;
+
+	@media (max-width: 640px) {
+		border-radius: 0;
+	}
 }
 
 .post-title {
