@@ -24,6 +24,8 @@
         </div>
         <img th:if="${not #strings.isEmpty(category.spec.cover)}"
              th:src="${category.spec.cover}"
+             th:srcset="|${thumbnail.gen(category.spec.cover, 's')} 400w, ${thumbnail.gen(category.spec.cover, 'm')} 800w|"
+             sizes="200px"
              class="category-cover"
              th:alt="${category.spec.displayName}" />
       </header>

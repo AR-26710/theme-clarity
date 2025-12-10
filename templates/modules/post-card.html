@@ -2,6 +2,8 @@
     <a th:href="${post.status.permalink}">
         <img th:if="${not #strings.isEmpty(post.spec.cover)}" 
              th:src="${post.spec.cover}" 
+             th:srcset="|${thumbnail.gen(post.spec.cover, 's')} 400w, ${thumbnail.gen(post.spec.cover, 'm')} 800w|" 
+             sizes="(max-width: 528px) 400px, 800px"
              class="article-cover" 
              loading="lazy"
              th:alt="${post.spec.title}" />
