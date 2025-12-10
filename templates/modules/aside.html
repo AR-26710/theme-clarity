@@ -362,8 +362,9 @@
               <th:block th:each="moment : ${momentFinder.list(1, momentCount).items}">
                 <article
                   class="moment-item"
-                  th:if="${not #strings.isEmpty(moment.spec.content.html)}"
+                  th:if="${not #strings.isEmpty(moment.spec.content.html) or (moment.spec.content.medium != null and not #lists.isEmpty(moment.spec.content.medium))}"
                   th:data-html="${moment.spec.content.html}"
+                  th:data-has-media="${moment.spec.content.medium != null and not #lists.isEmpty(moment.spec.content.medium)}"
                 >
                   <a class="moment-content" th:href="|/moments/${moment.metadata.name}|"></a>
                   <time class="moment-time" th:datetime="${moment.spec.releaseTime}">
@@ -393,26 +394,33 @@
                 // 使用 requestIdleCallback 提升页面初渲染流畅度
                 const run = () => {
                   items.forEach((item) => {
-                    const raw = item.dataset.html;
-                    if (!raw) {
-                      item.style.display = "none";
-                      return;
+                    const raw = item.dataset.html || "";
+                    const hasMedia = item.dataset.hasMedia === "true";
+                    let displayText = "";
+
+                    // 处理HTML内容
+                    if (raw) {
+                      // 内存解析 HTML 并提取纯文本
+                      const doc = parser.parseFromString(raw, "text/html");
+                      const text = doc.body.textContent || doc.body.innerText || "";
+                      displayText = text.trim();
                     }
 
-                    // 内存解析 HTML 并提取纯文本
-                    const doc = parser.parseFromString(raw, "text/html");
-                    const text = doc.body.textContent || doc.body.innerText || "";
-                    const trimmedText = text.trim();
-
-                    // 内容为空则隐藏
-                    if (!trimmedText) {
-                      item.style.display = "none";
-                      return;
+                    // 判断显示逻辑
+                    if (!displayText) {
+                      if (hasMedia) {
+                        // 有媒体资源但无文字，显示提示
+                        displayText = "此微语无文字，请点击查看。";
+                      } else {
+                        // 既无文字又无媒体，隐藏（不知道会不会出现这种情况，但还预防一下）
+                        item.style.display = "none";
+                        return;
+                      }
                     }
 
-                    // 写入纯文本内容
+                    // 写入内容
                     const content = item.querySelector(".moment-content");
-                    if (content) content.textContent = trimmedText;
+                    if (content) content.textContent = displayText;
                   });
                 };
 
