@@ -82,17 +82,30 @@ span:not([class]):empty {
 
 .article-cover {
 	position: absolute;
-	opacity: 0.8;
+	opacity: 0;
 	top: 0;
 	inset-inline-end: 0;
 	width: min(320px, 50%);
 	height: 100%;
 	margin: 0;
 	mask-image: linear-gradient(to var(--end), transparent, #FFF 50%);
-	transition: all 0.2s;
+	transition: opacity 0.3s ease;
 	object-fit: cover;
+	background: var(--ld-bg-card) url('/themes/theme-clarity/assets/images/loading5.gif') center no-repeat;
+	background-size: 48px;
 
-	:hover > & {
+	// 图片加载完成后显示
+	&.img-loaded {
+		opacity: 0.8;
+	}
+
+	// 图片加载失败
+	&.img-error {
+		opacity: 0.6;
+		background-image: none;
+	}
+
+	:hover > &.img-loaded {
 		opacity: 1;
 	}
 }

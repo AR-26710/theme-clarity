@@ -1,9 +1,19 @@
 import { Fancybox } from "@fancyapps/ui";
 
+// 动态加载 Fancybox CSS（只在首次使用时加载）
+let cssLoaded = false;
+function loadFancyboxCSS() {
+  if (cssLoaded) return;
+  cssLoaded = true;
+  import("@fancyapps/ui/dist/fancybox/fancybox.css");
+}
+
 /**
  * 初始化 Fancybox 灯箱
  */
 export function initFancybox() {
+  // 预加载 CSS（用户可能会点击图片）
+  loadFancyboxCSS();
   // 销毁之前的绑定（避免重复绑定）
   Fancybox.destroy();
 

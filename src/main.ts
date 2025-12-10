@@ -294,6 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initFancybox();
   initBackToTop();
   initLinkSubmit();
+  initImageLoading();
 });
 
 // 初始化下拉菜单交互
@@ -380,5 +381,52 @@ function initBackToTop() {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     });
+  }
+}
+
+// 图片加载动画：使用事件委托统一处理
+function initImageLoading() {
+  const ERROR_IMG = "/themes/theme-clarity/assets/images/error.svg";
+  const COVER_SELECTOR = ".article-cover, .slide-item .cover, .post-cover";
+
+  // 处理已经加载完成的图片（缓存命中）
+  document.querySelectorAll<HTMLImageElement>(COVER_SELECTOR).forEach((img) => {
+    if (img.complete) {
+      if (img.naturalWidth > 0) {
+        img.classList.add("img-loaded");
+      } else {
+        handleImageError(img);
+      }
+    }
+  });
+
+  // 事件委托：捕获阶段监听 load 和 error
+  document.addEventListener(
+    "load",
+    (e) => {
+      const img = e.target as HTMLImageElement;
+      if (img.matches?.(COVER_SELECTOR)) {
+        img.classList.add("img-loaded");
+      }
+    },
+    true
+  );
+
+  document.addEventListener(
+    "error",
+    (e) => {
+      const img = e.target as HTMLImageElement;
+      if (img.matches?.(COVER_SELECTOR)) {
+        handleImageError(img);
+      }
+    },
+    true
+  );
+
+  function handleImageError(img: HTMLImageElement) {
+    // 避免重复处理
+    if (img.classList.contains("img-error")) return;
+    img.classList.add("img-error", "img-loaded");
+    img.src = ERROR_IMG;
   }
 }

@@ -188,36 +188,6 @@
       </div>
     </div>
 
-    <nav th:if="${moments.hasPrevious() or moments.hasNext()}" class="moments-pagination">
-      <a 
-        th:if="${moments.hasPrevious()}"
-        th:href="@{${moments.prevUrl}}"
-        class="page-btn"
-      >
-        <span class="icon-[ph--caret-left-bold]"></span>
-        上一页
-      </a>
-      <span th:unless="${moments.hasPrevious()}" class="page-btn disabled">
-        <span class="icon-[ph--caret-left-bold]"></span>
-        上一页
-      </span>
-
-      <span class="page-info">
-        <span th:text="${moments.page}"></span> / <span th:text="${moments.totalPages}"></span>
-      </span>
-
-      <a 
-        th:if="${moments.hasNext()}"
-        th:href="@{${moments.nextUrl}}"
-        class="page-btn"
-      >
-        下一页
-        <span class="icon-[ph--caret-right-bold]"></span>
-      </a>
-      <span th:unless="${moments.hasNext()}" class="page-btn disabled">
-        下一页
-        <span class="icon-[ph--caret-right-bold]"></span>
-      </span>
-    </nav>
+    <th:block th:replace="~{modules/pagination :: pagination(data=${moments})}" />
   </th:block>
 </html>

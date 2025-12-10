@@ -49,29 +49,5 @@
     </th:block>
   </menu>
 
-  <div
-    class="pagination-wrapper"
-    th:if="${posts.totalPages > 1}"
-    th:attr="x-data=|pagination(${posts.page ?: 1}, ${posts.totalPages ?: 1})|"
-  >
-    <div class="pagination">
-      <a :href="getPageUrl(page - 1)" class="page-btn rtl-flip" :class="{ 'disabled': page <= 1 }">
-        <span class="icon-[ph--arrow-fat-left-duotone]"></span>
-      </a>
-
-      <template x-for="p in pageArr" :key="p">
-        <a
-          :href="p === '...' ? 'javascript:void(0)' : getPageUrl(p)"
-          class="page-btn"
-          :class="{ 'active': p === page, 'page-ellipsis': p === '...' }"
-          x-text="p"
-        >
-        </a>
-      </template>
-
-      <a :href="getPageUrl(page + 1)" class="page-btn rtl-flip" :class="{ 'disabled': page >= total }">
-        <span class="icon-[ph--arrow-fat-right-duotone]"></span>
-      </a>
-    </div>
-  </div>
+  <th:block th:replace="~{modules/pagination :: paginationIndex(data=${posts})}" />
 </div>

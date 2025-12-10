@@ -66,36 +66,6 @@
       </div>
     </div>
 
-    <nav th:if="${friends.hasPrevious() or friends.hasNext()}" class="friends-pagination">
-      <a 
-        th:if="${friends.hasPrevious()}"
-        th:href="@{${friends.prevUrl}}"
-        class="page-btn"
-      >
-        <span class="icon-[ph--caret-left-bold]"></span>
-        上一页
-      </a>
-      <span th:unless="${friends.hasPrevious()}" class="page-btn disabled">
-        <span class="icon-[ph--caret-left-bold]"></span>
-        上一页
-      </span>
-
-      <span class="page-info">
-        <span th:text="${friends.page}"></span> / <span th:text="${friends.totalPages}"></span>
-      </span>
-
-      <a 
-        th:if="${friends.hasNext()}"
-        th:href="@{${friends.nextUrl}}"
-        class="page-btn"
-      >
-        下一页
-        <span class="icon-[ph--caret-right-bold]"></span>
-      </a>
-      <span th:unless="${friends.hasNext()}" class="page-btn disabled">
-        下一页
-        <span class="icon-[ph--caret-right-bold]"></span>
-      </span>
-    </nav>
+    <th:block th:replace="~{modules/pagination :: pagination(data=${friends})}" />
   </th:block>
 </html>

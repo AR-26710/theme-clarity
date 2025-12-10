@@ -3,6 +3,13 @@
   <head>
     <th:block th:replace="~{modules/seo :: seo(pageTitle=${pageTitle})}" />
 
+    <th:block th:if="${theme.config.custom.preconnect_urls != null and !theme.config.custom.preconnect_urls.isEmpty()}">
+      <th:block th:each="item : ${theme.config.custom.preconnect_urls}">
+        <link rel="preconnect" th:href="${item.url}" crossorigin />
+        <link rel="dns-prefetch" th:href="${item.url}" />
+      </th:block>
+    </th:block>
+
     <link
       rel="stylesheet"
       th:href="@{/assets/fonts/JetBrainsMono-Regular/jetBrainsMonoRegular.css?v={version}(version=${theme.spec.version})}"

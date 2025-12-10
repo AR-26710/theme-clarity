@@ -630,6 +630,17 @@ spec:
           label: Iconfont CSS 链接
           placeholder: //at.alicdn.com/t/c/font_xxxxxxx.css
           help: "输入 Iconfont 或其他图标库的 CSS 链接，用于支持自定义图标"
+        - $formkit: repeater
+          name: preconnect_urls
+          label: 预连接域名
+          value: []
+          help: "添加第三方服务域名以提前建立连接，提升加载速度（如统计服务、CDN 等）"
+          children:
+            - $formkit: url
+              name: url
+              label: 域名
+              placeholder: https://hm.baidu.com
+              validation: required
     - group: development
       label: 开发设置
       formSchema:

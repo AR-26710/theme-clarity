@@ -35,19 +35,7 @@
         </section>
       </th:block>
 
-      <div class="pagination-wrapper" th:if="${archives.totalPages > 1}">
-        <div class="pagination">
-          <a th:href="${archives.prevUrl}" class="page-btn" th:classappend="${!archives.hasPrevious} ? 'disabled'">
-            <span class="icon-[ph--caret-left-bold]"></span>
-          </a>
-          <span class="page-info">
-            <span th:text="${archives.page}"></span> / <span th:text="${archives.totalPages}"></span>
-          </span>
-          <a th:href="${archives.nextUrl}" class="page-btn" th:classappend="${!archives.hasNext} ? 'disabled'">
-            <span class="icon-[ph--caret-right-bold]"></span>
-          </a>
-        </div>
-      </div>
+      <th:block th:replace="~{modules/pagination :: pagination(data=${archives})}" />
 
       <script>
         (function() {
