@@ -24,6 +24,8 @@
             <img
               th:if="${post.spec.cover}"
               th:src="${post.spec.cover}"
+              th:srcset="|${thumbnail.gen(post.spec.cover, 's')} 400w, ${thumbnail.gen(post.spec.cover, 'm')} 800w|"
+              sizes="400px"
               class="cover"
               loading="lazy"
               th:alt="${post.spec.title}"
@@ -50,14 +52,14 @@
     <button
       class="carousel-action prev at-slide-hover"
       aria-label="上一页"
-      onclick="document.getElementById('slide-scroll-container').scrollBy({left: -300, behavior: 'smooth'})"
+      onclick="document.getElementById('slide-scroll-container').scrollBy({ left: -300, behavior: 'smooth' })"
     >
       <span class="icon-[ph--caret-left-bold]"></span>
     </button>
     <button
       class="carousel-action next at-slide-hover"
       aria-label="下一页"
-      onclick="document.getElementById('slide-scroll-container').scrollBy({left: 300, behavior: 'smooth'})"
+      onclick="document.getElementById('slide-scroll-container').scrollBy({ left: 300, behavior: 'smooth' })"
     >
       <span class="icon-[ph--caret-right-bold]"></span>
     </button>

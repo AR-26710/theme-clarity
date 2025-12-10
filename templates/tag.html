@@ -1,5 +1,8 @@
 <!doctype html>
-<html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = ${tag.spec.displayName})}">
+<html
+  xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = ${tag.spec.displayName})}"
+>
   <th:block th:fragment="content">
     <div class="archive proper-height">
       <header class="tag-header">
@@ -8,21 +11,29 @@
           <span>标签云</span>
         </a>
         <div class="tag-info">
-          <h1 class="tag-name">
-            <span class="tag-hash">#</span><span th:text="${tag.spec.displayName}"></span>
-          </h1>
-          <p class="tag-meta">
-            共 <strong th:text="${posts.total}">0</strong> 篇文章
-          </p>
+          <h1 class="tag-name"><span class="tag-hash">#</span><span th:text="${tag.spec.displayName}"></span></h1>
+          <p class="tag-meta">共 <strong th:text="${posts.total}">0</strong> 篇文章</p>
         </div>
       </header>
 
       <menu class="archive-list">
-        <li th:each="post,postStat : ${posts.items}" class="article-item" th:style="'--delay: ' + ${postStat.index * 0.03} + 's'">
+        <li
+          th:each="post,postStat : ${posts.items}"
+          class="article-item"
+          th:style="'--delay: ' + ${postStat.index * 0.03} + 's'"
+        >
           <time th:text="${#temporals.format(post.spec.publishTime, 'MM/dd')}"></time>
           <a th:href="${post.status.permalink}" class="article-link gradient-card" th:title="${post.status.excerpt}">
             <span class="article-title" th:text="${post.spec.title}"></span>
-            <img th:if="${post.spec.cover}" th:src="${post.spec.cover}" class="article-cover" loading="lazy" th:alt="${post.spec.title}" />
+            <img
+              th:if="${post.spec.cover}"
+              th:src="${post.spec.cover}"
+              th:srcset="|${thumbnail.gen(post.spec.cover, 's')} 400w|"
+              sizes="100px"
+              class="article-cover"
+              loading="lazy"
+              th:alt="${post.spec.title}"
+            />
           </a>
         </li>
       </menu>
@@ -32,19 +43,7 @@
         <p>该标签下暂无文章</p>
       </div>
 
-      <div class="pagination-wrapper" th:if="${posts.totalPages > 1}">
-        <div class="pagination">
-          <a th:href="${posts.prevUrl}" class="page-btn rtl-flip" th:classappend="${!posts.hasPrevious} ? 'disabled'">
-            <span class="icon-[ph--arrow-fat-left-duotone]"></span>
-          </a>
-          <span class="page-info">
-            <span th:text="${posts.page}"></span> / <span th:text="${posts.totalPages}"></span>
-          </span>
-          <a th:href="${posts.nextUrl}" class="page-btn rtl-flip" th:classappend="${!posts.hasNext} ? 'disabled'">
-            <span class="icon-[ph--arrow-fat-right-duotone]"></span>
-          </a>
-        </div>
-      </div>
+      <th:block th:replace="~{modules/pagination :: pagination(data=${posts})}" />
     </div>
   </th:block>
 </html>

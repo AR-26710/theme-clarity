@@ -176,7 +176,7 @@ spec:
                   label: 链接
                   placeholder: https://example.com
                   validation: required
-        
+
         - $formkit: group
           name: links
           label: 页脚链接
@@ -325,6 +325,12 @@ spec:
                   max: 10
                   if: "$value.widget === 'moments'"
                 - $formkit: text
+                  name: moments_no_text
+                  label: 文案
+                  value: ""
+                  help: 当微语无文字时显示的文案，可为空。为空时默认显示“此+{微语标题}+无文字，请点击查看。”
+                  if: "$value.widget === 'moments'"
+                - $formkit: text
                   name: title
                   label: 自定义标题
                   if: "$value.widget === 'custom'"
@@ -431,6 +437,11 @@ spec:
           min: 1
           max: 50
           validation: required
+        - $formkit: checkbox
+          name: default_cover
+          label: 启用默认封面图
+          value: true
+          help: 当文章无封面图时，显示灰色背景+文章标题作为默认封面
         - $formkit: checkbox
           name: show_excerpt
           id: show_excerpt
@@ -630,6 +641,17 @@ spec:
           label: Iconfont CSS 链接
           placeholder: //at.alicdn.com/t/c/font_xxxxxxx.css
           help: "输入 Iconfont 或其他图标库的 CSS 链接，用于支持自定义图标"
+        - $formkit: repeater
+          name: preconnect_urls
+          label: 预连接域名
+          value: []
+          help: "添加第三方服务域名以提前建立连接，提升加载速度（如统计服务、CDN 等）"
+          children:
+            - $formkit: url
+              name: url
+              label: 域名
+              placeholder: https://hm.baidu.com
+              validation: required
     - group: development
       label: 开发设置
       formSchema:

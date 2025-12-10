@@ -294,7 +294,19 @@ document.addEventListener("DOMContentLoaded", () => {
   initFancybox();
   initBackToTop();
   initLinkSubmit();
+  initImageLoaded();
 });
+
+function initImageLoaded() {
+  document.querySelectorAll("img").forEach((img) => {
+    if (img.complete) {
+      img.classList.add("loaded");
+    } else {
+      img.addEventListener("load", () => img.classList.add("loaded"));
+      img.addEventListener("error", () => img.classList.add("loaded"));
+    }
+  });
+}
 
 // 初始化下拉菜单交互
 function initDropdownMenus() {

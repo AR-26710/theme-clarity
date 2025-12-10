@@ -117,12 +117,12 @@ button, input, textarea {
 	transform: scale(0.8);
 }
 
-// 图片加载失败 fallback
+// 图片加载失败
 img {
 	display: inline-block;
-	overflow: hidden;    // Chrome 90- 😡
-	overflow: clip;      // 🔥🦊😡
-	transform: scale(1); // position: fixed 的定位祖先
+	overflow: hidden;    
+	overflow: clip;      
+	transform: scale(1); 
 
 	&::before {
 		position: absolute;

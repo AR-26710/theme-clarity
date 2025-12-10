@@ -6,12 +6,20 @@
       <article class="article-card card" th:style="'--delay: ' + ${iterStat.index * 0.05} + 's'">
         <a th:href="${post.status.permalink}">
           <img
-            th:if="${post.spec.cover}"
+            th:if="${not #strings.isEmpty(post.spec.cover)}"
             th:src="${post.spec.cover}"
+            th:srcset="|${thumbnail.gen(post.spec.cover, 's')} 400w, ${thumbnail.gen(post.spec.cover, 'm')} 800w|"
+            sizes="(max-width: 528px) 400px, 800px"
             class="article-cover"
             loading="lazy"
             th:alt="${post.spec.title}"
           />
+          <div
+            th:if="${#strings.isEmpty(post.spec.cover) and theme.config.post.default_cover != false}"
+            class="article-cover default-cover"
+          >
+            <span class="default-cover-title" th:text="${post.spec.title}"></span>
+          </div>
         </a>
 
         <div class="article-body">
@@ -29,10 +37,7 @@
 
             <span th:if="${not #lists.isEmpty(post.categories)}" class="info-item article-category">
               <span class="icon-[ph--folder-bold]"></span>
-              <a
-                th:href="${post.categories[0].status.permalink}"
-                th:text="${post.categories[0].spec.displayName}"
-              ></a>
+              <a th:href="${post.categories[0].status.permalink}" th:text="${post.categories[0].spec.displayName}"></a>
             </span>
 
             <span class="info-item">
@@ -47,29 +52,5 @@
     </th:block>
   </menu>
 
-  <div
-    class="pagination-wrapper"
-    th:if="${posts.totalPages > 1}"
-    th:attr="x-data=|pagination(${posts.page ?: 1}, ${posts.totalPages ?: 1})|"
-  >
-    <div class="pagination">
-      <a :href="getPageUrl(page - 1)" class="page-btn rtl-flip" :class="{ 'disabled': page <= 1 }">
-        <span class="icon-[ph--arrow-fat-left-duotone]"></span>
-      </a>
-
-      <template x-for="p in pageArr" :key="p">
-        <a
-          :href="p === '...' ? 'javascript:void(0)' : getPageUrl(p)"
-          class="page-btn"
-          :class="{ 'active': p === page, 'page-ellipsis': p === '...' }"
-          x-text="p"
-        >
-        </a>
-      </template>
-
-      <a :href="getPageUrl(page + 1)" class="page-btn rtl-flip" :class="{ 'disabled': page >= total }">
-        <span class="icon-[ph--arrow-fat-right-duotone]"></span>
-      </a>
-    </div>
-  </div>
+  <th:block th:replace="~{modules/pagination :: paginationIndex(data=${posts})}" />
 </div>

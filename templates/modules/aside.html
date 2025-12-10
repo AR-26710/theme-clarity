@@ -350,21 +350,30 @@
           </script>
         </section>
 
-        <section th:case="'moments'" class="widget">
+        <section
+          th:case="'moments'"
+          class="widget"
+          th:with="momentsTitle = ${item.moments_title ?: '微语'}, noTextConfig = ${item.moments_no_text}"
+        >
           <hgroup class="widget-title">
-            <span class="title-text text-creative" th:text="${item.moments_title ?: '微语'}">微语</span>
+            <span class="title-text text-creative" th:text="${momentsTitle}">微语</span>
             <a href="/moments" aria-label="查看全部" title="查看全部">
               <span class="icon-[ph--arrow-right-bold]"></span>
             </a>
           </hgroup>
-          <div class="widget-body widget-card moments-widget">
+          <div
+            class="widget-body widget-card moments-widget"
+            th:data-title="${momentsTitle}"
+            th:data-no-text="${noTextConfig}"
+          >
             <th:block th:with="momentCount = ${item.count ?: 3}">
               <th:block th:each="moment : ${momentFinder.list(1, momentCount).items}">
                 <article
                   class="moment-item"
-                  th:if="${not #strings.isEmpty(moment.spec.content.html)}"
-                  th:data-html="${moment.spec.content.html}"
+                  th:if="${not #strings.isEmpty(moment.spec.content.html) or (moment.spec.content.medium != null and not #lists.isEmpty(moment.spec.content.medium))}"
+                  th:data-has-media="${moment.spec.content.medium != null and not #lists.isEmpty(moment.spec.content.medium)}"
                 >
+                  <script type="text/plain" class="moment-raw-html" th:utext="${moment.spec.content.html}"></script>
                   <a class="moment-content" th:href="|/moments/${moment.metadata.name}|"></a>
                   <time class="moment-time" th:datetime="${moment.spec.releaseTime}">
                     <span class="icon-[ph--clock-bold]"></span>
@@ -383,6 +392,10 @@
                 if (!widget) return;
 
                 const items = Array.from(widget.querySelectorAll(".moment-item"));
+                // 获取动态标题
+                const momentsTitle = widget.dataset.title || "微语";
+                // 获取配置的无文字文案
+                const noTextConfig = widget.dataset.noText;
 
                 // 如果完全没有内容则不展示
                 if (!items.length) return;
@@ -390,42 +403,45 @@
                 // 预编译 DOMParser
                 const parser = new DOMParser();
 
-                // 选择器常量（避免每次 parse 都创建）
-                const REMOVE_MEDIA = "img, video, iframe, audio, embed, object";
-                const REMOVE_TAG_LINKS = 'a[href*="/tags/"], a[href*="/tag/"], a.tag, a.moment-tag';
-
                 // 使用 requestIdleCallback 提升页面初渲染流畅度
                 const run = () => {
                   items.forEach((item) => {
-                    const raw = item.dataset.html;
-                    if (!raw) {
-                      item.style.display = "none";
-                      return;
+                    const hasMedia = item.dataset.hasMedia === "true";
+                    let displayText = "";
+
+                    // 从moment-raw-html脚本标签中获取HTML内容
+                    const rawHtmlScript = item.querySelector(".moment-raw-html");
+                    const raw = rawHtmlScript ? rawHtmlScript.textContent || rawHtmlScript.innerText || "" : "";
+
+                    // 处理HTML内容
+                    if (raw) {
+                      // 内存解析 HTML 并提取纯文本
+                      const doc = parser.parseFromString(raw, "text/html");
+                      const text = doc.body.textContent || doc.body.innerText || "";
+                      displayText = text.trim();
                     }
 
-                    // 内存解析 HTML
-                    const doc = parser.parseFromString(raw, "text/html");
-                    const body = doc.body;
-
-                    // 移除媒体
-                    body.querySelectorAll(REMOVE_MEDIA).forEach((el) => el.remove());
-                    // 移除标签链接
-                    body.querySelectorAll(REMOVE_TAG_LINKS).forEach((el) => el.remove());
-
-                    // 移除空元素（一次性选择）
-                    body.querySelectorAll("p, div, span").forEach((el) => !el.textContent.trim() && el.remove());
-
-                    const html = body.innerHTML.trim();
-
-                    // 内容为空则隐藏
-                    if (!html) {
-                      item.style.display = "none";
-                      return;
+                    // 判断显示逻辑
+                    if (!displayText) {
+                      if (hasMedia) {
+                        // 有媒体资源但无文字，显示提示
+                        if (noTextConfig && noTextConfig.trim()) {
+                          // 使用配置的文案
+                          displayText = noTextConfig.trim();
+                        } else {
+                          // 使用默认文案，包含动态标题
+                          displayText = `此${momentsTitle}无文字，请点击查看。`;
+                        }
+                      } else {
+                        // 既无文字又无媒体，隐藏（不知道会不会出现这种情况，但还预防一下）
+                        item.style.display = "none";
+                        return;
+                      }
                     }
 
                     // 写入内容
                     const content = item.querySelector(".moment-content");
-                    if (content) content.innerHTML = html;
+                    if (content) content.textContent = displayText;
                   });
                 };
 
