@@ -357,7 +357,7 @@
               <span class="icon-[ph--arrow-right-bold]"></span>
             </a>
           </hgroup>
-          <div class="widget-body widget-card moments-widget">
+          <div class="widget-body widget-card moments-widget" th:data-title="${item.moments_title ?: '微语'}">
             <th:block th:with="momentCount = ${item.count ?: 3}">
               <th:block th:each="moment : ${momentFinder.list(1, momentCount).items}">
                 <article
@@ -384,6 +384,8 @@
                 if (!widget) return;
 
                 const items = Array.from(widget.querySelectorAll(".moment-item"));
+                // 获取动态标题
+                const momentsTitle = widget.dataset.title || "微语";
 
                 // 如果完全没有内容则不展示
                 if (!items.length) return;
@@ -409,8 +411,8 @@
                     // 判断显示逻辑
                     if (!displayText) {
                       if (hasMedia) {
-                        // 有媒体资源但无文字，显示提示
-                        displayText = "此微语无文字，请点击查看。";
+                        // 有媒体资源但无文字，显示提示，使用动态标题
+                        displayText = `此${momentsTitle}无文字，请点击查看。`;
                       } else {
                         // 既无文字又无媒体，隐藏（不知道会不会出现这种情况，但还预防一下）
                         item.style.display = "none";
