@@ -66,12 +66,14 @@ spec:
       key: post_original
       name: post_original
       label: 来源
+      validation: required
     - $formkit: text
       if: "$get(post_author).value == 'false'"
       id: post_original_url
       key: post_original_url
       name: post_original_url
       label: 源链接
+      validation: required
     - $formkit: text
       if: "$get(post_author).value == 'false'"
       id: post_original_text
@@ -79,6 +81,7 @@ spec:
       name: post_original_text
       value: "此文来自 {post_original} ，侵删。"
       label: 非原创文案
+      help: "{post_original} 为占位符，显示的值为来源。"
     - $formkit: checkbox
       name: post_license
       id: post_license
