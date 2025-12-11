@@ -2,16 +2,42 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title th:if="${pageTitle != null}" th:text="${pageTitle} + ' | ' + ${site.title}"></title>
-  <title th:if="${pageTitle == null and post != null}" th:text="${post.spec.title} + ' | ' + ${site.title}"></title>
-  <title th:if="${pageTitle == null and singlePage != null and post == null}" th:text="${singlePage.spec.title} + ' | ' + ${site.title}"></title>
-  <title th:if="${pageTitle == null and author != null and post == null and singlePage == null}" th:text="${author.spec.displayName} + ' 的文章 | ' + ${site.title}"></title>
-  <title th:if="${pageTitle == null and post == null and singlePage == null and author == null}" 
-         th:text="${site.subtitle} ? (${site.title} + ' | ' + ${site.subtitle}) : ${site.title}"></title>
+  <title
+    th:if="${pageTitle != null}"
+    th:text="${pageTitle} + (${theme.config.custom.title_type == 'across' ? ' - ' : ' | '}) + ${site.title}"
+  ></title>
+  <title
+    th:if="${pageTitle == null and post != null}"
+    th:text="${post.spec.title} + (${theme.config.custom.title_type == 'across' ? ' - ' : ' | '}) + ${site.title}"
+  ></title>
+  <title
+    th:if="${pageTitle == null and singlePage != null and post == null}"
+    th:text="${singlePage.spec.title} + (${theme.config.custom.title_type == 'across' ? ' - ' : ' | '}) + ${site.title}"
+  ></title>
+  <title
+    th:if="${pageTitle == null and author != null and post == null and singlePage == null}"
+    th:text="${author.spec.displayName} + ' 的文章' + (${theme.config.custom.title_type == 'across' ? ' - ' : ' | '}) + ${site.title}"
+  ></title>
+  <title
+    th:if="${pageTitle == null and post == null and singlePage == null and author == null}"
+    th:text="${site.subtitle} ? (${site.title} + (${theme.config.custom.title_type == 'across' ? ' - ' : ' | '}) + ${site.subtitle}) : ${site.title}"
+  ></title>
   <meta name="description" th:if="${post != null}" th:content="${post.status.excerpt ?: site.subtitle}" />
-  <meta name="description" th:if="${singlePage != null and post == null}" th:content="${singlePage.status.excerpt ?: site.subtitle}" />
-  <meta name="description" th:if="${author != null and post == null and singlePage == null}" th:content="${author.spec.bio ?: (author.spec.displayName + ' 的文章归档')}" />
-  <meta name="description" th:if="${post == null and singlePage == null and author == null}" th:content="${site.subtitle}" />
+  <meta
+    name="description"
+    th:if="${singlePage != null and post == null}"
+    th:content="${singlePage.status.excerpt ?: site.subtitle}"
+  />
+  <meta
+    name="description"
+    th:if="${author != null and post == null and singlePage == null}"
+    th:content="${author.spec.bio ?: (author.spec.displayName + ' 的文章归档')}"
+  />
+  <meta
+    name="description"
+    th:if="${post == null and singlePage == null and author == null}"
+    th:content="${site.subtitle}"
+  />
   <th:block th:if="${post != null and not #lists.isEmpty(post.tags)}">
     <meta name="keywords" th:content="${#strings.listJoin(post.tags.![spec.displayName], ', ')}" />
   </th:block>
@@ -19,12 +45,25 @@
   <meta name="author" th:if="${author != null and post == null}" th:content="${author.spec.displayName}" />
   <meta name="author" th:if="${post == null and author == null}" th:content="${site.title}" />
   <link rel="canonical" th:if="${post != null}" th:href="${site.url + post.status.permalink}" />
-  <link rel="canonical" th:if="${singlePage != null and post == null}" th:href="${site.url + singlePage.status.permalink}" />
-  <link rel="canonical" th:if="${author != null and post == null and singlePage == null}" th:href="${site.url + author.status.permalink}" />
+  <link
+    rel="canonical"
+    th:if="${singlePage != null and post == null}"
+    th:href="${site.url + singlePage.status.permalink}"
+  />
+  <link
+    rel="canonical"
+    th:if="${author != null and post == null and singlePage == null}"
+    th:href="${site.url + author.status.permalink}"
+  />
   <link rel="canonical" th:if="${post == null and singlePage == null and author == null}" th:href="${site.url}" />
   <link rel="icon" th:href="${site.favicon ?: site.logo}" />
   <link rel="apple-touch-icon" th:href="${site.favicon ?: site.logo}" />
-  <link rel="alternate" type="application/rss+xml" th:href="${site.url + '/rss.xml'}" th:title="${site.title + ' - RSS Feed'}" />
+  <link
+    rel="alternate"
+    type="application/rss+xml"
+    th:href="${site.url + '/rss.xml'}"
+    th:title="${site.title + ' - RSS Feed'}"
+  />
   <meta property="og:site_name" th:content="${site.title}" />
   <meta property="og:locale" content="zh_CN" />
   <th:block th:if="${post != null}">
@@ -34,10 +73,22 @@
     <meta property="og:url" th:content="${site.url + post.status.permalink}" />
     <meta property="og:image" th:if="${post.spec.cover}" th:content="${post.spec.cover}" />
     <meta property="og:image" th:unless="${post.spec.cover}" th:content="${site.logo}" />
-    <meta property="article:published_time" th:if="${post.spec.publishTime}" th:content="${#temporals.format(post.spec.publishTime, 'yyyy-MM-dd''T''HH:mm:ssXXX')}" />
-    <meta property="article:modified_time" th:if="${post.status.lastModifyTime}" th:content="${#temporals.format(post.status.lastModifyTime, 'yyyy-MM-dd''T''HH:mm:ssXXX')}" />
+    <meta
+      property="article:published_time"
+      th:if="${post.spec.publishTime}"
+      th:content="${#temporals.format(post.spec.publishTime, 'yyyy-MM-dd''T''HH:mm:ssXXX')}"
+    />
+    <meta
+      property="article:modified_time"
+      th:if="${post.status.lastModifyTime}"
+      th:content="${#temporals.format(post.status.lastModifyTime, 'yyyy-MM-dd''T''HH:mm:ssXXX')}"
+    />
     <meta property="article:author" th:if="${post.owner != null}" th:content="${post.owner.displayName}" />
-    <meta property="article:section" th:if="${not #lists.isEmpty(post.categories)}" th:content="${post.categories[0].spec.displayName}" />
+    <meta
+      property="article:section"
+      th:if="${not #lists.isEmpty(post.categories)}"
+      th:content="${post.categories[0].spec.displayName}"
+    />
     <th:block th:if="${not #lists.isEmpty(post.tags)}">
       <meta th:each="tag : ${post.tags}" property="article:tag" th:content="${tag.spec.displayName}" />
     </th:block>
@@ -69,14 +120,34 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" th:if="${post != null}" th:content="${post.spec.title}" />
   <meta name="twitter:title" th:if="${singlePage != null and post == null}" th:content="${singlePage.spec.title}" />
-  <meta name="twitter:title" th:if="${author != null and post == null and singlePage == null}" th:content="${author.spec.displayName} + ' 的文章'" />
-  <meta name="twitter:title" th:if="${post == null and singlePage == null and author == null}" th:content="${site.title}" />
-  
+  <meta
+    name="twitter:title"
+    th:if="${author != null and post == null and singlePage == null}"
+    th:content="${author.spec.displayName} + ' 的文章'"
+  />
+  <meta
+    name="twitter:title"
+    th:if="${post == null and singlePage == null and author == null}"
+    th:content="${site.title}"
+  />
+
   <meta name="twitter:description" th:if="${post != null}" th:content="${post.status.excerpt ?: site.subtitle}" />
-  <meta name="twitter:description" th:if="${singlePage != null and post == null}" th:content="${singlePage.status.excerpt ?: site.subtitle}" />
-  <meta name="twitter:description" th:if="${author != null and post == null and singlePage == null}" th:content="${author.spec.bio ?: (author.spec.displayName + ' 的文章归档')}" />
-  <meta name="twitter:description" th:if="${post == null and singlePage == null and author == null}" th:content="${site.subtitle}" />
-  
+  <meta
+    name="twitter:description"
+    th:if="${singlePage != null and post == null}"
+    th:content="${singlePage.status.excerpt ?: site.subtitle}"
+  />
+  <meta
+    name="twitter:description"
+    th:if="${author != null and post == null and singlePage == null}"
+    th:content="${author.spec.bio ?: (author.spec.displayName + ' 的文章归档')}"
+  />
+  <meta
+    name="twitter:description"
+    th:if="${post == null and singlePage == null and author == null}"
+    th:content="${site.subtitle}"
+  />
+
   <th:block th:if="${post != null}">
     <meta name="twitter:image" th:if="${post.spec.cover}" th:content="${post.spec.cover}" />
     <meta name="twitter:image" th:unless="${post.spec.cover}" th:content="${site.logo}" />

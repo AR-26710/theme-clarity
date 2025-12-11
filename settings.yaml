@@ -176,7 +176,7 @@ spec:
                   label: 链接
                   placeholder: https://example.com
                   validation: required
-        
+
         - $formkit: group
           name: links
           label: 页脚链接
@@ -646,6 +646,16 @@ spec:
               label: 域名
               placeholder: https://hm.baidu.com
               validation: required
+        - $formkit: radio
+          name: title_type
+          label: 网页标题分隔符
+          help: 选择网页标题的分隔符（横线或竖线）
+          value: "vertical"
+          options:
+            - value: "vertical"
+              label: 竖线
+            - value: "across"
+              label: 横线
     - group: development
       label: 开发设置
       formSchema:
