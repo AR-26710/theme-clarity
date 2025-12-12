@@ -156,16 +156,20 @@ spec:
               label: 显示开往
               value: true
               help: 开往是一个友链接力项目
-            - $formkit: repeater
+            - $formkit: array
               name: links
               label: 自定义探索链接
               value: []
+              itemLabels:
+                - type: image
+                  label: $value.icon
+                - type: text
+                  label: $value.text
               children:
-                - $formkit: text
+                - $formkit: iconify
                   name: icon
                   label: 图标
-                  help: "填写 Iconfont 类名，如：icon-home（需先配置 Iconfont CSS 链接）"
-                  placeholder: icon-home
+                  format: dataurl
                 - $formkit: text
                   name: text
                   label: 文本
@@ -187,16 +191,20 @@ spec:
               label: 栏目标题
               value: 链接
               validation: required
-            - $formkit: repeater
+            - $formkit: array
               name: items
               label: 链接列表
               value: []
+              itemLabels:
+                - type: image
+                  label: $value.icon
+                - type: text
+                  label: $value.text
               children:
-                - $formkit: text
+                - $formkit: iconify
                   name: icon
                   label: 图标
-                  help: "填写 Iconfont 类名，如：icon-link（需先配置 Iconfont CSS 链接）"
-                  placeholder: icon-link
+                  format: dataurl
                 - $formkit: text
                   name: text
                   label: 文本
@@ -213,17 +221,21 @@ spec:
           label: 侧边栏社交
           help: 配置侧边栏底部的社交图标
           children:
-            - $formkit: repeater
+            - $formkit: array
               name: items
               label: 社交图标
               value: []
+              itemLabels:
+                - type: image
+                  label: $value.icon
+                - type: text
+                  label: $value.text
               children:
-                - $formkit: text
+                - $formkit: iconify
                   name: icon
                   label: 图标
-                  help: "填写 Iconfont 类名，如：icon-github（需先配置 Iconfont CSS 链接）"
-                  placeholder: icon-github
                   validation: required
+                  format: dataurl
                 - $formkit: text
                   name: text
                   label: 描述
@@ -285,7 +297,7 @@ spec:
           label: 小组件配置
           help: 拖拽调整顺序，越靠前优先级越高
           children:
-            - $formkit: repeater
+            - $formkit: array
               name: index
               label: 首页侧边栏
               value:
@@ -642,7 +654,7 @@ spec:
           label: Iconfont CSS 链接
           placeholder: //at.alicdn.com/t/c/font_xxxxxxx.css
           help: "输入 Iconfont 或其他图标库的 CSS 链接，用于支持自定义图标"
-        - $formkit: repeater
+        - $formkit: array
           name: preconnect_urls
           label: 预连接域名
           value: []

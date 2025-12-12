@@ -5,7 +5,7 @@
     <div class="dropdown dropdown-end">
       <div tabindex="0" role="button" class="dropdown-trigger">
         <th:block th:with="catIcon = ${category?.metadata?.annotations != null ? category.metadata.annotations['categoryIicon'] : null}">
-          <i th:if="${not #strings.isEmpty(catIcon)}" th:class="'iconfont ' + ${catIcon}"></i>
+          <img th:if="${not #strings.isEmpty(catIcon)}" th:src="${catIcon}" alt="" />
           <span th:if="${#strings.isEmpty(catIcon)}" class="icon-[ph--folder-bold]"></span>
         </th:block>
         <span th:text="${category != null} ? ${category.spec.displayName} : '全部分类'">全部分类</span>
@@ -37,7 +37,7 @@
         <span class="cat-indent-corner">└</span>
       </span>
       <th:block th:with="icon = ${cat.metadata.annotations != null ? cat.metadata.annotations['categoryIicon'] : null}">
-        <i th:if="${not #strings.isEmpty(icon)}" th:class="'iconfont ' + ${icon}"></i>
+        <img th:if="${not #strings.isEmpty(icon)}" th:src="${icon}" alt="" />
         <span th:if="${#strings.isEmpty(icon)}" 
               th:classappend="${level == 0} ? 'icon-[ph--folder]' : 'icon-[ph--folder-simple]'"></span>
       </th:block>
