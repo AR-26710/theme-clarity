@@ -325,6 +325,12 @@ spec:
                   max: 10
                   if: "$value.widget === 'moments'"
                 - $formkit: text
+                  name: moments_no_text
+                  label: 文案
+                  value: ""
+                  help: 当微语无文字时显示的文案，可为空。为空时默认显示“此+{微语标题}+无文字，请点击查看。”
+                  if: "$value.widget === 'moments'"
+                - $formkit: text
                   name: title
                   label: 自定义标题
                   if: "$value.widget === 'custom'"
