@@ -7,11 +7,10 @@ spec:
     group: ""
     kind: MenuItem
   formSchema:
-    - $formkit: text
+    - $formkit: iconify
       name: icon
       label: 图标
-      placeholder: iconfont icon-home
-      help: 支持 Iconfont 类名
+      format: dataurl
 ---
 apiVersion: v1alpha1
 kind: AnnotationSetting
@@ -22,11 +21,10 @@ spec:
     group: "content.halo.run"
     kind: Category
   formSchema:
-    - $formkit: text
+    - $formkit: iconify
       name: categoryIicon
       label: 图标
-      placeholder: iconfont icon-home
-      help: 支持 Iconfont 类名
+      format: dataurl
 ---
 apiVersion: v1alpha1
 kind: AnnotationSetting
