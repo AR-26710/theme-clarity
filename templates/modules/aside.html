@@ -375,10 +375,23 @@
                 >
                   <script type="text/plain" class="moment-raw-html" th:utext="${moment.spec.content.html}"></script>
                   <a class="moment-content" th:href="|/moments/${moment.metadata.name}|"></a>
-                  <time class="moment-time" th:datetime="${moment.spec.releaseTime}">
-                    <span class="icon-[ph--clock-bold]"></span>
-                    <span th:text="${#temporals.format(moment.spec.releaseTime, 'MM-dd HH:mm')}"></span>
-                  </time>
+                  <div class="moment-meta">
+                    <time class="moment-time" th:datetime="${moment.spec.releaseTime}">
+                      <span class="icon-[ph--clock-bold]"></span>
+                      <span th:text="${#temporals.format(moment.spec.releaseTime, 'MM-dd HH:mm')}"></span>
+                    </time>
+                    <div th:if="${not #lists.isEmpty(moment.spec.tags)}" class="moment-tags">
+                      <a
+                        th:each="tag,iterStat : ${moment.spec.tags}"
+                        th:if="${iterStat.index &lt; 2}"
+                        th:href="@{/moments(tag=${tag})}"
+                        class="moment-tag"
+                      >
+                        <span class="tag-hash">#</span>
+                        <span th:text="${tag}"></span>
+                      </a>
+                    </div>
+                  </div>
                 </article>
               </th:block>
               <div th:if="${momentFinder.list(1, 1).items.isEmpty()}" class="empty-tip">
@@ -415,8 +428,16 @@
 
                     // 处理HTML内容
                     if (raw) {
-                      // 内存解析 HTML 并提取纯文本
+                      // 内存解析 HTML
                       const doc = parser.parseFromString(raw, "text/html");
+
+                      // 删除所有class="tag"元素的内容
+                      const tagElements = doc.querySelectorAll(".tag");
+                      tagElements.forEach((tag) => {
+                        tag.textContent = "";
+                      });
+
+                      // 提取纯文本
                       const text = doc.body.textContent || doc.body.innerText || "";
                       displayText = text.trim();
                     }
