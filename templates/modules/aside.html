@@ -415,8 +415,16 @@
 
                     // 处理HTML内容
                     if (raw) {
-                      // 内存解析 HTML 并提取纯文本
+                      // 内存解析 HTML
                       const doc = parser.parseFromString(raw, "text/html");
+
+                      // 删除所有class="tag"元素的内容
+                      const tagElements = doc.querySelectorAll(".tag");
+                      tagElements.forEach((tag) => {
+                        tag.textContent = "";
+                      });
+
+                      // 提取纯文本
                       const text = doc.body.textContent || doc.body.innerText || "";
                       displayText = text.trim();
                     }
