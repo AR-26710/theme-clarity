@@ -512,6 +512,7 @@ a.sponsor-card.widget-card.with-bg {
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-decoration: none !important;
+	transition: color .2s;
 
 	&:hover {
 		color: var(--c-primary) !important;
