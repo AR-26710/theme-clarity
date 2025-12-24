@@ -142,8 +142,8 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        <th:block th:if="${link.icon != null}" th:with="iconVal = ${link.icon.value}">
-          <img th:if="${not #strings.isEmpty(iconVal)}" th:src="${iconVal}" alt="" />
+        <th:block th:if="${link.icon != null}" th:with="iconVal = ${link.icon.value != null ? link.icon.value : (link.icon instanceof T(String) ? link.icon : null)}">
+          <img th:if="${iconVal != null and not #strings.isEmpty(iconVal)}" th:src="${iconVal}" alt="" />
         </th:block>
       </a>
     </div>

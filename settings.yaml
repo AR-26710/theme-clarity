@@ -136,6 +136,102 @@ spec:
     - group: footer
       label: 页脚 & 社交
       formSchema:
+        - $el: div
+          attrs:
+            class: "text-sm"
+            style: |
+              margin-bottom: 1rem;
+              padding: 0.75rem 1rem;
+              background: #fef3c7;
+              border-radius: 0.5rem;
+              border: 1px solid #fcd34d;
+          children:
+            - $el: div
+              attrs:
+                style: |
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  flex-wrap: wrap;
+                  gap: 0.5rem;
+              children:
+                - $el: span
+                  attrs:
+                    style: "color: #92400e;"
+                  children: "🔧 升级提示：如果升级主题后出现白屏、报错或图标不显示，请点击清理尝试修复"
+                - $el: button
+                  attrs:
+                    type: "button"
+                    style: |
+                      color: #fff;
+                      background: #f59e0b;
+                      padding: 0.25rem 0.75rem;
+                      border-radius: 0.25rem;
+                      border: none;
+                      cursor: pointer;
+                      font-size: 0.75rem;
+                    onclick: |
+                      (async function(){
+                        if(!confirm('确定要清理旧格式的图标数据吗？将清理：页脚链接、菜单、分类的旧图标。')) return;
+                        let total = 0;
+                        try {
+                          // 1. 清理 ConfigMap 中的页脚图标
+                          const res = await fetch('/api/v1alpha1/configmaps/theme-clarity-configMap');
+                          const cm = await res.json();
+                          if(cm.data.footer) {
+                            const f = JSON.parse(cm.data.footer);
+                            ['explore.links','links.items','social.items'].forEach(p => {
+                              const ps = p.split('.');
+                              let a = f;
+                              for(const k of ps) a = a?.[k];
+                              if(Array.isArray(a)) a.forEach(i => { if(typeof i.icon === 'string'){ delete i.icon; total++; }});
+                            });
+                            cm.data.footer = JSON.stringify(f);
+                            await fetch('/api/v1alpha1/configmaps/theme-clarity-configMap', {
+                              method: 'PUT',
+                              headers: {'Content-Type': 'application/json'},
+                              body: JSON.stringify(cm)
+                            });
+                          }
+                          // 2. 清理菜单项 icon
+                          const menuRes = await fetch('/api/v1alpha1/menuitems');
+                          const menus = await menuRes.json();
+                          for(const item of menus.items || []) {
+                            const icon = item.metadata?.annotations?.icon;
+                            if(icon && typeof icon === 'string' && !icon.startsWith('{')) {
+                              delete item.metadata.annotations.icon;
+                              await fetch('/api/v1alpha1/menuitems/' + item.metadata.name, {
+                                method: 'PUT',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify(item)
+                              });
+                              total++;
+                            }
+                          }
+                          // 3. 清理分类 icon
+                          const catRes = await fetch('/apis/content.halo.run/v1alpha1/categories');
+                          const cats = await catRes.json();
+                          for(const cat of cats.items || []) {
+                            const icon = cat.metadata?.annotations?.categoryIicon;
+                            if(icon && typeof icon === 'string' && !icon.startsWith('{')) {
+                              delete cat.metadata.annotations.categoryIicon;
+                              await fetch('/apis/content.halo.run/v1alpha1/categories/' + cat.metadata.name, {
+                                method: 'PUT',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify(cat)
+                              });
+                              total++;
+                            }
+                          }
+                          if(total > 0) {
+                            alert('已清理 ' + total + ' 个旧图标，请刷新页面后重新配置');
+                            location.reload();
+                          } else {
+                            alert('没有需要清理的旧图标数据');
+                          }
+                        } catch(e) { alert('清理失败: ' + e.message); }
+                      })();
+                  children: "清理旧图标"
         - $formkit: group
           name: explore
           label: 探索
@@ -169,7 +265,7 @@ spec:
               value: []
               itemLabels:
                 - type: image
-                  label: $value.icon
+                  label: $value.icon.value
                 - type: text
                   label: $value.text
               children:
@@ -204,7 +300,7 @@ spec:
               value: []
               itemLabels:
                 - type: image
-                  label: $value.icon
+                  label: $value.icon.value
                 - type: text
                   label: $value.text
               children:
@@ -234,7 +330,7 @@ spec:
               value: []
               itemLabels:
                 - type: image
-                  label: $value.icon
+                  label: $value.icon.value
                 - type: text
                   label: $value.text
               children:

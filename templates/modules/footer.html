@@ -17,8 +17,8 @@
         </li>
         <li th:each="link : ${theme.config.footer.explore?.links}">
           <a th:href="${link.url}" target="_blank">
-            <th:block th:if="${link.icon != null}" th:with="iconVal = ${link.icon.value}">
-              <img th:if="${not #strings.isEmpty(iconVal)}" th:src="${iconVal}" alt="" />
+            <th:block th:if="${link.icon != null}" th:with="iconVal = ${link.icon.value != null ? link.icon.value : (link.icon instanceof T(String) ? link.icon : null)}">
+              <img th:if="${iconVal != null and not #strings.isEmpty(iconVal)}" th:src="${iconVal}" alt="" />
             </th:block>
             <span class="nav-text" th:text="${link.text}"></span>
           </a>
@@ -31,8 +31,8 @@
       <menu>
         <li th:each="link : ${theme.config.footer.links.items}">
           <a th:href="${link.url}" target="_blank">
-            <th:block th:if="${link.icon != null}" th:with="iconVal = ${link.icon.value}">
-              <img th:if="${not #strings.isEmpty(iconVal)}" th:src="${iconVal}" alt="" />
+            <th:block th:if="${link.icon != null}" th:with="iconVal = ${link.icon.value != null ? link.icon.value : (link.icon instanceof T(String) ? link.icon : null)}">
+              <img th:if="${iconVal != null and not #strings.isEmpty(iconVal)}" th:src="${iconVal}" alt="" />
             </th:block>
             <span class="nav-text" th:text="${link.text}"></span>
           </a>
