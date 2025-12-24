@@ -106,7 +106,7 @@
         <span class="icon-[ph--align-right-duotone] rtl-flip" style="display: block;"></span>
       </button>
       <button
-        th:if="${isLinksPage and theme.config.links?.enable_random != false}"
+        th:if="${isLinksPage == true and theme.config.links?.enable_random != false}"
         id="mobile-random-link-btn"
         aria-label="随机穿梭"
         onclick="randomVisitLink()"
