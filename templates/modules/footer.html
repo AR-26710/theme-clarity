@@ -1,6 +1,9 @@
 <footer th:fragment="footer" class="z-footer">
   <nav class="footer-nav">
-    <div class="footer-nav-group" th:if="${theme.config.footer.explore?.show_rss != false or theme.config.footer.explore?.show_travellings != false or (theme.config.footer.explore?.links != null and !theme.config.footer.explore.links.isEmpty())}">
+    <div
+      class="footer-nav-group"
+      th:if="${theme.config.footer.explore?.show_rss != false or theme.config.footer.explore?.show_travellings != false or (theme.config.footer.explore?.links != null and !theme.config.footer.explore.links.isEmpty())}"
+    >
       <h3 th:text="${theme.config.footer.explore?.title ?: '探索'}"></h3>
       <menu>
         <li th:if="${theme.config.footer.explore?.show_rss != false}">
@@ -17,23 +20,22 @@
         </li>
         <li th:each="link : ${theme.config.footer.explore?.links}">
           <a th:href="${link.url}" target="_blank">
-            <th:block th:if="${link.icon != null}" th:with="iconVal = ${link.icon.value}">
-              <img th:if="${not #strings.isEmpty(iconVal)}" th:src="${iconVal}" alt="" />
-            </th:block>
+            <img th:if="${not #strings.isEmpty(link.icon)}" th:src="${link.icon}" alt="" />
             <span class="nav-text" th:text="${link.text}"></span>
           </a>
         </li>
       </menu>
     </div>
 
-    <div class="footer-nav-group" th:if="${theme.config.footer.links?.items != null and !theme.config.footer.links.items.isEmpty()}">
+    <div
+      class="footer-nav-group"
+      th:if="${theme.config.footer.links?.items != null and !theme.config.footer.links.items.isEmpty()}"
+    >
       <h3 th:text="${theme.config.footer.links?.title} ?: '链接'"></h3>
       <menu>
         <li th:each="link : ${theme.config.footer.links.items}">
           <a th:href="${link.url}" target="_blank">
-            <th:block th:if="${link.icon != null}" th:with="iconVal = ${link.icon.value}">
-              <img th:if="${not #strings.isEmpty(iconVal)}" th:src="${iconVal}" alt="" />
-            </th:block>
+            <img th:if="${not #strings.isEmpty(link.icon)}" th:src="${link.icon}" alt="" />
             <span class="nav-text" th:text="${link.text}"></span>
           </a>
         </li>
@@ -62,20 +64,17 @@
           </a>
         </li>
         <li th:if="${not #strings.isEmpty(theme.config.footer.gongan_beian)}">
-          <a
-            id="gongan-beian-link"
-            href="https://beian.mps.gov.cn/#/query/webSearch"
-            target="_blank"
-          >
+          <a id="gongan-beian-link" href="https://beian.mps.gov.cn/#/query/webSearch" target="_blank">
             <img th:src="@{/assets/images/gonganbeian.png}" alt="公安备案" class="beian-icon" />
             <span id="gongan-beian-text" class="nav-text" th:text="${theme.config.footer.gongan_beian}"></span>
           </a>
           <script>
-            (function() {
-              const text = document.getElementById('gongan-beian-text').innerText;
-              const code = text.replace(/[^0-9]/g, '');
+            (function () {
+              const text = document.getElementById("gongan-beian-text").innerText;
+              const code = text.replace(/[^0-9]/g, "");
               if (code) {
-                document.getElementById('gongan-beian-link').href = 'https://beian.mps.gov.cn/#/query/webSearch?code=' + code;
+                document.getElementById("gongan-beian-link").href =
+                  "https://beian.mps.gov.cn/#/query/webSearch?code=" + code;
               }
             })();
           </script>
@@ -90,5 +89,4 @@
   </div>
 
   <p>© <span th:text="${#temporals.year(#temporals.createNow())}"></span> <span th:text="${site.title}"></span></p>
-
 </footer>
