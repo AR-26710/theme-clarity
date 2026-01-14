@@ -14,6 +14,7 @@
       <hgroup class="widget-title">
         <span class="title-text">文章目录</span>
         <a
+          th:if="${post != null}"
           onclick="return false;"
           aria-label="点赞文章"
           x-data="postLike()"
