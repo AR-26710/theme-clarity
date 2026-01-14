@@ -253,7 +253,7 @@
     <button
       id="edit-post-btn"
       class="edit-post-btn"
-      th:if="${#authentication.name == post.owner.name}"
+      th:if="${theme.config.custom.enable_edit and #authentication.name == post.owner.name}"
       th:data-url="@{${'/console/posts/editor'}(name=${post.metadata.name}, returnToView=true)}"
       title="编辑文章"
     >

@@ -58,7 +58,7 @@
     <button
       id="edit-page-btn"
       class="edit-page-btn"
-      th:if="${#authentication.name == singlePage.owner.name}"
+      th:if="${theme.config.custom.enable_edit and #authentication.name == singlePage.owner.name}"
       th:data-url="@{/console/single-pages/editor(name=${singlePage.metadata.name}, returnToView=true)}"
       title="编辑页面"
     >
