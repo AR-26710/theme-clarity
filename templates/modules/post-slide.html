@@ -1,7 +1,7 @@
 <div
   class="z-slide"
   th:fragment="slide"
-  th:if="${posts.page == 1 and theme.config.post.featured_posts != null and not #lists.isEmpty(theme.config.post.featured_posts)}"
+  th:if="${(theme.config.post.featured_posts_page == false or posts.page == 1) and theme.config.post.featured_posts != null and not #lists.isEmpty(theme.config.post.featured_posts)}"
 >
   <div class="z-slide-header">
     <span class="title text-creative">精选文章</span>
@@ -52,14 +52,14 @@
     <button
       class="carousel-action prev at-slide-hover"
       aria-label="上一页"
-      onclick="document.getElementById('slide-scroll-container').scrollBy({left: -300, behavior: 'smooth'})"
+      onclick="document.getElementById('slide-scroll-container').scrollBy({ left: -300, behavior: 'smooth' })"
     >
       <span class="icon-[ph--caret-left-bold]"></span>
     </button>
     <button
       class="carousel-action next at-slide-hover"
       aria-label="下一页"
-      onclick="document.getElementById('slide-scroll-container').scrollBy({left: 300, behavior: 'smooth'})"
+      onclick="document.getElementById('slide-scroll-container').scrollBy({ left: 300, behavior: 'smooth' })"
     >
       <span class="icon-[ph--caret-right-bold]"></span>
     </button>

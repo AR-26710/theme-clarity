@@ -570,6 +570,13 @@ spec:
           label: 精选文章
           multiple: true
           help: 选择要在首页轮播展示的文章
+        - $formkit: switch
+          name: featured_posts_page
+          id: featured_posts_page
+          key: featured_posts_page
+          label: 精选文章仅显示在首页
+          value: true
+          help: 启用后，精选文章仅在首页显示
         - $formkit: number
           name: per_page
           label: 每页文章数
