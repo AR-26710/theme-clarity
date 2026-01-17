@@ -808,6 +808,12 @@ spec:
               value: 瞬间
               placeholder: 瞬间
               validation: required
+            - $formkit: text
+              name: moment_title
+              label: 瞬间详情标题
+              value: 瞬间详情
+              placeholder: 瞬间详情
+              validation: required
         - $formkit: group
           name: photos
           label: 图库插件
