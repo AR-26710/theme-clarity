@@ -875,7 +875,7 @@ spec:
           name: enable_page_toc
           label: 启用独立页面目录
           value: false
-          help: 开启后独立页面将显示目录
+          help: 开启后需要在页面设置中启用目录功能独立页面才会显示目录
         - $formkit: date
           name: owner_birthday
           label: 你的生日
