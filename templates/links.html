@@ -588,6 +588,13 @@
           wrapper.style.setProperty("--delay", (Math.abs(hash) % 1000) / 1000 + "s");
         });
 
+        // 动态调整随机访问按钮位置
+        const submitLinkBtn = document.getElementById("submit-link-btn");
+        const randomLinkBtn = document.getElementById("random-link-btn");
+        if (randomLinkBtn && !submitLinkBtn) {
+          randomLinkBtn.style.bottom = "calc(2.5rem + 60px)";
+        }
+
         // Tooltip 定位：检测是否会被顶部截断
         document.querySelectorAll(".feed-card-wrapper").forEach((wrapper) => {
           wrapper.addEventListener("mouseenter", function () {
