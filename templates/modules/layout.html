@@ -157,7 +157,7 @@
         <span class="icon-[ph--shuffle-bold]" style="display: block"></span>
       </button>
       <button
-        th:if="${isLinksPage == true and pluginFinder.available('link-submit')}"
+        th:if="${isLinksPage == true and pluginFinder.available('link-submit') and theme.config.links.enable_submit_kky != false}"
         id="mobile-submit-link-btn"
         aria-label="提交友链"
         onclick="LinkSubmitWidget.open()"
