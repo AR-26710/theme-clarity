@@ -1,5 +1,10 @@
 <!doctype html>
-<html lang="zh-CN" th:fragment="html (content, showAside, pageTitle)" th:data-page-transition="${theme.config.style.page_transition ?: 'fade-scale'}" th:data-nav-active="${theme.config.style.nav_active_indicator != false}">
+<html
+  lang="zh-CN"
+  th:fragment="html (content, showAside, pageTitle)"
+  th:data-page-transition="${theme.config.style.page_transition ?: 'fade-scale'}"
+  th:data-nav-active="${theme.config.style.nav_active_indicator != false}"
+>
   <head>
     <th:block th:replace="~{modules/seo :: seo(pageTitle=${pageTitle})}" />
 
@@ -150,6 +155,14 @@
         onclick="randomVisitLink()"
       >
         <span class="icon-[ph--shuffle-bold]" style="display: block"></span>
+      </button>
+      <button
+        th:if="${isLinksPage == true and pluginFinder.available('link-submit')}"
+        id="mobile-submit-link-btn"
+        aria-label="提交友链"
+        onclick="LinkSubmitWidget.open()"
+      >
+        <span class="icon-[ph--plus-bold]" style="display: block"></span>
       </button>
       <button id="back-to-top" aria-label="返回顶部" style="display: none">
         <span class="icon-[ph--arrow-up-bold]" style="display: block"></span>
