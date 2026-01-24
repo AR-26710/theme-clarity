@@ -924,6 +924,13 @@ spec:
           label: 启用编辑按钮
           value: false
           help: 开启后文章/页面将显示编辑按钮
+        - $formkit: switch
+          onValue: true
+          offValue: false
+          name: enable_fancybox
+          label: 关闭 FancyBox
+          value: false
+          help: 如果使用了其它灯箱插件，可以关闭 FancyBox 灯箱，避免重复加载
     - group: development
       label: 开发设置
       formSchema:

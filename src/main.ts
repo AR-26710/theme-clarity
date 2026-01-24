@@ -40,7 +40,9 @@ document.addEventListener("keydown", (e) => {
 // 页面初始加载
 document.addEventListener("DOMContentLoaded", () => {
   initDropdownMenus();
-  initFancybox();
+  if (window.themeConfig?.custom?.enable_fancybox !== true) {
+    initFancybox();
+  }
   initBackToTop();
   initLinkSubmit();
   initImageLoaded();
