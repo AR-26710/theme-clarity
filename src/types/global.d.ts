@@ -15,6 +15,7 @@ declare global {
     themeConfig?: {
       custom?: {
         img_alt?: boolean;
+        enable_fancybox?: boolean;
       };
     };
   }
@@ -27,9 +28,11 @@ declare global {
   }
 
   // Halo 搜索插件提供的全局对象
-  const SearchWidget: {
-    open: () => void;
-  } | undefined;
+  const SearchWidget:
+    | {
+        open: () => void;
+      }
+    | undefined;
 
   // View Transitions API
   interface Document {

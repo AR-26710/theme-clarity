@@ -40,7 +40,9 @@ document.addEventListener("keydown", (e) => {
 // 页面初始加载
 document.addEventListener("DOMContentLoaded", () => {
   initDropdownMenus();
-  initFancybox();
+  if (window.themeConfig?.custom?.enable_fancybox !== true) {
+    initFancybox();
+  }
   initBackToTop();
   initLinkSubmit();
   initImageLoaded();
@@ -63,9 +65,7 @@ function initActiveNavItem() {
 
     // 精确匹配或路径前缀匹配
     const isActive =
-      currentPath === href ||
-      (href !== "/" && currentPath.startsWith(href)) ||
-      (href === "/" && currentPath === "/");
+      currentPath === href || (href !== "/" && currentPath.startsWith(href)) || (href === "/" && currentPath === "/");
 
     if (isActive) {
       link.classList.add("active");
