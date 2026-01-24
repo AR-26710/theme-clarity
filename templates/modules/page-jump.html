@@ -22,7 +22,9 @@
       th:onkeypress="'if(event.keyCode==13) jumpToPage(this.nextElementSibling)'"
       placeholder="页码"
     />
-    <button class="page-jump-btn" th:onclick="'jumpToPage(this)'">跳转</button>
+    <button class="page-jump-btn" th:onclick="'jumpToPage(this)'">
+      <span class="icon-[ph--arrow-right-bold]"></span>
+    </button>
   </div>
 </th:block>
 
@@ -52,6 +54,8 @@
       th:onkeypress="'if(event.keyCode==13) jumpToPageWithPattern(this.nextElementSibling)'"
       placeholder="页码"
     />
-    <button class="page-jump-btn" th:onclick="'jumpToPageWithPattern(this)'">跳转</button>
+    <button class="page-jump-btn" th:onclick="'jumpToPageWithPattern(this)'">
+      <span class="icon-[ph--arrow-right-bold]"></span>
+    </button>
   </div>
 </th:block>
