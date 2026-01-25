@@ -155,6 +155,16 @@ spec:
           label: 显示文章作者
           value: true
           help: 在首页文章卡片中显示作者头像和名称
+        - $formkit: switch
+          name: switch_category_layout
+          label: 切换分类文章样式布局
+          value: false
+          help: 切换分类页面的文章列表样式布局
+        - $formkit: switch
+          name: switch_tag_layout
+          label: 切换标签文章样式布局
+          value: false
+          help: 切换标签页面的文章列表样式布局
     - group: footer
       label: 页脚 & 社交
       formSchema:
