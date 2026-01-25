@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initImageLoaded();
   initImageCaption();
   initActiveNavItem();
-  initHorizontalScroll();
+  moments_tags();
 });
 
 // 侧边栏菜单激活状态
@@ -205,7 +205,7 @@ function initBackToTop() {
   }
 }
 
-function initHorizontalScroll() {
+function moments_tags() {
   const scrollContainers = document.querySelectorAll<HTMLElement>(".scrollcheck-x");
 
   scrollContainers.forEach((container) => {
@@ -220,6 +220,22 @@ function initHorizontalScroll() {
         } else {
           hoverHint.style.display = "none";
         }
+      }
+    };
+
+    const scrollToActiveTag = () => {
+      const activeTag = container.querySelector<HTMLElement>(".tag-item.active");
+      if (!activeTag) return;
+
+      const containerRect = container.getBoundingClientRect();
+      const tagRect = activeTag.getBoundingClientRect();
+
+      if (tagRect.right > containerRect.right) {
+        const scrollAmount = tagRect.right - containerRect.right;
+        container.scrollLeft += scrollAmount + 20;
+      } else if (tagRect.left < containerRect.left) {
+        const scrollAmount = containerRect.left - tagRect.left;
+        container.scrollLeft -= scrollAmount + 20;
       }
     };
 
@@ -265,6 +281,22 @@ function initHorizontalScroll() {
     );
 
     checkScrollable();
+    scrollToActiveTag();
     window.addEventListener("resize", checkScrollable);
+
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "attributes" && mutation.attributeName === "class") {
+          const target = mutation.target as HTMLElement;
+          if (target.classList.contains("tag-item") && target.classList.contains("active")) {
+            setTimeout(() => scrollToActiveTag(), 100);
+          }
+        }
+      });
+    });
+
+    container.querySelectorAll<HTMLElement>(".tag-item").forEach((tag) => {
+      observer.observe(tag, { attributes: true, attributeFilter: ["class"] });
+    });
   });
 }
