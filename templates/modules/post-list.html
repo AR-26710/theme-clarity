@@ -79,7 +79,10 @@
   <th:block th:if="${caller == 'category'}">
     <th:block th:replace="~{modules/pagination :: pagination(data=${posts})}" />
   </th:block>
-  <th:block th:unless="${caller == 'category'}">
+  <th:block th:if="${caller == 'tag'}">
+    <th:block th:replace="~{modules/pagination :: pagination(data=${posts})}" />
+  </th:block>
+  <th:block th:if="${caller == 'index'}">
     <th:block th:replace="~{modules/pagination :: paginationIndex(data=${posts})}" />
   </th:block>
 </div>

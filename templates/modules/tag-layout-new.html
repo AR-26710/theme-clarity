@@ -1,0 +1,43 @@
+<th:block th:fragment="layout(tag, posts, thumbnail)">
+  <div class="archive proper-height">
+    <header class="tag-header">
+      <a href="/tags" class="tag-back" title="返回标签云">
+        <span class="icon-[ph--arrow-left-bold]"></span>
+        <span>标签云</span>
+      </a>
+      <div class="tag-info">
+        <h1 class="tag-name"><span class="tag-hash">#</span><span th:text="${tag.spec.displayName}"></span></h1>
+        <p class="tag-meta">共 <strong th:text="${posts.total}">0</strong> 篇文章</p>
+      </div>
+    </header>
+
+    <menu class="tag-list">
+      <li
+        th:each="post,postStat : ${posts.items}"
+        class="article-item"
+        th:style="'--delay: ' + ${postStat.index * 0.03} + 's'"
+      >
+        <time th:text="${#temporals.format(post.spec.publishTime, 'MM/dd')}"></time>
+        <a th:href="${post.status.permalink}" class="article-link gradient-card" th:title="${post.status.excerpt}">
+          <span class="article-title" th:text="${post.spec.title}"></span>
+          <img
+            th:if="${post.spec.cover}"
+            th:src="${post.spec.cover}"
+            th:srcset="|${thumbnail.gen(post.spec.cover, 's')} 400w|"
+            sizes="100px"
+            class="article-cover"
+            loading="lazy"
+            th:alt="${post.spec.title}"
+          />
+        </a>
+      </li>
+    </menu>
+
+    <div th:if="${#lists.isEmpty(posts.items)}" class="empty-state">
+      <span class="icon-[ph--article-bold]"></span>
+      <p>该标签下暂无文章</p>
+    </div>
+
+    <th:block th:replace="~{modules/pagination :: pagination(data=${posts})}" />
+  </div>
+</th:block>

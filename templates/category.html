@@ -4,36 +4,15 @@
   th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = ${category.spec.displayName})}"
 >
   <th:block th:fragment="content">
-    <div class="category-page">
-      <header class="category-header card">
-        <div class="category-info">
-          <h1 class="category-title text-creative">
-            <span class="icon-[ph--folder-bold]"></span>
-            <span th:text="${category.spec.displayName}">分类名称</span>
-          </h1>
-          <p
-            th:if="${not #strings.isEmpty(category.spec.description)}"
-            class="category-description"
-            th:text="${category.spec.description}"
-          ></p>
-          <div class="category-meta">
-            <span class="meta-item">
-              <span class="icon-[ph--article-bold]"></span>
-              <span th:text="${category.postCount + ' 篇文章'}">0 篇文章</span>
-            </span>
-          </div>
-        </div>
-        <img
-          th:if="${not #strings.isEmpty(category.spec.cover)}"
-          th:src="${category.spec.cover}"
-          th:srcset="|${thumbnail.gen(category.spec.cover, 's')} 400w, ${thumbnail.gen(category.spec.cover, 'm')} 800w|"
-          sizes="200px"
-          class="category-cover"
-          th:alt="${category.spec.displayName}"
-        />
-      </header>
-
-      <th:block th:replace="~{modules/post-list :: list(posts=${posts}, caller='category')}" />
-    </div>
+    <th:block th:if="${theme.config.style.switch_category_layout == false}">
+      <th:block
+        th:replace="~{modules/category-layout-old :: layout(category=${category}, posts=${posts}, thumbnail=${thumbnail})}"
+      />
+    </th:block>
+    <th:block th:if="${theme.config.style.switch_category_layout == true}">
+      <th:block
+        th:replace="~{modules/category-layout-new :: layout(category=${category}, posts=${posts}, thumbnail=${thumbnail})}"
+      />
+    </th:block>
   </th:block>
 </html>
