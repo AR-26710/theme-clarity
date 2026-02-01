@@ -129,6 +129,16 @@ $breakpoint-mobile: 768px !default;
 		font-size: 1.5em;
 	}
 
+  // 主菜单图标，开启「菜单图标颜色反转」时深色模式下反色
+  > img {
+    object-fit: contain;
+    flex-shrink: 0;
+
+    .dark #z-sidebar.menu-icon-invert & {
+      filter: invert(1) brightness(1.1);
+    }
+  }
+  
 	> .nav-text {
 		flex-grow: 1;
 	}
@@ -192,6 +202,16 @@ $breakpoint-mobile: 768px !default;
 			color: var(--c-primary);
 			font-weight: 500;
 		}
+
+    // 下拉项中的菜单图标，开启「菜单图标颜色反转」时深色模式下反色
+    > img {
+      object-fit: contain;
+      flex-shrink: 0;
+
+      .dark #z-sidebar.menu-icon-invert & {
+        filter: invert(1) brightness(1.1);
+      }
+    }
 	}
 }
 
@@ -296,6 +316,15 @@ $breakpoint-mobile: 768px !default;
 			background-color: var(--c-bg-soft);
 			color: var(--c-primary);
 		}
+
+    // 社交图标, 开启「菜单图标颜色反转」时深色模式下反色
+    img {
+      object-fit: contain;
+
+      .dark #z-sidebar.menu-icon-invert & {
+        filter: invert(1) brightness(1.1);
+      }
+    }
 	}
 }
 

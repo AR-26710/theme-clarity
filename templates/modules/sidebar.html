@@ -1,4 +1,8 @@
-<aside th:fragment="sidebar" id="z-sidebar">
+<aside
+  th:fragment="sidebar"
+  id="z-sidebar"
+  th:classappend="${theme.config.header.menu_icon_color_invert == true ? 'menu-icon-invert' : ''}"
+>
   <th:block th:replace="~{modules/header :: header}" />
 
   <nav class="sidebar-nav scrollcheck-y">
