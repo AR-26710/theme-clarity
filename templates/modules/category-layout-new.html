@@ -1,15 +1,15 @@
 <th:block th:fragment="layout(category, posts, thumbnail)">
   <div class="archive proper-height">
-    <header class="tag-header">
-      <a href="/categories" class="tag-back" title="返回分类列表">
+    <header class="archive-simple-header">
+      <a href="/categories" class="archive-back" title="返回分类列表">
         <span class="icon-[ph--arrow-left-bold]"></span>
         <span>分类列表</span>
       </a>
-      <div class="tag-info">
-        <h1 class="tag-name">
+      <div class="archive-simple-info">
+        <h1 class="archive-name">
           <span class="icon-[ph--folder-bold]"></span><span th:text="${category.spec.displayName}"></span>
         </h1>
-        <p class="tag-meta">共 <strong th:text="${posts.total}">0</strong> 篇文章</p>
+        <p class="archive-meta">共 <strong th:text="${posts.total}">0</strong> 篇文章</p>
       </div>
     </header>
 

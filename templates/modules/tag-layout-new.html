@@ -1,17 +1,17 @@
 <th:block th:fragment="layout(tag, posts, thumbnail)">
   <div class="archive proper-height">
-    <header class="tag-header">
-      <a href="/tags" class="tag-back" title="返回标签云">
+    <header class="archive-simple-header">
+      <a href="/tags" class="archive-back" title="返回标签云">
         <span class="icon-[ph--arrow-left-bold]"></span>
         <span>标签云</span>
       </a>
-      <div class="tag-info">
-        <h1 class="tag-name"><span class="tag-hash">#</span><span th:text="${tag.spec.displayName}"></span></h1>
-        <p class="tag-meta">共 <strong th:text="${posts.total}">0</strong> 篇文章</p>
+      <div class="archive-simple-info">
+        <h1 class="archive-name"><span class="archive-hash">#</span><span th:text="${tag.spec.displayName}"></span></h1>
+        <p class="archive-meta">共 <strong th:text="${posts.total}">0</strong> 篇文章</p>
       </div>
     </header>
 
-    <menu class="tag-list">
+    <menu class="archive-list">
       <li
         th:each="post,postStat : ${posts.items}"
         class="article-item"

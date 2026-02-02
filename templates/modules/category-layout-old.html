@@ -1,17 +1,17 @@
 <th:block th:fragment="layout(category, posts, thumbnail)">
-  <div class="category-page">
-    <header class="category-header card">
-      <div class="category-info">
-        <h1 class="category-title text-creative">
+  <div class="archive-page">
+    <header class="archive-page-header card">
+      <div class="archive-page-info">
+        <h1 class="archive-page-title text-creative">
           <span class="icon-[ph--folder-bold]"></span>
           <span th:text="${category.spec.displayName}">分类名称</span>
         </h1>
         <p
           th:if="${not #strings.isEmpty(category.spec.description)}"
-          class="category-description"
+          class="archive-description"
           th:text="${category.spec.description}"
         ></p>
-        <div class="category-meta">
+        <div class="archive-meta">
           <span class="meta-item">
             <span class="icon-[ph--article-bold]"></span>
             <span th:text="${category.postCount + ' 篇文章'}">0 篇文章</span>
@@ -23,7 +23,7 @@
         th:src="${category.spec.cover}"
         th:srcset="|${thumbnail.gen(category.spec.cover, 's')} 400w, ${thumbnail.gen(category.spec.cover, 'm')} 800w|"
         sizes="200px"
-        class="category-cover"
+        class="archive-cover"
         th:alt="${category.spec.displayName}"
       />
     </header>
