@@ -1,0 +1,112 @@
+<!-- 微语组件 -->
+<section
+  th:fragment="moments"
+  class="widget"
+  th:with="momentsTitle = ${item.moments_title ?: '微语'}, noTextConfig = ${item.moments_no_text}"
+>
+  <hgroup class="widget-title">
+    <span class="title-text text-creative" th:text="${momentsTitle}">微语</span>
+    <a href="/moments" aria-label="查看全部" title="查看全部">
+      <span class="icon-[ph--arrow-right-bold]"></span>
+    </a>
+  </hgroup>
+  <div class="widget-body widget-card moments-widget" th:data-title="${momentsTitle}" th:data-no-text="${noTextConfig}">
+    <th:block th:with="momentCount = ${item.count ?: 3}">
+      <th:block th:each="momentItem : ${momentFinder.list(1, momentCount).items}">
+        <article
+          class="moment-item"
+          th:if="${(not #strings.isEmpty(momentItem.spec.content.html) or (momentItem.spec.content.medium != null and not #lists.isEmpty(momentItem.spec.content.medium))) and (moment == null or momentItem.metadata.name != moment.metadata.name)}"
+          th:data-has-media="${momentItem.spec.content.medium != null and not #lists.isEmpty(momentItem.spec.content.medium)}"
+        >
+          <script type="text/plain" class="moment-raw-html" th:utext="${momentItem.spec.content.html}"></script>
+          <a class="moment-content" th:href="|/moments/${momentItem.metadata.name}|"></a>
+          <div class="moment-meta">
+            <time class="moment-time" th:datetime="${momentItem.spec.releaseTime}">
+              <span class="icon-[ph--clock-bold]"></span>
+              <span th:text="${#temporals.format(momentItem.spec.releaseTime, 'MM-dd HH:mm')}"></span>
+            </time>
+            <div th:if="${not #lists.isEmpty(momentItem.spec.tags)}" class="moment-tags">
+              <a
+                th:each="tag,iterStat : ${momentItem.spec.tags}"
+                th:if="${iterStat.index &lt; 2}"
+                th:href="@{/moments(tag=${tag})}"
+                class="moment-tag"
+              >
+                <span class="tag-hash">#</span>
+                <span th:text="${tag}"></span>
+              </a>
+            </div>
+          </div>
+        </article>
+      </th:block>
+      <div th:if="${momentFinder.list(1, 1).items.isEmpty()}" class="empty-tip">
+        <span class="icon-[ph--shooting-star-bold]"></span>
+        暂无微语
+      </div>
+    </th:block>
+    <script th:inline="none">
+      (function () {
+        const widget = document.querySelector(".moments-widget");
+        if (!widget) return;
+
+        const items = Array.from(widget.querySelectorAll(".moment-item"));
+        const momentsTitle = widget.dataset.title || "微语";
+        const noTextConfig = widget.dataset.noText;
+
+        if (!items.length) return;
+
+        const parser = new DOMParser();
+
+        const run = () => {
+          items.forEach((item) => {
+            const rawHtmlScript = item.querySelector(".moment-raw-html");
+            const raw = rawHtmlScript ? rawHtmlScript.textContent || rawHtmlScript.innerText || "" : "";
+            let displayText = "";
+            let hasMedia = item.dataset.hasMedia === "true";
+
+            if (raw) {
+              const doc = parser.parseFromString(raw, "text/html");
+
+              const tagElements = doc.querySelectorAll(".tag");
+              tagElements.forEach((tag) => {
+                tag.textContent = "";
+              });
+
+              const text = doc.body.textContent || doc.body.innerText || "";
+              displayText = text.trim();
+
+              const mediaSelectors = [
+                "img[src]",
+                "video[src]",
+                "audio[src]",
+                "figure[data-content-type='image']",
+                "figure[data-content-type='video']",
+                "iframe[src]",
+                "source[src]",
+              ];
+              hasMedia = hasMedia || mediaSelectors.some((selector) => doc.querySelector(selector));
+            }
+
+            if (!displayText) {
+              if (hasMedia) {
+                if (noTextConfig && noTextConfig.trim()) {
+                  displayText = noTextConfig.trim();
+                } else {
+                  displayText = `此${momentsTitle}无文字，请点击查看。`;
+                }
+              } else {
+                item.style.display = "none";
+                return;
+              }
+            }
+
+            const content = item.querySelector(".moment-content");
+            if (content) content.textContent = displayText;
+          });
+        };
+
+        window.requestIdleCallback ? requestIdleCallback(run) : run();
+      })();
+    </script>
+  </div>
+</section>

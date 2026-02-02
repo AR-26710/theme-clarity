@@ -1,0 +1,12 @@
+<!-- 社区组件 -->
+<section th:fragment="community" class="widget dim" th:if="${not #strings.isEmpty(theme.config.aside.community.image)}">
+  <hgroup class="widget-title text-creative" th:text="${theme.config.aside.community.title}">博客/技术社区</hgroup>
+  <div class="widget-body widget-card with-bg">
+    <img class="bg-img bg-right" th:src="${theme.config.aside.community.image}" alt="" loading="lazy" />
+    <div class="comm-title text-creative" th:text="${theme.config.aside.community.name}">技术交流群</div>
+    <p class="comm-tip">
+      <span class="icon-[ph--chat-circle-dots-bold]"></span>
+      <span th:text="${theme.config.aside.community.desc}">169994096</span>
+    </p>
+  </div>
+</section>
