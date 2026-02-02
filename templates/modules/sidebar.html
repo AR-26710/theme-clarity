@@ -6,158 +6,18 @@
   <th:block th:replace="~{modules/header :: header}" />
 
   <nav class="sidebar-nav scrollcheck-y">
-    <div
-      th:if="${pluginFinder.available('PluginSearchWidget')}"
-      class="search-btn sidebar-nav-item gradient-card"
-      onclick="SearchWidget.open()"
-    >
-      <span class="icon-[ph--magnifying-glass-bold]"></span>
-      <span class="nav-text">搜索</span>
-      <kbd class="search-shortcut" x-data x-text="navigator.platform.includes('Mac') ? '⌘K' : 'Ctrl+K'"></kbd>
-    </div>
-
-    <th:block
-      th:if="${not #strings.isEmpty(theme.config.header.primary_menu)}"
-      th:with="menu = ${menuFinder.getByName(theme.config.header.primary_menu)}, currentPath = ${#httpServletRequest.requestURI}"
-    >
-      <menu th:if="${menu != null and menu.menuItems != null}">
-        <li
-          th:each="menuItem : ${menu.menuItems}"
-          th:class="${menuItem.children != null and not #lists.isEmpty(menuItem.children)} ? 'has-submenu' : ''"
-        >
-          <th:block th:if="${menuItem.children != null and not #lists.isEmpty(menuItem.children)}">
-            <a
-              th:class="${currentPath != null and menuItem.status?.href != null and currentPath == menuItem.status.href ? 'sidebar-nav-item has-dropdown active' : 'sidebar-nav-item has-dropdown'}"
-              th:href="${menuItem.status.href}"
-              th:attr="target=${(menuItem.spec.target == '_blank' or menuItem.spec.target == 'BLANK' or menuItem.spec.target?.name == 'BLANK') ? '_blank' : ((menuItem.spec.target == '_parent' or menuItem.spec.target == 'PARENT' or menuItem.spec.target?.name == 'PARENT') ? '_parent' : ((menuItem.spec.target == '_top' or menuItem.spec.target == 'TOP' or menuItem.spec.target?.name == 'TOP') ? '_top' : ((menuItem.spec.target == '_self' or menuItem.spec.target == 'SELF' or menuItem.spec.target?.name == 'SELF') ? '_self' : null)))}"
-            >
-              <img
-                th:if="${not #strings.isEmpty(menuItem.metadata?.annotations?.get('icon'))}"
-                th:src="${menuItem.metadata.annotations.get('icon')}"
-                alt=""
-              />
-              <span class="nav-text" th:text="${menuItem.status.displayName}"></span>
-              <span class="icon-[ph--caret-down-bold] dropdown-arrow"></span>
-            </a>
-
-            <div class="dropdown-menu">
-              <a
-                th:each="child : ${menuItem.children}"
-                th:href="${child.status.href}"
-                th:class="${currentPath != null and child.status?.href != null and currentPath == child.status.href ? 'dropdown-item active' : 'dropdown-item'}"
-                th:attr="target=${(child.spec.target == '_blank' or child.spec.target == 'BLANK' or child.spec.target?.name == 'BLANK') ? '_blank' : ((child.spec.target == '_parent' or child.spec.target == 'PARENT' or child.spec.target?.name == 'PARENT') ? '_parent' : ((child.spec.target == '_top' or child.spec.target == 'TOP' or child.spec.target?.name == 'TOP') ? '_top' : ((child.spec.target == '_self' or child.spec.target == 'SELF' or child.spec.target?.name == 'SELF') ? '_self' : null)))}"
-              >
-                <img
-                  th:if="${not #strings.isEmpty(child.metadata?.annotations?.get('icon'))}"
-                  th:src="${child.metadata.annotations.get('icon')}"
-                  alt=""
-                />
-                <span class="nav-text" th:text="${child.status.displayName}"></span>
-              </a>
-            </div>
-          </th:block>
-          <a
-            th:unless="${menuItem.children != null and not #lists.isEmpty(menuItem.children)}"
-            th:href="${menuItem.status.href}"
-            th:class="${currentPath != null and menuItem.status?.href != null and currentPath == menuItem.status.href ? 'sidebar-nav-item active' : 'sidebar-nav-item'}"
-            th:attr="target=${(menuItem.spec.target == '_blank' or menuItem.spec.target == 'BLANK' or menuItem.spec.target?.name == 'BLANK') ? '_blank' : ((menuItem.spec.target == '_parent' or menuItem.spec.target == 'PARENT' or menuItem.spec.target?.name == 'PARENT') ? '_parent' : ((menuItem.spec.target == '_top' or menuItem.spec.target == 'TOP' or menuItem.spec.target?.name == 'TOP') ? '_top' : ((menuItem.spec.target == '_self' or menuItem.spec.target == 'SELF' or menuItem.spec.target?.name == 'SELF') ? '_self' : null)))}"
-          >
-            <img
-              th:if="${not #strings.isEmpty(menuItem.metadata?.annotations?.get('icon'))}"
-              th:src="${menuItem.metadata.annotations.get('icon')}"
-              alt=""
-            />
-            <span class="nav-text" th:text="${menuItem.status.displayName}"></span>
-            <span th:if="${menuItem.spec.target == '_blank'}" class="icon-[ph--arrow-up-right] external-tip"></span>
-          </a>
-        </li>
-      </menu>
-    </th:block>
+    <!-- 搜索组件 -->
+    <th:block th:replace="~{modules/sidebar-widgets/search-button :: search-button}" />
+    <!-- 导航菜单组件 -->
+    <th:block th:replace="~{modules/sidebar-widgets/nav-menu :: nav-menu}" />
   </nav>
 
   <footer class="sidebar-footer">
-    <div
-      class="user-auth"
-      x-data="userAuth()"
-      @click.outside="showMenu = false"
-      th:if="${theme.config.header.userAuth}"
-    >
-      <div x-show="!ready" class="user-entry loading">
-        <div class="avatar-wrapper">
-          <span class="icon-[ph--spinner] animate-spin"></span>
-        </div>
-        <div class="user-info">
-          <span class="user-name">加载中...</span>
-        </div>
-      </div>
-
-      <a x-show="ready && !currentUser" x-cloak href="/login" class="user-entry">
-        <div class="avatar-wrapper">
-          <span class="icon-[ph--user-circle-bold] default-avatar-icon"></span>
-        </div>
-        <div class="user-info">
-          <span class="user-name">登录</span>
-          <span class="user-desc">点击登录账号</span>
-        </div>
-      </a>
-
-      <div x-show="ready && currentUser" x-cloak class="user-entry" @click="handleClick()">
-        <div class="avatar-wrapper">
-          <img :src="currentUser?.avatar" :alt="currentUser?.name" class="user-avatar" />
-        </div>
-        <div class="user-info">
-          <span class="user-name" x-text="currentUser?.name"></span>
-          <span class="user-desc" x-text="currentUser?.roleDisplayName || '用户角色'"></span>
-        </div>
-        <span class="icon-[ph--caret-down-bold] menu-arrow" :class="{ 'rotate': showMenu }"></span>
-      </div>
-
-      <div x-show="ready && showMenu" x-cloak x-transition class="user-menu">
-        <a href="/uc" class="user-menu-item">
-          <span class="icon-[ph--user-bold]"></span>
-          <span>个人中心</span>
-        </a>
-        <a sec:authorize="hasRole('super-role')" href="/console" class="user-menu-item">
-          <span class="icon-[ph--gear-six-bold]"></span>
-          <span>管理中心</span>
-        </a>
-        <a href="/logout" class="user-menu-item logout">
-          <span class="icon-[ph--sign-out-bold]"></span>
-          <span>退出登录</span>
-        </a>
-      </div>
-    </div>
-
-    <div class="theme-toggle" x-data="themeToggle()">
-      <button :class="{ active: theme === 'light' }" @click="setTheme('light', $event)" title="浅色模式">
-        <span class="icon-[ph--sun-bold]"></span>
-      </button>
-      <button :class="{ active: theme === 'system' }" @click="setTheme('system', $event)" title="跟随系统">
-        <span class="icon-[ph--monitor-bold]"></span>
-      </button>
-      <button :class="{ active: theme === 'dark' }" @click="setTheme('dark', $event)" title="深色模式">
-        <span class="icon-[ph--moon-bold]"></span>
-      </button>
-    </div>
-
-    <div
-      class="social-icons"
-      th:if="${theme.config.footer.social?.items != null and !theme.config.footer.social.items.isEmpty()}"
-    >
-      <a
-        th:each="link : ${theme.config.footer.social.items}"
-        th:href="${link.url}"
-        th:title="${link.text}"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <th:block
-          th:if="${link.icon != null}"
-          th:with="iconVal = ${link.icon.value != null ? link.icon.value : (link.icon instanceof T(String) ? link.icon : null)}"
-        >
-          <img th:if="${iconVal != null and not #strings.isEmpty(iconVal)}" th:src="${iconVal}" alt="" />
-        </th:block>
-      </a>
-    </div>
+    <!-- 用户认证组件 -->
+    <th:block th:replace="~{modules/sidebar-widgets/user-auth :: user-auth}" />
+    <!-- 主题模式切换组件 -->
+    <th:block th:replace="~{modules/sidebar-widgets/theme-toggle :: theme-toggle}" />
+    <!-- 社交图标组件 -->
+    <th:block th:replace="~{modules/sidebar-widgets/social-icons :: social-icons}" />
   </footer>
 </aside>
