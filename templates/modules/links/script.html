@@ -1,12 +1,14 @@
 <script th:inline="javascript">
   /*<![CDATA[*/
+  // 配置传递给 JS 模块
   window.linkSubmitConfig = {
-    enableSubmit: /*[[${theme.config.links?.enable_submit}]]*/ false,
+    enableSubmit: /*[[${theme.config.links?.enable_submit_lywq}]]*/ false,
     enableUpdate: /*[[${theme.config.links?.enable_update}]]*/ false,
     verifyType: /*[[${theme.config.links?.verify_type ?: 'email'}]]*/ "email",
   };
   /*]]>*/
 
+  // 随机穿梭
   function randomVisitLink() {
     const linkCards = document.querySelectorAll(".feed-card-wrapper[data-link]");
     if (linkCards.length === 0) {
@@ -22,15 +24,19 @@
       }))
       .filter((item) => item.url);
 
+    // 随机选择
     const randomLink = linksInfo[Math.floor(Math.random() * linksInfo.length)];
 
+    // 调用全局穿梭组件
     if (window.openShuttle) {
       window.openShuttle(randomLink);
     } else {
+      // 降级：直接跳转
       window.open(randomLink.url, "_blank");
     }
   }
 
+  // Tab 切换
   function switchTab(btn) {
     const targetId = btn.getAttribute("data-tab");
     const tabsContainer = btn.closest(".custom-tabs-container");
@@ -41,7 +47,9 @@
     });
   }
 
+  // 初始化
   (function () {
+    // 复制功能
     document.querySelectorAll(".copy-btn").forEach((btn) => {
       btn.addEventListener("click", async function () {
         const text = this.getAttribute("data-copy");
@@ -58,6 +66,7 @@
       });
     });
 
+    // 友链卡片随机延迟动画
     document.querySelectorAll(".feed-card-wrapper").forEach((wrapper) => {
       const link = wrapper.getAttribute("data-link") || "";
       let hash = 0;
@@ -65,23 +74,34 @@
       wrapper.style.setProperty("--delay", (Math.abs(hash) % 1000) / 1000 + "s");
     });
 
+    // 动态调整随机访问按钮位置
+    const submitLinkBtn = document.getElementById("submit-link-btn");
+    const randomLinkBtn = document.getElementById("random-link-btn");
+    if (randomLinkBtn && !submitLinkBtn) {
+      randomLinkBtn.style.bottom = "calc(2.5rem + 60px)";
+    }
+
+    // Tooltip 定位：检测是否会被顶部截断
     document.querySelectorAll(".feed-card-wrapper").forEach((wrapper) => {
       wrapper.addEventListener("mouseenter", function () {
         const tooltip = this.querySelector(".feed-tooltip");
         if (!tooltip) return;
 
+        // 临时显示 tooltip 以获取位置
         tooltip.style.visibility = "visible";
         tooltip.style.opacity = "0";
 
         const rect = tooltip.getBoundingClientRect();
         const windowHeight = window.innerHeight;
 
+        // 检测 tooltip 是否会被顶部截断
         if (rect.top < 10) {
           tooltip.classList.add("tooltip-bottom");
         } else {
           tooltip.classList.remove("tooltip-bottom");
         }
 
+        // 恢复显示动画
         tooltip.style.visibility = "";
         tooltip.style.opacity = "";
       });

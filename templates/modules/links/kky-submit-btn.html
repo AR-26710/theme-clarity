@@ -1,0 +1,10 @@
+<!-- 友链提交按钮 -->
+<button
+  th:if="${pluginFinder.available('link-submit') and theme.config.links?.enable_submit_kky != false}"
+  id="submit-link-btn"
+  class="random-link-btn"
+  onclick="LinkSubmitWidget.open()"
+  title="提交友链"
+>
+  <span class="icon-[ph--plus-bold]"></span>
+</button>
