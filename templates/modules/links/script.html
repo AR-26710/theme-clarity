@@ -1,0 +1,97 @@
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  window.linkSubmitConfig = {
+    enableSubmit: /*[[${theme.config.links?.enable_submit}]]*/ false,
+    enableUpdate: /*[[${theme.config.links?.enable_update}]]*/ false,
+    verifyType: /*[[${theme.config.links?.verify_type ?: 'email'}]]*/ "email",
+  };
+  /*]]>*/
+
+  function randomVisitLink() {
+    const linkCards = document.querySelectorAll(".feed-card-wrapper[data-link]");
+    if (linkCards.length === 0) {
+      alert("暂无友链可访问");
+      return;
+    }
+    const linksInfo = Array.from(linkCards)
+      .map((card) => ({
+        url: card.getAttribute("data-link") || "",
+        name: card.querySelector(".author")?.textContent?.trim() || "",
+        logo: card.querySelector(".avatar img")?.src || "",
+        desc: card.querySelector(".desc-content p")?.textContent?.trim() || "",
+      }))
+      .filter((item) => item.url);
+
+    const randomLink = linksInfo[Math.floor(Math.random() * linksInfo.length)];
+
+    if (window.openShuttle) {
+      window.openShuttle(randomLink);
+    } else {
+      window.open(randomLink.url, "_blank");
+    }
+  }
+
+  function switchTab(btn) {
+    const targetId = btn.getAttribute("data-tab");
+    const tabsContainer = btn.closest(".custom-tabs-container");
+    tabsContainer.querySelectorAll(".custom-tab-item").forEach((t) => t.classList.remove("active"));
+    btn.classList.add("active");
+    tabsContainer.querySelectorAll(".custom-tab-pane").forEach((content) => {
+      content.classList.toggle("active", content.id === targetId);
+    });
+  }
+
+  (function () {
+    document.querySelectorAll(".copy-btn").forEach((btn) => {
+      btn.addEventListener("click", async function () {
+        const text = this.getAttribute("data-copy");
+        try {
+          await navigator.clipboard.writeText(text);
+          const icon = this.querySelector("span");
+          icon.className = "icon-[ph--check-bold]";
+          setTimeout(() => {
+            icon.className = "icon-[ph--copy-bold]";
+          }, 2000);
+        } catch (err) {
+          console.error("复制失败:", err);
+        }
+      });
+    });
+
+    document.querySelectorAll(".feed-card-wrapper").forEach((wrapper) => {
+      const link = wrapper.getAttribute("data-link") || "";
+      let hash = 0;
+      for (const char of link) hash = hash * 31 + char.charCodeAt(0);
+      wrapper.style.setProperty("--delay", (Math.abs(hash) % 1000) / 1000 + "s");
+    });
+
+    document.querySelectorAll(".feed-card-wrapper").forEach((wrapper) => {
+      wrapper.addEventListener("mouseenter", function () {
+        const tooltip = this.querySelector(".feed-tooltip");
+        if (!tooltip) return;
+
+        tooltip.style.visibility = "visible";
+        tooltip.style.opacity = "0";
+
+        const rect = tooltip.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+
+        if (rect.top < 10) {
+          tooltip.classList.add("tooltip-bottom");
+        } else {
+          tooltip.classList.remove("tooltip-bottom");
+        }
+
+        tooltip.style.visibility = "";
+        tooltip.style.opacity = "";
+      });
+
+      wrapper.addEventListener("mouseleave", function () {
+        const tooltip = this.querySelector(".feed-tooltip");
+        if (tooltip) {
+          tooltip.classList.remove("tooltip-bottom");
+        }
+      });
+    });
+  })();
+</script>
