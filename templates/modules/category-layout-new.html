@@ -22,7 +22,7 @@
         <time th:text="${#temporals.format(post.spec.publishTime, 'MM/dd')}"></time>
         <a th:href="${post.status.permalink}" class="article-link gradient-card" th:title="${post.status.excerpt}">
           <span class="article-title" th:text="${post.spec.title}"></span>
-          <th:block th:if="${post.spec.pinned}" th:replace="~{modules/common/pinned-icon :: pinned-icon}" />
+          <th:block th:if="${post.spec.pinned}" th:include="~{modules/common/pinned-icon :: pinned-icon}" />
           <img
             th:if="${post.spec.cover}"
             th:src="${post.spec.cover}"
