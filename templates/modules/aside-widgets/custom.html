@@ -1,0 +1,5 @@
+<!-- 自定义组件 -->
+<section th:fragment="custom" class="widget">
+  <hgroup class="widget-title text-creative" th:text="${item.title}">自定义</hgroup>
+  <div class="widget-body widget-card" th:utext="${item.content}"></div>
+</section>
