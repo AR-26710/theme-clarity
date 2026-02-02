@@ -7,7 +7,6 @@ import collapse from "@alpinejs/collapse";
 
 import { mountPhotoGallery, mountWeather } from "./preact";
 import { initFancybox } from "./utils/fancybox";
-import { initLinkSubmit } from "./links-submit";
 import { generateQRCode, generatePoster } from "./utils/poster";
 import { registerAlpineComponents } from "./alpine";
 
@@ -41,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     initFancybox();
   }
   initBackToTop();
-  initLinkSubmit();
   initImageLoaded();
   initImageCaption();
   initActiveNavItem();
@@ -50,6 +48,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.location.pathname.startsWith("/moments")) {
     import("./moments").then(({ moments_tags }) => {
       moments_tags();
+    });
+  }
+
+  // 动态加载 links-submit 功能
+  if (window.location.pathname.startsWith("/links") && window.linkSubmitConfig?.enableSubmit) {
+    import("./links-submit").then(({ initLinkSubmit }) => {
+      initLinkSubmit();
     });
   }
 });
