@@ -7,15 +7,11 @@ import collapse from "@alpinejs/collapse";
 
 import { mountPhotoGallery, mountWeather } from "./preact";
 import { initFancybox } from "./utils/fancybox";
-import { initLinkSubmit } from "./links-submit";
-import { generateQRCode, generatePoster } from "./utils/poster";
 import { registerAlpineComponents } from "./alpine";
 
 // 注册全局函数
 window.mountPhotoGallery = mountPhotoGallery;
 window.mountWeather = mountWeather;
-window.generateQRCode = generateQRCode;
-window.generatePoster = generatePoster;
 
 // 注册 Alpine.js 组件和插件
 registerAlpineComponents(Alpine);
@@ -41,11 +37,31 @@ document.addEventListener("DOMContentLoaded", () => {
     initFancybox();
   }
   initBackToTop();
-  initLinkSubmit();
   initImageLoaded();
   initImageCaption();
   initActiveNavItem();
-  moments_tags();
+
+  // 动态加载 moments 功能
+  if (window.location.pathname.startsWith("/moments")) {
+    import("./moments").then(({ moments_tags }) => {
+      moments_tags();
+    });
+  }
+
+  // 动态加载 links-submit 功能
+  if (window.location.pathname.startsWith("/links") && window.linkSubmitConfig?.enableSubmit) {
+    import("./links-submit").then(({ initLinkSubmit }) => {
+      initLinkSubmit();
+    });
+  }
+
+  // 动态加载 poster 功能
+  if (window.location.pathname.startsWith("/archives")) {
+    import("./utils/poster").then(({ generateQRCode, generatePoster }) => {
+      window.generateQRCode = generateQRCode;
+      window.generatePoster = generatePoster;
+    });
+  }
 });
 
 // 侧边栏菜单激活状态
@@ -203,100 +219,4 @@ function initBackToTop() {
       }
     });
   }
-}
-
-function moments_tags() {
-  const scrollContainers = document.querySelectorAll<HTMLElement>(".scrollcheck-x");
-
-  scrollContainers.forEach((container) => {
-    const wrapper = container.closest<HTMLElement>(".moments-tags-wrapper");
-    const hoverHint = wrapper?.querySelector<HTMLElement>(".at-slide-hover");
-
-    const checkScrollable = () => {
-      const isScrollable = container.scrollWidth > container.clientWidth;
-      if (hoverHint) {
-        if (isScrollable) {
-          hoverHint.style.display = "inline-flex";
-        } else {
-          hoverHint.style.display = "none";
-        }
-      }
-    };
-
-    const scrollToActiveTag = () => {
-      const activeTag = container.querySelector<HTMLElement>(".tag-item.active");
-      if (!activeTag) return;
-
-      const containerRect = container.getBoundingClientRect();
-      const tagRect = activeTag.getBoundingClientRect();
-
-      if (tagRect.right > containerRect.right) {
-        const scrollAmount = tagRect.right - containerRect.right;
-        container.scrollLeft += scrollAmount + 20;
-      } else if (tagRect.left < containerRect.left) {
-        const scrollAmount = containerRect.left - tagRect.left;
-        container.scrollLeft -= scrollAmount + 20;
-      }
-    };
-
-    container.addEventListener(
-      "wheel",
-      (e) => {
-        if (e.deltaY !== 0) {
-          e.preventDefault();
-          container.scrollLeft += e.deltaY;
-        }
-      },
-      { passive: false },
-    );
-
-    let touchStartX = 0;
-    let touchStartY = 0;
-
-    container.addEventListener(
-      "touchstart",
-      (e) => {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-      },
-      { passive: true },
-    );
-
-    container.addEventListener(
-      "touchmove",
-      (e) => {
-        const touchCurrentX = e.touches[0].clientX;
-        const touchCurrentY = e.touches[0].clientY;
-        const diffX = touchStartX - touchCurrentX;
-        const diffY = touchStartY - touchCurrentY;
-
-        if (Math.abs(diffX) > Math.abs(diffY)) {
-          e.preventDefault();
-          container.scrollLeft += diffX;
-          touchStartX = touchCurrentX;
-          touchStartY = touchCurrentY;
-        }
-      },
-      { passive: false },
-    );
-
-    checkScrollable();
-    scrollToActiveTag();
-    window.addEventListener("resize", checkScrollable);
-
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === "attributes" && mutation.attributeName === "class") {
-          const target = mutation.target as HTMLElement;
-          if (target.classList.contains("tag-item") && target.classList.contains("active")) {
-            setTimeout(() => scrollToActiveTag(), 100);
-          }
-        }
-      });
-    });
-
-    container.querySelectorAll<HTMLElement>(".tag-item").forEach((tag) => {
-      observer.observe(tag, { attributes: true, attributeFilter: ["class"] });
-    });
-  });
 }

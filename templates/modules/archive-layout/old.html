@@ -1,0 +1,29 @@
+<th:block th:fragment="layout(title, posts, thumbnail, icon, cover, description, postCount, caller)">
+  <div class="archive-page">
+    <header class="archive-page-header card">
+      <div class="archive-page-info">
+        <h1 class="archive-page-title text-creative">
+          <span th:class="${icon}"></span>
+          <span th:text="${title}">标题</span>
+        </h1>
+        <p th:if="${not #strings.isEmpty(description)}" class="archive-description" th:text="${description}"></p>
+        <div class="archive-meta">
+          <span class="meta-item">
+            <span class="icon-[ph--article-bold]"></span>
+            <span th:text="${postCount + ' 篇文章'}">0 篇文章</span>
+          </span>
+        </div>
+      </div>
+      <img
+        th:if="${not #strings.isEmpty(cover)}"
+        th:src="${cover}"
+        th:srcset="|${thumbnail.gen(cover, 's')} 400w, ${thumbnail.gen(cover, 'm')} 800w|"
+        sizes="200px"
+        class="archive-cover"
+        th:alt="${title}"
+      />
+    </header>
+
+    <th:block th:replace="~{modules/post-list :: list(posts=${posts}, caller=${caller})}" />
+  </div>
+</th:block>

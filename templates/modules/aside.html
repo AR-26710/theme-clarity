@@ -1,49 +1,40 @@
-<!-- 侧边栏背景遮罩 -->
-<th:block th:replace="~{modules/aside-widgets/bgmask :: bgmask}"></th:block>
+<th:block th:replace="~{modules/aside-widgets/aside-bgmask :: aside-bgmask}"></th:block>
 
-<!-- 侧边栏组件：根据页面类型显示不同内容 -->
 <aside th:fragment="aside" id="z-aside">
-  <!-- 当前为文章页或单页面时，显示目录(TOC) -->
   <th:block th:if="${post != null or singlePage != null}">
-    <th:block th:replace="~{modules/aside-widgets/toc :: toc}"></th:block>
+    <!-- 目录组件 -->
+    <div th:replace="~{modules/aside-widgets/toc-widget :: toc-widget}"></div>
   </th:block>
 
-  <!-- 当前为首页或其他非文章页时，根据配置显示相应的侧边栏组件 -->
+  <!-- 侧边栏组件 -->
   <th:block th:unless="${post != null or singlePage != null}">
     <th:block th:each="item : ${theme.config.aside.widgets.index}">
       <th:block th:switch="${item.widget}">
-        <!-- 统计组件 -->
         <th:block th:case="'stats'">
-          <th:block th:replace="~{modules/aside-widgets/stats :: stats}"></th:block>
+          <th:block th:replace="~{modules/aside-widgets/stats-widget :: stats-widget}"></th:block>
         </th:block>
-        <!-- 技术信息组件 -->
         <th:block th:case="'tech-info'">
-          <th:block th:replace="~{modules/aside-widgets/tech-info :: tech-info}"></th:block>
+          <th:block th:replace="~{modules/aside-widgets/tech-info-widget :: tech-info-widget}"></th:block>
         </th:block>
-        <!-- 天气组件 -->
         <th:block th:case="'weather'">
-          <th:block th:replace="~{modules/aside-widgets/weather :: weather}"></th:block>
+          <th:block th:replace="~{modules/aside-widgets/weather-widget :: weather-widget}"></th:block>
         </th:block>
-        <!-- 微语组件 -->
         <th:block th:case="'moments'">
-          <th:block th:replace="~{modules/aside-widgets/moments :: moments}"></th:block>
+          <th:block th:replace="~{modules/aside-widgets/moments-widget :: moments-widget}"></th:block>
         </th:block>
-        <!-- 社区组件 -->
         <th:block th:case="'community'">
-          <th:block th:replace="~{modules/aside-widgets/community :: community}"></th:block>
+          <th:block th:replace="~{modules/aside-widgets/community-widget :: community-widget}"></th:block>
         </th:block>
-        <!-- 赞助组件 -->
         <th:block th:case="'sponsor'">
-          <th:block th:replace="~{modules/aside-widgets/sponsor :: sponsor}"></th:block>
+          <th:block th:replace="~{modules/aside-widgets/sponsor-widget :: sponsor-widget}"></th:block>
         </th:block>
-        <!-- 自定义组件 -->
         <th:block th:case="'custom'">
-          <th:block th:replace="~{modules/aside-widgets/custom :: custom}"></th:block>
+          <th:block th:replace="~{modules/aside-widgets/custom-widget :: custom-widget(item=${item})}"></th:block>
         </th:block>
       </th:block>
     </th:block>
   </th:block>
 
-  <!-- 侧边栏脚本组件 -->
-  <th:block th:replace="~{modules/aside-widgets/scripts :: scripts}"></th:block>
+  <!-- 侧边栏组件脚本 -->
+  <div th:replace="~{modules/aside-widgets/aside-scripts :: aside-scripts}"></div>
 </aside>

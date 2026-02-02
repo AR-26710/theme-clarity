@@ -5,10 +5,14 @@
 >
   <th:block th:fragment="content">
     <th:block th:if="${theme.config.style.switch_tag_layout == false}">
-      <th:block th:replace="~{modules/tag-layout-old :: layout(tag=${tag}, posts=${posts}, thumbnail=${thumbnail})}" />
+      <th:block
+        th:replace="~{modules/archive-layout/old :: layout(title=${tag.spec.displayName}, posts=${posts}, thumbnail=${thumbnail}, icon='icon-[ph--hash-bold]', cover=${tag.spec.cover}, description=null, postCount=${tag.postCount}, caller='tag')}"
+      />
     </th:block>
     <th:block th:if="${theme.config.style.switch_tag_layout == true}">
-      <th:block th:replace="~{modules/tag-layout-new :: layout(tag=${tag}, posts=${posts}, thumbnail=${thumbnail})}" />
+      <th:block
+        th:replace="~{modules/archive-layout/new :: layout(title=${tag.spec.displayName}, posts=${posts}, thumbnail=${thumbnail}, backUrl='/tags', backText='标签云', icon='icon-[ph--hash-bold]', emptyText='该标签下暂无文章')}"
+      />
     </th:block>
   </th:block>
 </html>
