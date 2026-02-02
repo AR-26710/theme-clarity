@@ -7,14 +7,11 @@ import collapse from "@alpinejs/collapse";
 
 import { mountPhotoGallery, mountWeather } from "./preact";
 import { initFancybox } from "./utils/fancybox";
-import { generateQRCode, generatePoster } from "./utils/poster";
 import { registerAlpineComponents } from "./alpine";
 
 // 注册全局函数
 window.mountPhotoGallery = mountPhotoGallery;
 window.mountWeather = mountWeather;
-window.generateQRCode = generateQRCode;
-window.generatePoster = generatePoster;
 
 // 注册 Alpine.js 组件和插件
 registerAlpineComponents(Alpine);
@@ -55,6 +52,14 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.location.pathname.startsWith("/links") && window.linkSubmitConfig?.enableSubmit) {
     import("./links-submit").then(({ initLinkSubmit }) => {
       initLinkSubmit();
+    });
+  }
+
+  // 动态加载 poster 功能
+  if (window.location.pathname.startsWith("/archives")) {
+    import("./utils/poster").then(({ generateQRCode, generatePoster }) => {
+      window.generateQRCode = generateQRCode;
+      window.generatePoster = generatePoster;
     });
   }
 });
