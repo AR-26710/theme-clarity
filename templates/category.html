@@ -6,12 +6,12 @@
   <th:block th:fragment="content">
     <th:block th:if="${theme.config.style.switch_category_layout == false}">
       <th:block
-        th:replace="~{modules/category-layout-old :: layout(category=${category}, posts=${posts}, thumbnail=${thumbnail})}"
+        th:replace="~{modules/archive-layout/old :: layout(title=${category.spec.displayName}, posts=${posts}, thumbnail=${thumbnail}, icon='icon-[ph--folder-bold]', cover=${category.spec.cover}, description=${category.spec.description}, postCount=${category.postCount}, caller='category')}"
       />
     </th:block>
     <th:block th:if="${theme.config.style.switch_category_layout == true}">
       <th:block
-        th:replace="~{modules/category-layout-new :: layout(category=${category}, posts=${posts}, thumbnail=${thumbnail})}"
+        th:replace="~{modules/archive-layout/new :: layout(title=${category.spec.displayName}, posts=${posts}, thumbnail=${thumbnail}, backUrl='/categories', backText='分类列表', icon='icon-[ph--folder-bold]', emptyText='该分类下暂无文章')}"
       />
     </th:block>
   </th:block>
