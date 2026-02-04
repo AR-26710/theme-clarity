@@ -112,7 +112,8 @@
 }
 
 .shop-product-content {
-  padding: var(--shop-spacing-xl) 1rem;
+  margin: var(--shop-spacing-xl) 1rem 0;
+  padding-top: var(--shop-spacing-xl);
   border-top: 1px solid var(--shop-gray-200);
 
   &__description {
@@ -187,7 +188,8 @@
   }
 
   .shop-product-content {
-    padding: var(--shop-spacing-xl) 1rem;
+    margin: var(--shop-spacing-xl) 1rem 0;
+    padding-top: var(--shop-spacing-xl);
 
     &__specs {
       td:first-child {

@@ -3,6 +3,7 @@
   grid-template-columns: 1fr 400px;
   gap: var(--shop-spacing-xl);
   align-items: start;
+  margin: 0 1rem;
 
   &__items {
     display: flex;
@@ -112,6 +113,7 @@
 @media (max-width: 1024px) {
   .shop-cart {
     grid-template-columns: 1fr;
+    margin: 0 1rem;
   }
 
   .shop-cart-summary {
@@ -120,6 +122,10 @@
 }
 
 @media (max-width: 768px) {
+  .shop-cart {
+    margin: 0 1rem;
+  }
+
   .shop-cart-item {
     display: flex;
     flex-wrap: wrap;

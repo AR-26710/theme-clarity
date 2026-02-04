@@ -1,10 +1,9 @@
 .shop-breadcrumb {
-  margin-bottom: 24px;
+  margin: var(--shop-spacing-lg) 1rem 24px;
   padding: 12px 16px;
   background: var(--shop-color-base-100);
   border: 1px solid var(--shop-gray-200);
   border-radius: var(--shop-border-radius);
-  margin-top: var(--shop-spacing-lg);
 
   &__list {
     display: flex;

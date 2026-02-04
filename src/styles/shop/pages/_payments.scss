@@ -3,6 +3,7 @@
   grid-template-columns: 1fr 420px;
   gap: var(--shop-spacing-xl);
   align-items: start;
+  margin: 0 1rem;
 
   &__left {
     display: flex;
@@ -280,6 +281,7 @@
 @media (max-width: 1024px) {
   .shop-payments {
     grid-template-columns: 1fr;
+    margin: 0 1rem;
 
     &__right {
       position: static;
@@ -288,6 +290,10 @@
 }
 
 @media (max-width: 768px) {
+  .shop-payments {
+    margin: 0 1rem;
+  }
+
   .shop-payment-methods {
     grid-template-columns: 1fr;
   }
