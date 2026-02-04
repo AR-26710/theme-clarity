@@ -1,0 +1,14 @@
+<!doctype html>
+<html
+  xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{modules/layout :: html(content = ~{::content}, showAside = false, pageTitle = '购物车')}"
+>
+  <th:block th:fragment="content">
+    <th:block th:replace="~{shop/modules/breadcrumb}" />
+
+    <shop-page-cart th:csrfToken="${_csrf.token}"> </shop-page-cart>
+
+    <th:block th:replace="~{shop/modules/style}" />
+    <th:block th:replace="~{shop/modules/script}" />
+  </th:block>
+</html>
