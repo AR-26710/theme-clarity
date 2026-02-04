@@ -50,6 +50,15 @@
       </table>
     </div>
 
+    <h3 th:if="${haloCommentEnabled}" class="comment-title">
+      <span class="icon-[ph--chat-circle-text-bold]"></span>
+      评论区
+    </h3>
+    <!-- TODO: 此处仅由基础的评论功能，其它功能等待后续官方的支持。 -->
+    <section th:if="${haloCommentEnabled}" class="z-comment" id="comment">
+      <halo:comment group="shop.halo.run" kind="shop" th:attr="name=${product.id}" />
+    </section>
+
     <th:block th:replace="~{shop/modules/style}" />
     <th:block th:replace="~{shop/modules/script}" />
   </th:block>
