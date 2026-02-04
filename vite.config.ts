@@ -9,6 +9,7 @@ export default ({ mode }: { mode: string }) => {
   const entries = {
     main: path.resolve(__dirname, "src/main.ts"),
     auth: path.resolve(__dirname, "src/auth.ts"),
+    shop: path.resolve(__dirname, "src/styles/shop/main.scss"),
   };
 
   return defineConfig({

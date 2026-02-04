@@ -28,6 +28,8 @@ export async function initFancybox() {
     ".comment-content img",
     ".link-info img",
     ".gallery-item img",
+    ".shop-product-gallery img[data-zoomable]",
+    ".shop-order-item__image",
   ];
 
   const allImages: HTMLImageElement[] = [];

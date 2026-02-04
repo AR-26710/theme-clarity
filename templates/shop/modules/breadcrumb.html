@@ -1,0 +1,31 @@
+<nav class="shop-breadcrumb" aria-label="面包屑导航">
+  <ol class="shop-breadcrumb__list">
+    <li class="shop-breadcrumb__item">
+      <a th:href="@{/shop/products}" class="shop-breadcrumb__link">商品列表</a>
+    </li>
+    <th:block th:if="${product != null}">
+      <li class="shop-breadcrumb__separator" aria-hidden="true">/</li>
+      <li class="shop-breadcrumb__item">
+        <span class="shop-breadcrumb__current" th:text="${product.title}">商品标题</span>
+      </li>
+    </th:block>
+    <th:block th:if="${pageTitle == '购物车'}">
+      <li class="shop-breadcrumb__separator" aria-hidden="true">/</li>
+      <li class="shop-breadcrumb__item">
+        <span class="shop-breadcrumb__current">购物车</span>
+      </li>
+    </th:block>
+    <th:block th:if="${pageTitle == '结算'}">
+      <li class="shop-breadcrumb__separator" aria-hidden="true">/</li>
+      <li class="shop-breadcrumb__item">
+        <span class="shop-breadcrumb__current">结算</span>
+      </li>
+    </th:block>
+    <th:block th:if="${pageTitle == '支付'}">
+      <li class="shop-breadcrumb__separator" aria-hidden="true">/</li>
+      <li class="shop-breadcrumb__item">
+        <span class="shop-breadcrumb__current">支付</span>
+      </li>
+    </th:block>
+  </ol>
+</nav>
