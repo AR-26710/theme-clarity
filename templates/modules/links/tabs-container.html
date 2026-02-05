@@ -1,0 +1,118 @@
+<div class="custom-tabs-container" id="link-tabs">
+  <div class="custom-tabs-header">
+    <div class="custom-tabs-nav">
+      <button class="custom-tab-item active" data-tab="tab-info" onclick="switchTab(this)">我的博客信息</button>
+      <button class="custom-tab-item" data-tab="tab-apply" onclick="switchTab(this)">申请友链</button>
+    </div>
+  </div>
+
+  <div class="custom-tabs-content">
+    <div id="tab-info" class="custom-tab-pane active">
+      <div
+        class="link-tab"
+        th:with="
+          myTitle = ${theme.config.links.my_info?.title} ?: ${site.title},
+          myUrl = ${theme.config.links.my_info?.url} ?: ${site.url},
+          myLogo = ${theme.config.links.my_info?.logo} ?: ${theme.config.header.logo},
+          myDesc = ${theme.config.links.my_info?.description} ?: ${theme.config.header.subtitle},
+          myRss = ${theme.config.links.my_info?.rss} ?: '/rss.xml'
+        "
+      >
+        <div class="my-feed-card gradient-card">
+          <div class="avatar">
+            <img th:src="${myLogo}" th:alt="${myTitle}" />
+          </div>
+          <div class="info">
+            <span class="author" th:text="${myTitle}"></span>
+            <span class="title" th:text="${myDesc}"></span>
+          </div>
+        </div>
+
+        <div class="copy-fields">
+          <div class="copy-item">
+            <span class="prompt">名称</span>
+            <div class="code" th:text="${myTitle}"></div>
+            <button class="operation copy-btn" aria-label="复制" th:data-copy="${myTitle}">
+              <span class="icon-[ph--copy-bold]"></span>
+            </button>
+          </div>
+          <div class="copy-item">
+            <span class="prompt">网址</span>
+            <div class="code" th:text="${myUrl}"></div>
+            <button class="operation copy-btn" aria-label="复制" th:data-copy="${myUrl}">
+              <span class="icon-[ph--copy-bold]"></span>
+            </button>
+          </div>
+          <div class="copy-item">
+            <span class="prompt">Logo</span>
+            <div class="code" th:text="${myLogo}"></div>
+            <button class="operation copy-btn" aria-label="复制" th:data-copy="${myLogo}">
+              <span class="icon-[ph--copy-bold]"></span>
+            </button>
+          </div>
+          <div class="copy-item">
+            <span class="prompt">描述</span>
+            <div class="code" th:text="${myDesc}"></div>
+            <button class="operation copy-btn" aria-label="复制" th:data-copy="${myDesc}">
+              <span class="icon-[ph--copy-bold]"></span>
+            </button>
+          </div>
+          <div class="copy-item">
+            <span class="prompt">RSS</span>
+            <div class="code" th:text="${myRss}"></div>
+            <button class="operation copy-btn" aria-label="复制" th:data-copy="${myRss}">
+              <span class="icon-[ph--copy-bold]"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-apply" class="custom-tab-pane">
+      <div class="link-tab">
+        <div class="apply-content article">
+          <th:block
+            th:if="${theme.config.links?.apply_content}"
+            th:utext="${theme.config.links.apply_content}"
+          ></th:block>
+          <th:block th:unless="${theme.config.links?.apply_content}">
+            <p>欢迎与我交换友链！请在评论区留下你的博客信息：</p>
+            <ul>
+              <li><strong>博客名称</strong>：你的博客标题</li>
+              <li><strong>博客地址</strong>：你的博客 URL</li>
+              <li><strong>博客描述</strong>：一句话介绍</li>
+              <li><strong>博客头像</strong>：Logo 或头像链接</li>
+            </ul>
+            <p>我会尽快审核并添加你的友链。</p>
+          </th:block>
+        </div>
+
+        <th:block th:if="${theme.config.links?.enable_submit}">
+          <div class="link-submit-actions">
+            <div id="link-submit-entry" class="link-submit-entry" style="display: none">
+              <button type="button" class="z-btn primary" onclick="openLinkSubmitModal()">
+                <span class="icon-[ph--plus-bold]"></span>
+                <span>在线提交</span>
+              </button>
+            </div>
+            <div
+              th:if="${theme.config.links?.enable_update}"
+              id="link-update-entry"
+              class="link-submit-entry"
+              style="display: none"
+            >
+              <button type="button" class="z-btn" onclick="openLinkUpdateModal()">
+                <span class="icon-[ph--pencil-bold]"></span>
+                <span>修改友链</span>
+              </button>
+            </div>
+            <div id="link-submit-unavailable" class="link-submit-unavailable" style="display: none">
+              <span class="icon-[ph--warning-circle-bold]"></span>
+              <span>自主提交插件未安装</span>
+            </div>
+          </div>
+        </th:block>
+      </div>
+    </div>
+  </div>
+</div>

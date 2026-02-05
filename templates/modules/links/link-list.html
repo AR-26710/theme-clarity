@@ -1,0 +1,39 @@
+<th:block th:each="group,groupStat : ${groups}">
+  <section class="feed-group" th:if="${not #lists.isEmpty(group.links)}">
+    <h3 class="feed-title" th:text="${group.spec.displayName}"></h3>
+    <p
+      th:if="${group.metadata.annotations?.get('description')}"
+      class="feed-desc"
+      th:text="${group.metadata.annotations.get('description')}"
+    ></p>
+
+    <menu class="feed-list">
+      <li th:each="link,linkStat : ${group.links}">
+        <div class="feed-card-wrapper" th:data-link="${link.spec.url}">
+          <a th:href="${link.spec.url}" class="feed-card gradient-card" target="_blank" rel="noopener noreferrer">
+            <div class="avatar">
+              <img th:src="${link.spec.logo}" th:alt="${link.spec.displayName}" loading="lazy" />
+            </div>
+            <span class="author" th:text="${link.spec.displayName}"></span>
+          </a>
+
+          <div class="feed-tooltip">
+            <div class="site-content">
+              <img class="site-icon" th:src="${link.spec.logo}" th:alt="${link.spec.displayName}" />
+              <div class="site-info">
+                <h4 class="text-creative" th:text="${link.spec.displayName}"></h4>
+                <code
+                  class="domain"
+                  th:text="${#strings.replace(#strings.replace(link.spec.url, 'https://', ''), 'http://', '')}"
+                ></code>
+              </div>
+            </div>
+            <div class="desc-content">
+              <p th:text="${link.spec.description}"></p>
+            </div>
+          </div>
+        </div>
+      </li>
+    </menu>
+  </section>
+</th:block>
