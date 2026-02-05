@@ -1,0 +1,65 @@
+<!doctype html>
+<html
+  xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{modules/layout :: html(content = ~{::content}, showAside = false, pageTitle = '商品' + ${product.title})}"
+>
+  <th:block th:fragment="content">
+    <th:block th:replace="~{shop/modules/breadcrumb}" />
+
+    <div class="shop-product-detail">
+      <div th:unless="${#lists.isEmpty(product.images)}" class="shop-product-gallery">
+        <swiper-container class="product-gallery-swiper" thumbs-swiper=".product-gallery-nav-swiper" navigation="true">
+          <swiper-slide th:each="image : ${product.images}">
+            <img th:src="${image}" th:data-src="${image}" alt="Product Image" data-zoomable />
+          </swiper-slide>
+        </swiper-container>
+        <swiper-container
+          class="product-gallery-nav-swiper"
+          space-between="10"
+          slides-per-view="auto"
+          free-mode="true"
+          watch-slides-progress="true"
+        >
+          <swiper-slide th:each="image : ${product.images}">
+            <img th:src="${image}" sizes="100px" alt="Product Image" />
+          </swiper-slide>
+        </swiper-container>
+      </div>
+
+      <div class="shop-product-info">
+        <p class="shop-product-info__desc" th:text="${product.description}"></p>
+        <shop-buy-box th:id="${product.id}" th:csrfToken="${_csrf.token}"></shop-buy-box>
+      </div>
+    </div>
+
+    <div class="shop-product-content">
+      <article class="article" th:utext="${product.content}"></article>
+
+      <table th:if="${!#lists.isEmpty(product.specDefinition)}" class="shop-product-content__specs">
+        <tbody>
+          <tr th:each="spec : ${product.specDefinition}">
+            <td th:text="${spec.name}"></td>
+            <td>
+              <span
+                th:each="specValue, iterStat : ${spec.values}"
+                th:text="${specValue.value} + ${iterStat.last ? '' : ', '}"
+              ></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 th:if="${haloCommentEnabled}" class="comment-title">
+      <span class="icon-[ph--chat-circle-text-bold]"></span>
+      评论区
+    </h3>
+    <!-- TODO: 此处仅由基础的评论功能，其它功能等待后续官方的支持。 -->
+    <section th:if="${haloCommentEnabled}" class="z-comment" id="comment">
+      <halo:comment group="shop.halo.run" kind="shop" th:attr="name=${product.id}" />
+    </section>
+
+    <th:block th:replace="~{shop/modules/style}" />
+    <th:block th:replace="~{shop/modules/script}" />
+  </th:block>
+</html>
