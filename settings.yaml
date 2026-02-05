@@ -592,18 +592,51 @@ spec:
     - group: post
       label: 文章
       formSchema:
-        - $formkit: postSelect
-          name: featured_posts
-          label: 精选文章
-          multiple: true
-          help: 选择要在首页轮播展示的文章
-        - $formkit: switch
-          name: featured_posts_page
-          id: featured_posts_page
-          key: featured_posts_page
-          label: 精选文章仅显示在首页
-          value: true
-          help: 启用后，精选文章仅在首页显示
+        - $formkit: group
+          name: homepage
+          label: 首页顶部小组件
+          help: 拖拽调整顺序，越靠前优先级越高
+          children:
+            - $formkit: array
+              name: widgets
+              label: 小组件配置
+              value: []
+              itemLabels:
+                - type: text
+                  label: $value.widget
+              children:
+                - $formkit: select
+                  name: widget
+                  label: 小组件
+                  options:
+                    - value: "featured"
+                      label: 精选文章
+                    - value: "custom"
+                      label: 自定义内容
+                - $formkit: text
+                  name: title
+                  label: 标题
+                  if: "$value.widget === 'custom'"
+                  placeholder: 小组件标题
+                - $formkit: textarea
+                  name: content
+                  label: 内容
+                  if: "$value.widget === 'custom'"
+                  placeholder: 支持 HTML
+                  rows: 5
+        - $formkit: group
+          name: featured
+          label: 精选文章配置
+          children:
+            - $formkit: text
+              name: title
+              label: 标题
+              value: "精选文章"
+            - $formkit: postSelect
+              name: posts
+              label: 文章列表
+              multiple: true
+              help: 选择要在首页轮播展示的文章
         - $formkit: number
           name: per_page
           label: 每页文章数
