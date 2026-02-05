@@ -478,6 +478,8 @@ spec:
                       label: 云计算支持
                     - value: "custom"
                       label: 自定义
+                    - value: "promotion"
+                      label: 推广轮播
                 - $formkit: text
                   name: moments_title
                   label: 标题
@@ -589,6 +591,55 @@ spec:
               label: 心知天气 API Key
               placeholder: 请输入心知天气 API Key
               help: "前往 https://www.seniverse.com 注册获取，免费版即可，自动根据访客 IP 定位"
+        - $formkit: group
+          name: promotion
+          label: 推广轮播配置
+          children:
+            - $formkit: text
+              name: title
+              label: 标题
+              value: "推广"
+              placeholder: 推广
+            - $formkit: number
+              name: height
+              label: 图片高度 (px)
+              value: 120
+              min: 80
+              max: 300
+              help: 轮播图片的显示高度（像素）
+            - $formkit: number
+              name: interval
+              label: 自动切换间隔 (秒)
+              value: 5
+              min: 0
+              max: 30
+              help: 设为 0 则不自动切换
+            - $formkit: array
+              name: items
+              label: 轮播项
+              value: []
+              help: 前端最多显示 6 个轮播项
+              itemLabels:
+                - type: image
+                  label: $value.image
+                - type: text
+                  label: $value.tip
+              children:
+                - $formkit: attachment
+                  name: image
+                  label: 图片
+                  accepts:
+                    - "image/*"
+                  validation: required
+                - $formkit: text
+                  name: tip
+                  label: 提示文字
+                  placeholder: 图片描述
+                - $formkit: url
+                  name: url
+                  label: 跳转链接
+                  placeholder: https://example.com
+                  help: 可选，点击图片跳转的地址
     - group: post
       label: 文章
       formSchema:

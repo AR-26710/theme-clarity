@@ -531,6 +531,107 @@
           </a>
         </section>
 
+        <section
+          th:case="'promotion'"
+          class="widget"
+          th:if="${theme.config.aside.promotion?.items != null and not #lists.isEmpty(theme.config.aside.promotion.items)}"
+          th:with="totalCount = ${#lists.size(theme.config.aside.promotion.items)}, itemCount = ${T(java.lang.Math).min(totalCount, 6)}"
+        >
+          <hgroup class="widget-title text-creative" th:text="${theme.config.aside.promotion?.title} ?: '推广'">
+            推广
+          </hgroup>
+          <div
+            class="widget-body widget-card promotion-carousel"
+            th:style="|--promotion-height: ${theme.config.aside.promotion?.height ?: 120}px; --promotion-count: ${itemCount}|"
+            th:data-interval="${theme.config.aside.promotion?.interval ?: 5}"
+          >
+            <div class="promotion-track">
+              <th:block th:each="slide, iterStat : ${theme.config.aside.promotion.items}" th:if="${iterStat.index < 6}">
+                <a
+                  th:if="${not #strings.isEmpty(slide.url)}"
+                  th:href="${slide.url}"
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  class="promotion-slide"
+                  th:classappend="${iterStat.first} ? 'active' : ''"
+                >
+                  <img th:src="${slide.image}" th:alt="${slide.tip}" loading="lazy" />
+                  <span th:if="${not #strings.isEmpty(slide.tip)}" class="promotion-tip" th:text="${slide.tip}"></span>
+                </a>
+                <div
+                  th:unless="${not #strings.isEmpty(slide.url)}"
+                  class="promotion-slide"
+                  th:classappend="${iterStat.first} ? 'active' : ''"
+                >
+                  <img th:src="${slide.image}" th:alt="${slide.tip}" loading="lazy" />
+                  <span th:if="${not #strings.isEmpty(slide.tip)}" class="promotion-tip" th:text="${slide.tip}"></span>
+                </div>
+              </th:block>
+            </div>
+            <div class="promotion-dots" th:if="${itemCount > 1}">
+              <span
+                th:each="slide, iterStat : ${theme.config.aside.promotion.items}"
+                th:if="${iterStat.index < 6}"
+                class="promotion-dot"
+                th:classappend="${iterStat.first} ? 'active' : ''"
+                th:data-index="${iterStat.index}"
+              ></span>
+            </div>
+          </div>
+          <script>
+            (function () {
+              const carousel = document.querySelector(".promotion-carousel");
+              if (!carousel) return;
+
+              const slides = carousel.querySelectorAll(".promotion-slide");
+              const dots = carousel.querySelectorAll(".promotion-dot");
+              if (slides.length <= 1) return;
+
+              const interval = parseInt(carousel.dataset.interval) || 5;
+              let current = 0;
+              let timer = null;
+
+              function showSlide(index) {
+                slides.forEach((s, i) => s.classList.toggle("active", i === index));
+                dots.forEach((d, i) => d.classList.toggle("active", i === index));
+                current = index;
+              }
+
+              function next() {
+                showSlide((current + 1) % slides.length);
+              }
+
+              function startAuto() {
+                if (interval > 0 && !timer) {
+                  timer = setInterval(next, interval * 1000);
+                }
+              }
+
+              function stopAuto() {
+                if (timer) {
+                  clearInterval(timer);
+                  timer = null;
+                }
+              }
+
+              // 圆点点击
+              dots.forEach((dot) => {
+                dot.addEventListener("click", () => {
+                  showSlide(parseInt(dot.dataset.index));
+                  stopAuto();
+                  startAuto();
+                });
+              });
+
+              // 鼠标悬停暂停
+              carousel.addEventListener("mouseenter", stopAuto);
+              carousel.addEventListener("mouseleave", startAuto);
+
+              startAuto();
+            })();
+          </script>
+        </section>
+
         <section th:case="'custom'" class="widget">
           <hgroup class="widget-title text-creative" th:text="${item.title}">自定义</hgroup>
           <div class="widget-body widget-card" th:utext="${item.content}"></div>
