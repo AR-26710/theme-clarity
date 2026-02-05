@@ -1,0 +1,107 @@
+<div th:fragment="homepage-widgets">
+  <th:block
+    th:if="${theme.config.post.homepage.widgets != null and not #lists.isEmpty(theme.config.post.homepage.widgets)}"
+  >
+    <th:block th:each="item, itemStat : ${theme.config.post.homepage.widgets}">
+      <th:block th:switch="${item.widget}">
+        <!-- 精选文章组件：引用全局配置 -->
+        <section
+          th:case="featured"
+          class="z-slide"
+          th:if="${theme.config.post.featured.posts != null and not #lists.isEmpty(theme.config.post.featured.posts)}"
+        >
+          <div class="z-slide-header">
+            <span class="title text-creative" th:text="${theme.config.post.featured.title} ?: '精选文章'"
+              >精选文章</span
+            >
+            <div class="at-slide-hover">
+              <span class="icon-[ph--mouse-simple-bold]"></span>
+              <span>按住 Shift 横向滚动</span>
+            </div>
+          </div>
+
+          <div class="z-slide-body">
+            <div class="slide-list" th:id="|slide-scroll-container-${itemStat.index}|">
+              <th:block th:each="postName : ${theme.config.post.featured.posts}">
+                <th:block th:with="post = ${postFinder.getByName(postName)}">
+                  <a
+                    th:if="${post != null}"
+                    th:href="${post.status.permalink}"
+                    class="slide-item gradient-card"
+                    th:title="${post.status.excerpt}"
+                  >
+                    <img
+                      th:if="${post.spec.cover}"
+                      th:src="${post.spec.cover}"
+                      th:srcset="|${thumbnail.gen(post.spec.cover, 's')} 400w, ${thumbnail.gen(post.spec.cover, 'm')} 800w|"
+                      sizes="400px"
+                      class="cover"
+                      loading="lazy"
+                      th:alt="${post.spec.title}"
+                    />
+                    <div
+                      th:unless="${post.spec.cover}"
+                      class="cover flex items-center justify-center bg-gray-200 dark:bg-gray-700"
+                    >
+                      <span class="icon-[ph--image-broken] text-4xl opacity-20"></span>
+                    </div>
+
+                    <div class="info">
+                      <div class="title text-creative" th:text="${post.spec.title}"></div>
+                      <div class="desc" th:if="${post.spec.publishTime}">
+                        <span class="icon-[ph--calendar-dots-bold]"></span>
+                        <span th:text="${#temporals.format(post.spec.publishTime, 'yyyy-MM-dd')}"></span>
+                      </div>
+                    </div>
+                  </a>
+                </th:block>
+              </th:block>
+            </div>
+
+            <button
+              class="carousel-action prev at-slide-hover"
+              aria-label="上一页"
+              th:onclick="|document.getElementById('slide-scroll-container-${itemStat.index}').scrollBy({ left: -300, behavior: 'smooth' })|"
+            >
+              <span class="icon-[ph--caret-left-bold]"></span>
+            </button>
+            <button
+              class="carousel-action next at-slide-hover"
+              aria-label="下一页"
+              th:onclick="|document.getElementById('slide-scroll-container-${itemStat.index}').scrollBy({ left: 300, behavior: 'smooth' })|"
+            >
+              <span class="icon-[ph--caret-right-bold]"></span>
+            </button>
+          </div>
+
+          <script>
+            (function () {
+              const containerId = "slide-scroll-container-[[${itemStat.index}]]";
+              const container = document.getElementById(containerId);
+              if (container) {
+                container.addEventListener(
+                  "wheel",
+                  (e) => {
+                    if (!e.shiftKey && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                      e.preventDefault();
+                      container.scrollLeft += e.deltaY;
+                    }
+                  },
+                  { passive: false },
+                );
+              }
+            })();
+          </script>
+        </section>
+
+        <!-- 自定义组件 -->
+        <section th:case="custom" class="custom-widget">
+          <div class="z-slide-header">
+            <span class="title text-creative" th:text="${item.title}">自定义</span>
+          </div>
+          <div th:utext="${item.content}"></div>
+        </section>
+      </th:block>
+    </th:block>
+  </th:block>
+</div>
