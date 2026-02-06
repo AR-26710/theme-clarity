@@ -17,7 +17,9 @@
       <!-- 更新友链弹窗 -->
       <div th:replace="~{modules/links/LinksSubmit-lywq/update-modal}"></div>
       <!-- 评论区 -->
-      <div th:replace="~{modules/links/comment-section}"></div>
+      <th:block
+        th:replace="~{modules/common/comment :: comment(group='plugin.halo.run', kind='Plugin', name=${pluginName}, title='评论区')}"
+      />
     </div>
     <!-- 随机友链按钮 -->
     <div th:replace="~{modules/links/random-btn}"></div>

@@ -1,0 +1,9 @@
+<th:block th:fragment="comment(group, kind, name, title)">
+  <h3 th:if="${haloCommentEnabled}" class="comment-title">
+    <span class="icon-[ph--chat-circle-text-bold]"></span>
+    <span th:text="${title}"></span>
+  </h3>
+  <section th:if="${haloCommentEnabled}" class="z-comment" id="comment">
+    <halo:comment th:attr="group=${group}, kind=${kind}, name=${name}" />
+  </section>
+</th:block>
