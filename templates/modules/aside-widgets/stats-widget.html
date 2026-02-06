@@ -11,12 +11,9 @@
         <dd class="time-ago" id="latest-update-time" data-time="">-</dd>
         <script th:inline="javascript">
           (function () {
-            var posts = /*[[${postFinder.listAll()}]]*/ [];
+            var posts = /*[[${postFinder.list({page: 1, size: 1, sort: {'spec.publishTime,desc'}}).items}]]*/ [];
             if (posts && posts.length > 0) {
-              var latest = posts.reduce(function (max, post) {
-                var time = post.spec && post.spec.publishTime;
-                return time && time > max ? time : max;
-              }, "");
+              var latest = posts[0].spec && posts[0].spec.publishTime;
               if (latest) {
                 document.getElementById("latest-update-time").dataset.time = latest;
               }
