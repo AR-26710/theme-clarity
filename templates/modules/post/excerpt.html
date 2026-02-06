@@ -1,0 +1,44 @@
+<th:block th:fragment="excerpt(post, theme)">
+  <div
+    th:if="${theme.config.post.show_excerpt != false and post.status.excerpt != null and post.status.excerpt != ''}"
+    class="md-excerpt gradient-card"
+    th:with="
+      enableAnimation = ${theme.config.post.excerpt?.animation != false},
+      speed = ${theme.config.post.excerpt?.speed ?: 50},
+      caret = ${theme.config.post.excerpt?.caret ?: '_'}
+    "
+    th:data-animation="${enableAnimation}"
+    th:data-speed="${speed}"
+    th:data-caret="${caret}"
+  >
+    <span class="icon-[ph--highlighter-bold]"></span>
+    <span
+      id="excerpt-text"
+      th:data-text="${post.status.excerpt}"
+      th:text="${enableAnimation ? '' : post.status.excerpt}"
+    ></span
+    ><span th:if="${enableAnimation}" id="excerpt-caret" class="excerpt-caret" th:text="${caret}"></span>
+  </div>
+  <script>
+    (function () {
+      const container = document.querySelector(".md-excerpt");
+      if (!container || container.dataset.animation === "false") return;
+      const el = document.getElementById("excerpt-text");
+      const caret = document.getElementById("excerpt-caret");
+      if (!el) return;
+      const text = el.dataset.text || "";
+      const speed = parseInt(container.dataset.speed) || 50;
+      let index = 0;
+      function type() {
+        if (index < text.length) {
+          el.textContent += text[index];
+          index++;
+          setTimeout(type, speed);
+        } else {
+          if (caret) caret.style.display = "none";
+        }
+      }
+      type();
+    })();
+  </script>
+</th:block>

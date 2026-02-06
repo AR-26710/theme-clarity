@@ -1,0 +1,55 @@
+<th:block th:fragment="post-header(post, theme, site)">
+  <div
+    class="post-header"
+    th:classappend="${(post.spec.cover != null and post.spec.cover != '' ? 'has-cover ' : '') + (theme.config.post.center_title ? 'center-title' : '')}"
+  >
+    <img
+      th:if="${post.spec.cover != null and post.spec.cover != ''}"
+      th:src="${post.spec.cover}"
+      class="post-cover"
+      th:alt="${post.spec.title}"
+    />
+
+    <div class="post-nav">
+      <div class="operations">
+        <button class="z-btn" id="share-btn" title="复制分享文本">
+          <span class="icon-[ph--share-bold]"></span>
+          <span>文字分享</span>
+        </button>
+        <button class="z-btn" id="poster-btn" title="生成分享海报">
+          <span class="icon-[ph--image-bold]"></span>
+          <span>海报分享</span>
+        </button>
+      </div>
+
+      <div class="post-info">
+        <th:block th:replace="~{modules/author-capsule :: capsule(author=${post.owner})}" />
+
+        <span th:if="${post.spec.publishTime}">
+          <span class="icon-[ph--calendar-dots-bold]"></span>
+          <time th:text="${#temporals.format(post.spec.publishTime, 'yyyy-MM-dd')}"></time>
+        </span>
+
+        <span th:if="${post.stats.comment != null}">
+          <span class="icon-[ph--chat-circle-dots-bold]"></span>
+          <span th:text="${post.stats.comment}"></span> 评论
+        </span>
+
+        <span th:if="${not #lists.isEmpty(post.categories)}">
+          <span class="icon-[ph--folder-bold]"></span>
+          <a th:href="${post.categories[0].status.permalink}" th:text="${post.categories[0].spec.displayName}"></a>
+        </span>
+
+        <span th:if="${post.stats.visit != null}">
+          <span class="icon-[ph--eye-bold]"></span>
+          <span th:text="${post.stats.visit}"></span> 阅读
+        </span>
+      </div>
+    </div>
+    <h1
+      class="post-title text-creative"
+      th:text="${post.spec.title}"
+      th:style="${#annotations.getOrDefault(post, 'enable_post_title_color', 'false') == 'true' ? 'color: ' + #annotations.getOrDefault(post, 'post_title_color', '#FFFFFF') : null}"
+    ></h1>
+  </div>
+</th:block>

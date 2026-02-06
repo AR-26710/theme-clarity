@@ -1,0 +1,36 @@
+<th:block th:fragment="outdated-notice(post, theme)">
+  <div
+    th:if="${theme.config.post.outdated_notice?.enabled != false and post.spec.publishTime != null}"
+    class="outdated-notice"
+    th:with="
+      thresholdDays = ${theme.config.post.outdated_notice?.days ?: 180},
+      message = ${theme.config.post.outdated_notice?.message ?: '本文发布于 {days} 天前，内容可能已过时，请注意甄别。'}
+    "
+    th:data-publish-time="${#temporals.format(post.spec.publishTime, 'yyyy-MM-dd''T''HH:mm:ss')}"
+    th:data-threshold="${thresholdDays}"
+    th:data-message="${message}"
+    style="display: none"
+  >
+    <span class="icon-[ph--warning-circle-bold]"></span>
+    <span class="notice-text"></span>
+  </div>
+  <script>
+    (function () {
+      const notice = document.querySelector(".outdated-notice");
+      if (!notice) return;
+
+      const publishTime = new Date(notice.dataset.publishTime).getTime();
+      const threshold = parseInt(notice.dataset.threshold) || 180;
+      const messageTemplate = notice.dataset.message;
+
+      const now = Date.now();
+      const daysPassed = Math.floor((now - publishTime) / (1000 * 60 * 60 * 24));
+
+      if (daysPassed >= threshold) {
+        const text = messageTemplate.replace("{days}", daysPassed);
+        notice.querySelector(".notice-text").textContent = text;
+        notice.style.display = "";
+      }
+    })();
+  </script>
+</th:block>

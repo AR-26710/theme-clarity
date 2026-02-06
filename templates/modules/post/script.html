@@ -1,0 +1,102 @@
+<th:block th:fragment="script(post, site, theme)">
+  <script th:inline="javascript">
+    (function () {
+      const title = /*[[${post.spec.title}]]*/ "";
+      const excerpt = /*[[${post.status.excerpt ?: ''}]]*/ "";
+      const siteTitle = /*[[${site.title}]]*/ "";
+      const url = window.location.href;
+
+      // 文字分享
+      const shareBtn = document.getElementById("share-btn");
+      if (shareBtn) {
+        const shareText = `【${siteTitle}】${title}\n\n${excerpt ? excerpt + "\n\n" : ""}${url}`;
+        shareBtn.addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(shareText);
+            const icon = shareBtn.querySelector("span:first-child");
+            const text = shareBtn.querySelector("span:last-child");
+            icon.className = "icon-[ph--check-bold]";
+            text.textContent = "已复制";
+            setTimeout(() => {
+              icon.className = "icon-[ph--share-bold]";
+              text.textContent = "文字分享";
+            }, 2000);
+          } catch (err) {
+            console.error("复制失败:", err);
+          }
+        });
+      }
+
+      // 海报分享
+      const posterBtn = document.getElementById("poster-btn");
+      const posterModal = document.getElementById("poster-modal");
+      const posterClose = document.getElementById("poster-close");
+      const posterDownload = document.getElementById("poster-download");
+      const posterQrcode = document.getElementById("poster-qrcode");
+      const posterCard = document.getElementById("poster-card");
+
+      // 编辑文章
+      const editPostBtn = document.getElementById("edit-post-btn");
+      if (editPostBtn) {
+        editPostBtn.addEventListener("click", () => {
+          const editUrl = editPostBtn.dataset.url;
+          if (editUrl) {
+            window.location.href = editUrl;
+          }
+        });
+      }
+
+      if (posterBtn && posterModal) {
+        let qrGenerated = false;
+
+        // 打开弹窗
+        posterBtn.addEventListener("click", () => {
+          posterModal.style.display = "flex";
+          document.body.style.overflow = "hidden";
+
+          // 生成二维码
+          if (!qrGenerated && window.generateQRCode) {
+            window.generateQRCode(posterQrcode, url);
+            qrGenerated = true;
+          }
+        });
+
+        // 关闭弹窗
+        const closeModal = () => {
+          posterModal.style.display = "none";
+          document.body.style.overflow = "";
+        };
+
+        posterClose.addEventListener("click", closeModal);
+        posterModal.querySelector(".poster-modal-overlay").addEventListener("click", closeModal);
+
+        // 下载海报
+        posterDownload.addEventListener("click", async () => {
+          const icon = posterDownload.querySelector("span:first-child");
+          const text = posterDownload.querySelector("span:last-child");
+
+          icon.className = "icon-[ph--spinner] animate-spin";
+          text.textContent = "生成中...";
+
+          try {
+            if (window.generatePoster) {
+              await window.generatePoster(posterCard, title);
+              icon.className = "icon-[ph--check-bold]";
+              text.textContent = "已保存";
+            }
+          } catch (err) {
+            console.error("生成失败:", err);
+            icon.className = "icon-[ph--warning-bold]";
+            text.textContent = "生成失败";
+          }
+
+          setTimeout(() => {
+            icon.className = "icon-[ph--download-bold]";
+            text.textContent = "保存海报";
+          }, 2000);
+        });
+      }
+    })();
+  </script>
+</th:block>
+<!-- TODO 这里编辑器报错，但我确实没找到是哪里的问题，但实际是可以正常使用的。 -->
