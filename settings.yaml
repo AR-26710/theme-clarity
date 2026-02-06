@@ -476,10 +476,10 @@ spec:
                       label: 社区群组
                     - value: "sponsor"
                       label: 云计算支持
-                    - value: "custom"
-                      label: 自定义
                     - value: "promotion"
                       label: 推广轮播
+                    - value: "custom"
+                      label: 自定义
                 - $formkit: text
                   name: moments_title
                   label: 标题
