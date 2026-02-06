@@ -9,7 +9,7 @@
       th:classappend="${(singlePage.spec.cover != null and singlePage.spec.cover != '' ? 'has-cover ' : '') + (theme.config.post.center_title ? 'center-title' : '')}"
     >
       <img
-        th:if="${singlePage.spec.cover}"
+        th:if="${singlePage.spec.cover != null and singlePage.spec.cover  != ''}"
         th:src="${singlePage.spec.cover}"
         class="post-cover"
         th:alt="${singlePage.spec.title}"
