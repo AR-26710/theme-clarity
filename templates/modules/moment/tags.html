@@ -1,0 +1,20 @@
+<th:block th:fragment="content">
+  <div th:if="${not #lists.isEmpty(tags)}" class="moments-tags-wrapper">
+    <nav class="moments-tags scrollcheck-x">
+      <a th:href="@{/moments}" class="tag-item" th:classappend="${#lists.isEmpty(param.tag)} ? 'active' : ''"> 全部 </a>
+      <a
+        th:each="tag : ${tags}"
+        th:href="|/moments?tag=${tag.name}|"
+        class="tag-item"
+        th:classappend="${#lists.contains(param.tag, tag.name)} ? 'active' : ''"
+      >
+        <span th:text="${tag.name}"></span>
+        <span class="tag-count" th:text="${tag.momentCount}"></span>
+      </a>
+    </nav>
+    <div class="at-slide-hover">
+      <span class="icon-[ph--mouse-simple-bold]"></span>
+      <span>滚动查看更多</span>
+    </div>
+  </div>
+</th:block>

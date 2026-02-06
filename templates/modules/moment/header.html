@@ -1,0 +1,12 @@
+<th:block th:fragment="content">
+  <div class="moments-header">
+    <div class="moments-title">
+      <span class="icon-[ph--shooting-star-bold]"></span>
+      <h1 class="text-creative" th:text="${theme.config.plugins?.moments?.title} ?: '瞬间'">瞬间</h1>
+    </div>
+    <a href="/moments/rss.xml" class="rss-link" title="RSS 订阅" target="_blank" rel="noopener">
+      <span class="icon-[ph--rss-simple-bold]"></span>
+      RSS 订阅
+    </a>
+  </div>
+</th:block>

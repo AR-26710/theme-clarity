@@ -1,0 +1,82 @@
+<th:block th:fragment="media">
+  <div
+    th:if="${not #lists.isEmpty(content.medium)}"
+    class="moment-media"
+    th:classappend="${#lists.size(content.medium) == 1 ? 'single' : (#lists.size(content.medium) == 2 ? 'double' : 'grid')}"
+  >
+    <th:block th:each="mediaItem : ${content.medium}">
+      <figure th:if="${mediaItem.type.name == 'PHOTO'}" class="media-item photo">
+        <img th:src="${mediaItem.url}" alt="瞬间图片" loading="lazy" />
+      </figure>
+
+      <figure th:if="${mediaItem.type.name == 'VIDEO'}" class="media-item video">
+        <video th:src="${mediaItem.url}" controls preload="metadata"></video>
+      </figure>
+
+      <figure th:if="${mediaItem.type.name == 'AUDIO'}" class="media-item audio">
+        <audio th:src="${mediaItem.url}" controls></audio>
+      </figure>
+    </th:block>
+  </div>
+</th:block>
+
+<th:block th:fragment="like-button">
+  <button
+    class="action-btn like"
+    title="点赞"
+    x-data="{ 
+      liked: localStorage.getItem('moment-liked-' + $el.dataset.name) === 'true',
+      count: parseInt($el.dataset.count) || 0,
+      loading: false,
+      async toggle() {
+        if (this.loading || this.liked) return;
+        this.loading = true;
+        try {
+          const res = await fetch('/apis/api.halo.run/v1alpha1/trackers/upvote', { 
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              group: 'moment.halo.run',
+              plural: 'moments',
+              name: $el.dataset.name
+            })
+          });
+          if (res.ok) {
+            this.liked = true;
+            this.count++;
+            localStorage.setItem('moment-liked-' + $el.dataset.name, 'true');
+          } else {
+            console.error('Upvote failed:', res.status, await res.text());
+          }
+        } catch(e) { console.error('Upvote error:', e); }
+        this.loading = false;
+      }
+    }"
+    :class="{ 'active': liked, 'loading': loading }"
+    @click="toggle()"
+    th:data-name="${moment.metadata.name}"
+    th:data-count="${moment.stats.upvote ?: 0}"
+  >
+    <span class="icon-[ph--heart-bold]" x-show="!liked"></span>
+    <span class="icon-[ph--heart-fill]" x-show="liked" style="display: none; color: var(--c-red, #ef4444)"></span>
+    <span x-text="count"></span>
+  </button>
+</th:block>
+
+<th:block th:fragment="share-button(url)">
+  <button
+    class="action-btn share"
+    title="复制链接"
+    th:attr="data-url=${url}"
+    onclick="
+      const url = this.dataset.url && this.dataset.url.trim() ? location.origin + this.dataset.url : location.href;
+      navigator.clipboard.writeText(url);
+      this.classList.add('copied');
+      setTimeout(() => this.classList.remove('copied'), 2000);
+    "
+  >
+    <span class="icon-[ph--link-bold]"></span>
+  </button>
+</th:block>
