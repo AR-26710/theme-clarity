@@ -1,0 +1,21 @@
+<!-- 社交图标组件 -->
+<div
+  th:fragment="social-icons"
+  class="social-icons"
+  th:if="${theme.config.footer.social?.items != null and !theme.config.footer.social.items.isEmpty()}"
+>
+  <a
+    th:each="link : ${theme.config.footer.social.items}"
+    th:href="${link.url}"
+    th:title="${link.text}"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <th:block
+      th:if="${link.icon != null}"
+      th:with="iconVal = ${link.icon.value != null ? link.icon.value : (link.icon instanceof T(String) ? link.icon : null)}"
+    >
+      <img th:if="${iconVal != null and not #strings.isEmpty(iconVal)}" th:src="${iconVal}" alt="" />
+    </th:block>
+  </a>
+</div>
