@@ -25,7 +25,7 @@
               <th:block th:each="postName : ${theme.config.post.featured.posts}">
                 <th:block
                   th:if="${postName != null and postName != ''}"
-                  th:with="post = ${postFinder.getByName(postName)}"
+                  th:with="post = ${postFinder.getByName(postName) ?: null}"
                 >
                   <a
                     th:if="${post != null}"
