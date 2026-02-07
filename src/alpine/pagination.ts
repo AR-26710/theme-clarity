@@ -1,4 +1,5 @@
 import type Alpine from "alpinejs";
+import { showToast } from "../utils/toast";
 
 export function registerPagination(alpine: typeof Alpine) {
   alpine.data("pagination", (page: number, total: number) => ({
@@ -60,7 +61,7 @@ window.jumpToPage = function (button: HTMLElement) {
   const totalPages = parseInt(input.dataset.totalPages || "1");
 
   if (isNaN(targetPage) || targetPage < 1 || targetPage > totalPages) {
-    alert("请输入有效的页码");
+    showToast("请输入有效页码", "warning");
     return;
   }
 
@@ -118,7 +119,7 @@ window.jumpToPageWithPattern = function (button: HTMLElement) {
   const firstPageUrl = input.dataset.firstPageUrl || "/";
 
   if (isNaN(targetPage) || targetPage < 1 || targetPage > totalPages) {
-    alert("请输入有效的页码");
+    showToast("请输入有效页码", "warning");
     return;
   }
 
