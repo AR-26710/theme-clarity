@@ -3,13 +3,9 @@
   th:fragment="hot-post"
   th:if="${theme.config.post.hot_post != null and theme.config.post.hot_post.post_number > 0}"
 >
-  <div class="z-slide-header">
-    <span class="title text-creative" th:text="${theme.config.post.hot_post.title} ?: '热门文章'">热门文章</span>
-    <div class="at-slide-hover">
-      <span class="icon-[ph--mouse-simple-bold]"></span>
-      <span>按住 Shift 横向滚动</span>
-    </div>
-  </div>
+  <div
+    th:replace="~{modules/home-widgets/slide-widget-base::header(${theme.config.post.hot_post.title ?: '热门文章'})}"
+  ></div>
 
   <div class="z-slide-body">
     <div class="slide-list" id="hot-post-scroll-container">
@@ -21,66 +17,13 @@
       })}"
       >
         <th:block th:each="post : ${posts.items}">
-          <a th:href="${post.status.permalink}" class="slide-item gradient-card" th:title="${post.status.excerpt}">
-            <img
-              th:if="${post.spec.cover}"
-              th:src="${post.spec.cover}"
-              th:srcset="|${thumbnail.gen(post.spec.cover, 's')} 400w, ${thumbnail.gen(post.spec.cover, 'm')} 800w|"
-              sizes="400px"
-              class="cover"
-              loading="lazy"
-              th:alt="${post.spec.title}"
-            />
-            <div
-              th:unless="${post.spec.cover}"
-              class="cover flex items-center justify-center bg-gray-200 dark:bg-gray-700"
-            >
-              <span class="icon-[ph--image-broken] text-4xl opacity-20"></span>
-            </div>
-
-            <div class="info">
-              <div class="title text-creative" th:text="${post.spec.title}"></div>
-              <div class="desc" th:if="${post.spec.publishTime}">
-                <span class="icon-[ph--calendar-dots-bold]"></span>
-                <span th:text="${#temporals.format(post.spec.publishTime, 'yyyy-MM-dd')}"></span>
-              </div>
-            </div>
-          </a>
+          <div th:replace="~{modules/home-widgets/slide-widget-base::post-item(${post})}"></div>
         </th:block>
       </th:block>
     </div>
 
-    <button
-      class="carousel-action prev at-slide-hover"
-      aria-label="上一页"
-      onclick="document.getElementById('hot-post-scroll-container').scrollBy({ left: -300, behavior: 'smooth' })"
-    >
-      <span class="icon-[ph--caret-left-bold]"></span>
-    </button>
-    <button
-      class="carousel-action next at-slide-hover"
-      aria-label="下一页"
-      onclick="document.getElementById('hot-post-scroll-container').scrollBy({ left: 300, behavior: 'smooth' })"
-    >
-      <span class="icon-[ph--caret-right-bold]"></span>
-    </button>
+    <div th:replace="~{modules/home-widgets/slide-widget-base::footer('hot-post-scroll-container')}"></div>
   </div>
 
-  <script>
-    (function () {
-      const container = document.getElementById("hot-post-scroll-container");
-      if (container) {
-        container.addEventListener(
-          "wheel",
-          (e) => {
-            if (!e.shiftKey && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-              e.preventDefault();
-              container.scrollLeft += e.deltaY;
-            }
-          },
-          { passive: false },
-        );
-      }
-    })();
-  </script>
+  <div th:replace="~{modules/home-widgets/slide-widget-base::script('hot-post-scroll-container')}"></div>
 </div>
