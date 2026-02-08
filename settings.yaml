@@ -662,6 +662,8 @@ spec:
                   options:
                     - value: "featured"
                       label: 精选文章
+                    - value: "hot-post"
+                      label: 热门文章
                     - value: "custom"
                       label: 自定义内容
                 - $formkit: text
@@ -688,6 +690,21 @@ spec:
               label: 文章列表
               multiple: true
               help: 选择要在首页轮播展示的文章
+        - $formkit: group
+          name: hot_post
+          label: 热门文章配置
+          children:
+            - $formkit: text
+              name: title
+              label: 标题
+              value: "热门文章"
+            - $formkit: number
+              name: post_number
+              label: 文章数量
+              value: 5
+              min: 1
+              max: 10
+              help: 选择要在首页展示的热门文章数量
         - $formkit: number
           name: per_page
           label: 每页文章数
