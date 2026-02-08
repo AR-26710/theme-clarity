@@ -1,0 +1,15 @@
+<div th:fragment="home">
+  <th:block
+    th:if="${theme.config.post.homepage.widgets != null and not #lists.isEmpty(theme.config.post.homepage.widgets)}"
+  >
+    <th:block th:each="item, itemStat : ${theme.config.post.homepage.widgets}">
+      <th:block th:switch="${item.widget}">
+        <!-- 精选文章组件：引用全局配置 -->
+        <section th:case="featured" th:insert="~{modules/home/featured-widget :: featured}"></section>
+
+        <!-- 自定义组件 -->
+        <section th:case="custom" class="custom-widget" th:insert="~{modules/home/custom-widget :: custom}"></section>
+      </th:block>
+    </th:block>
+  </th:block>
+</div>
