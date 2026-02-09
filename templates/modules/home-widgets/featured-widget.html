@@ -10,7 +10,7 @@
   <div class="z-slide-body">
     <div class="slide-list" id="slide-scroll-container">
       <th:block th:each="postName : ${theme.config.post.featured.posts}">
-        <th:block th:with="post = ${postFinder.getByName(postName) ?: null}">
+        <th:block th:if="${!#strings.isEmpty(postName)}" th:with="post=${postFinder.getByName(postName)}">
           <div th:if="${post != null}" th:replace="~{modules/home-widgets/slide-widget-base::post-item(${post})}"></div>
         </th:block>
       </th:block>
