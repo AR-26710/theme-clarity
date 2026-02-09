@@ -46,7 +46,7 @@ spec:
 apiVersion: v1alpha1
 kind: AnnotationSetting
 metadata:
-  name: annotation-setting-
+  name: post-annotation-setting
 spec:
   targetRef:
     group: content.halo.run
@@ -140,7 +140,7 @@ spec:
 apiVersion: v1alpha1
 kind: AnnotationSetting
 metadata:
-  name: annotation-setting-
+  name: page-annotation-setting
 spec:
   targetRef:
     group: content.halo.run

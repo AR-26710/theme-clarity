@@ -9,9 +9,9 @@
           <span th:if="${#strings.isEmpty(iconVal)}" class="icon-[ph--folder-bold]"></span>
         </th:block>
         <span th:text="${category != null} ? ${category.spec.displayName} : '全部分类'">全部分类</span>
-        <span class="icon-[ph--caret-down-bold]" style="font-size: 0.75em;"></span>
+        <span class="icon-[ph--caret-down-bold]" style="font-size: 0.75em"></span>
       </div>
-      <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[9999] w-48 p-2 shadow-lg">
+      <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-9999 w-48 p-2 shadow-lg">
         <li>
           <a href="/" th:classappend="${category == null} ? 'active' : ''">
             <span class="icon-[ph--squares-four-bold]"></span>
@@ -29,8 +29,10 @@
 <!-- 递归分类项片段 -->
 <th:block th:fragment="catItem(cat, level)">
   <li class="cat-level" th:classappend="'level-' + ${level}">
-    <a th:href="${cat.status.permalink}" 
-       th:classappend="${category != null and category.metadata.name == cat.metadata.name} ? 'active' : ''">
+    <a
+      th:href="${cat.status.permalink}"
+      th:classappend="${category != null and category.metadata.name == cat.metadata.name} ? 'active' : ''"
+    >
       <!-- 层级缩进线 -->
       <span th:if="${level > 0}" class="cat-indent">
         <span th:each="i : ${#numbers.sequence(1, level)}" class="cat-indent-line"></span>
@@ -38,8 +40,10 @@
       </span>
       <th:block th:with="iconVal = ${cat.metadata?.annotations?.get('categoryIicon')}">
         <img th:if="${not #strings.isEmpty(iconVal)}" th:src="${iconVal}" alt="" />
-        <span th:if="${#strings.isEmpty(iconVal)}" 
-              th:classappend="${level == 0} ? 'icon-[ph--folder]' : 'icon-[ph--folder-simple]'"></span>
+        <span
+          th:if="${#strings.isEmpty(iconVal)}"
+          th:classappend="${level == 0} ? 'icon-[ph--folder]' : 'icon-[ph--folder-simple]'"
+        ></span>
       </th:block>
       <span th:text="${cat.spec.displayName}"></span>
     </a>

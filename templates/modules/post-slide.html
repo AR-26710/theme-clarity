@@ -14,7 +14,7 @@
   <div class="z-slide-body">
     <div class="slide-list" id="slide-scroll-container">
       <th:block th:each="postName : ${theme.config.post.featured_posts}">
-        <th:block th:with="post = ${postFinder.getByName(postName)}">
+        <th:block th:with="post = ${postFinder.getByName(postName) ?: null}">
           <a
             th:if="${post != null}"
             th:href="${post.status.permalink}"

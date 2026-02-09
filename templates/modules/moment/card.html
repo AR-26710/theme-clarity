@@ -1,0 +1,68 @@
+<th:block th:fragment="content">
+  <article
+    th:each="moment,iterStat : ${moments.items}"
+    th:with="content=${moment.spec.content}"
+    class="moment-card"
+    th:id="|moment-${moment.metadata.name}|"
+    th:style="'--delay: ' + ${iterStat.index * 0.05} + 's'"
+  >
+    <header class="moment-header">
+      <div th:if="${moment.owner != null}" class="author-info">
+        <img
+          th:if="${moment.owner.avatar != null}"
+          th:src="${moment.owner.avatar}"
+          th:alt="${moment.owner.displayName}"
+          class="author-avatar"
+          loading="lazy"
+        />
+        <span class="author-name" th:text="${moment.owner.displayName}"></span>
+      </div>
+      <time
+        class="moment-time"
+        th:datetime="${moment.spec.releaseTime}"
+        th:title="${#temporals.format(moment.spec.releaseTime, 'yyyy-MM-dd HH:mm')}"
+      >
+        <span class="icon-[ph--calendar-dots-bold]"></span>
+        <span th:text="${#temporals.format(moment.spec.releaseTime, 'yyyy-MM-dd')}"></span>
+      </time>
+    </header>
+
+    <div class="moment-body">
+      <div th:if="${not #strings.isEmpty(content.html)}" class="moment-text" th:utext="${content.html}"></div>
+
+      <th:block th:replace="~{modules/moment/common :: media}"></th:block>
+    </div>
+
+    <footer class="moment-footer">
+      <div th:if="${not #lists.isEmpty(moment.spec.tags)}" class="moment-tags">
+        <a th:each="tag : ${moment.spec.tags}" th:href="|/moments?tag=${tag}|" class="moment-tag">
+          <span class="tag-hash">#</span>
+          <span th:text="${tag}"></span>
+        </a>
+      </div>
+
+      <div class="moment-actions">
+        <th:block th:replace="~{modules/moment/common :: like-button}"></th:block>
+        <button
+          class="action-btn comment"
+          title="评论"
+          onclick="this.closest('.moment-card').querySelector('.moment-comment')?.classList.toggle('show')"
+        >
+          <span class="icon-[ph--chat-circle-bold]"></span>
+          <span th:text="${moment.stats.approvedComment ?: 0}"></span>
+        </button>
+        <th:block
+          th:replace="~{modules/moment/common :: share-button(url=|/moments/${moment.metadata.name}|)}"
+        ></th:block>
+      </div>
+    </footer>
+
+    <div th:if="${haloCommentEnabled}" class="moment-comment" th:id="|comment-${moment.metadata.name}|">
+      <div class="comment-header">
+        <span class="icon-[ph--chat-circle-text-bold]"></span>
+        <span>评论</span>
+      </div>
+      <halo:comment group="moment.halo.run" kind="Moment" th:attr="name=${moment.metadata.name}" />
+    </div>
+  </article>
+</th:block>

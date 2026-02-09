@@ -9,7 +9,7 @@
       th:classappend="${(singlePage.spec.cover != null and singlePage.spec.cover != '' ? 'has-cover ' : '') + (theme.config.post.center_title ? 'center-title' : '')}"
     >
       <img
-        th:if="${singlePage.spec.cover}"
+        th:if="${singlePage.spec.cover != null and singlePage.spec.cover  != ''}"
         th:src="${singlePage.spec.cover}"
         class="post-cover"
         th:alt="${singlePage.spec.title}"
@@ -48,13 +48,9 @@
 
     <article class="article" th:utext="${singlePage.content.content}"></article>
 
-    <h3 th:if="${haloCommentEnabled}" class="comment-title">
-      <span class="icon-[ph--chat-circle-text-bold]"></span>
-      评论区
-    </h3>
-    <section th:if="${haloCommentEnabled}" class="z-comment" id="comment">
-      <halo:comment group="content.halo.run" kind="SinglePage" th:attr="name=${singlePage.metadata.name}" />
-    </section>
+    <th:block
+      th:replace="~{modules/common/comment :: comment(group='content.halo.run', kind='SinglePage', name=${singlePage.metadata.name}, title='评论区')}"
+    />
     <button
       id="edit-page-btn"
       class="edit-page-btn"

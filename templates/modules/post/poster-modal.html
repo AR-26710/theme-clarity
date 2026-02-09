@@ -1,0 +1,51 @@
+<th:block th:fragment="poster-modal(post, site)">
+  <div id="poster-modal" class="poster-modal" style="display: none">
+    <div class="poster-modal-overlay"></div>
+    <div class="poster-modal-content">
+      <button class="poster-close" id="poster-close">
+        <span class="icon-[ph--x-bold]"></span>
+      </button>
+      <div class="poster-preview">
+        <div class="poster-card" id="poster-card">
+          <div class="poster-header">
+            <img
+              th:if="${post.spec.cover}"
+              th:src="${post.spec.cover}"
+              class="poster-cover"
+              th:alt="${post.spec.title}"
+              crossorigin="anonymous"
+            />
+            <div class="poster-gradient"></div>
+          </div>
+          <div class="poster-body">
+            <h2 class="poster-title" th:text="${post.spec.title}"></h2>
+            <p th:if="${post.status.excerpt}" class="poster-excerpt" th:text="${post.status.excerpt}"></p>
+            <div class="poster-meta">
+              <span
+                th:if="${post.spec.publishTime}"
+                th:text="${#temporals.format(post.spec.publishTime, 'yyyy-MM-dd')}"
+              ></span>
+              <span
+                th:if="${not #lists.isEmpty(post.categories)}"
+                th:text="${post.categories[0].spec.displayName}"
+              ></span>
+            </div>
+          </div>
+          <div class="poster-footer">
+            <div class="poster-qrcode" id="poster-qrcode"></div>
+            <div class="poster-site">
+              <div class="poster-site-name" th:text="${site.title}"></div>
+              <div class="poster-site-tip">扫码阅读全文</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="poster-actions">
+        <button class="z-btn primary" id="poster-download">
+          <span class="icon-[ph--download-bold]"></span>
+          <span>保存海报</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</th:block>

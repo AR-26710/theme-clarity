@@ -1,0 +1,22 @@
+<div th:fragment="home">
+  <th:block
+    th:if="${theme.config.post.homepage.widgets != null and not #lists.isEmpty(theme.config.post.homepage.widgets)}"
+  >
+    <th:block th:each="item, itemStat : ${theme.config.post.homepage.widgets}">
+      <th:block th:switch="${item.widget}">
+        <!-- 精选文章组件 -->
+        <section th:case="featured" th:insert="~{modules/home-widgets/featured-widget :: featured}"></section>
+
+        <!-- 热门文章组件 -->
+        <section th:case="hot-post" th:insert="~{modules/home-widgets/hot-post-widget :: hot-post}"></section>
+
+        <!-- 自定义组件 -->
+        <section
+          th:case="custom"
+          class="custom-widget"
+          th:insert="~{modules/home-widgets/custom-widget :: custom}"
+        ></section>
+      </th:block>
+    </th:block>
+  </th:block>
+</div>

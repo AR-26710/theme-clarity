@@ -4,184 +4,21 @@
   th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = (${theme.config.plugins?.moments?.title} ?: '瞬间'))}"
 >
   <th:block th:fragment="content">
-    <div class="moments-header">
-      <div class="moments-title">
-        <span class="icon-[ph--shooting-star-bold]"></span>
-        <h1 class="text-creative" th:text="${theme.config.plugins?.moments?.title} ?: '瞬间'">瞬间</h1>
-      </div>
-      <a href="/moments/rss.xml" class="rss-link" title="RSS 订阅" target="_blank" rel="noopener">
-        <span class="icon-[ph--rss-simple-bold]"></span>
-        RSS 订阅
-      </a>
-    </div>
-
-    <div th:if="${not #lists.isEmpty(tags)}" class="moments-tags-wrapper">
-      <nav class="moments-tags scrollcheck-x">
-        <a th:href="@{/moments}" class="tag-item" th:classappend="${#lists.isEmpty(param.tag)} ? 'active' : ''">
-          全部
-        </a>
-        <a
-          th:each="tag : ${tags}"
-          th:href="|/moments?tag=${tag.name}|"
-          class="tag-item"
-          th:classappend="${#lists.contains(param.tag, tag.name)} ? 'active' : ''"
-        >
-          <span th:text="${tag.name}"></span>
-          <span class="tag-count" th:text="${tag.momentCount}"></span>
-        </a>
-      </nav>
-      <div class="at-slide-hover">
-        <span class="icon-[ph--mouse-simple-bold]"></span>
-        <span>滚动查看更多</span>
-      </div>
-    </div>
+    <!-- 瞬间列表标题 -->
+    <th:block th:replace="~{modules/moment/header :: content}" />
+    <!-- 瞬间标签 -->
+    <th:block th:replace="~{modules/moment/tags :: content}" />
 
     <div class="moments-list proper-height">
-      <article
-        th:each="moment,iterStat : ${moments.items}"
-        th:with="content=${moment.spec.content}"
-        class="moment-card"
-        th:id="|moment-${moment.metadata.name}|"
-        th:style="'--delay: ' + ${iterStat.index * 0.05} + 's'"
-      >
-        <header class="moment-header">
-          <div th:if="${moment.owner != null}" class="author-info">
-            <img
-              th:if="${moment.owner.avatar != null}"
-              th:src="${moment.owner.avatar}"
-              th:alt="${moment.owner.displayName}"
-              class="author-avatar"
-              loading="lazy"
-            />
-            <span class="author-name" th:text="${moment.owner.displayName}"></span>
-          </div>
-          <time
-            class="moment-time"
-            th:datetime="${moment.spec.releaseTime}"
-            th:title="${#temporals.format(moment.spec.releaseTime, 'yyyy-MM-dd HH:mm')}"
-          >
-            <span class="icon-[ph--calendar-dots-bold]"></span>
-            <span th:text="${#temporals.format(moment.spec.releaseTime, 'yyyy-MM-dd')}"></span>
-          </time>
-        </header>
-
-        <div class="moment-body">
-          <div th:if="${not #strings.isEmpty(content.html)}" class="moment-text" th:utext="${content.html}"></div>
-
-          <div
-            th:if="${not #lists.isEmpty(content.medium)}"
-            class="moment-media"
-            th:classappend="${#lists.size(content.medium) == 1 ? 'single' : (#lists.size(content.medium) == 2 ? 'double' : 'grid')}"
-          >
-            <th:block th:each="mediaItem : ${content.medium}">
-              <figure th:if="${mediaItem.type.name == 'PHOTO'}" class="media-item photo">
-                <img th:src="${mediaItem.url}" alt="瞬间图片" loading="lazy" />
-              </figure>
-
-              <figure th:if="${mediaItem.type.name == 'VIDEO'}" class="media-item video">
-                <video th:src="${mediaItem.url}" controls preload="metadata"></video>
-              </figure>
-
-              <figure th:if="${mediaItem.type.name == 'AUDIO'}" class="media-item audio">
-                <audio th:src="${mediaItem.url}" controls></audio>
-              </figure>
-            </th:block>
-          </div>
-        </div>
-
-        <footer class="moment-footer">
-          <div th:if="${not #lists.isEmpty(moment.spec.tags)}" class="moment-tags">
-            <a th:each="tag : ${moment.spec.tags}" th:href="|/moments?tag=${tag}|" class="moment-tag">
-              <span class="tag-hash">#</span>
-              <span th:text="${tag}"></span>
-            </a>
-          </div>
-
-          <div class="moment-actions">
-            <button
-              class="action-btn like"
-              title="点赞"
-              x-data="{ 
-                liked: localStorage.getItem('moment-liked-' + $el.dataset.name) === 'true',
-                count: parseInt($el.dataset.count) || 0,
-                loading: false,
-                async toggle() {
-                  if (this.loading || this.liked) return;
-                  this.loading = true;
-                  try {
-                    const res = await fetch('/apis/api.halo.run/v1alpha1/trackers/upvote', { 
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify({
-                        group: 'moment.halo.run',
-                        plural: 'moments',
-                        name: $el.dataset.name
-                      })
-                    });
-                    if (res.ok) {
-                      this.liked = true;
-                      this.count++;
-                      localStorage.setItem('moment-liked-' + $el.dataset.name, 'true');
-                    } else {
-                      console.error('Upvote failed:', res.status, await res.text());
-                    }
-                  } catch(e) { console.error('Upvote error:', e); }
-                  this.loading = false;
-                }
-              }"
-              :class="{ 'active': liked, 'loading': loading }"
-              @click="toggle()"
-              th:data-name="${moment.metadata.name}"
-              th:data-count="${moment.stats.upvote ?: 0}"
-            >
-              <span class="icon-[ph--heart-bold]" x-show="!liked"></span>
-              <span
-                class="icon-[ph--heart-fill]"
-                x-show="liked"
-                style="display: none; color: var(--c-red, #ef4444)"
-              ></span>
-              <span x-text="count"></span>
-            </button>
-            <button
-              class="action-btn comment"
-              title="评论"
-              onclick="this.closest('.moment-card').querySelector('.moment-comment')?.classList.toggle('show')"
-            >
-              <span class="icon-[ph--chat-circle-bold]"></span>
-              <span th:text="${moment.stats.approvedComment ?: 0}"></span>
-            </button>
-            <button
-              class="action-btn share"
-              title="复制链接"
-              th:data-url="|/moments/${moment.metadata.name}|"
-              onclick="
-                navigator.clipboard.writeText(location.origin + this.dataset.url);
-                this.classList.add('copied');
-                setTimeout(() => this.classList.remove('copied'), 2000);
-              "
-            >
-              <span class="icon-[ph--link-bold]"></span>
-            </button>
-          </div>
-        </footer>
-
-        <div th:if="${haloCommentEnabled}" class="moment-comment" th:id="|comment-${moment.metadata.name}|">
-          <div class="comment-header">
-            <span class="icon-[ph--chat-circle-text-bold]"></span>
-            <span>评论</span>
-          </div>
-          <halo:comment group="moment.halo.run" kind="Moment" th:attr="name=${moment.metadata.name}" />
-        </div>
-      </article>
+      <!-- 瞬间列表 -->
+      <th:block th:replace="~{modules/moment/card :: content}" />
 
       <div th:if="${#lists.isEmpty(moments.items)}" class="moments-empty">
         <span class="icon-[ph--shooting-star-bold]"></span>
         <p>暂无瞬间</p>
       </div>
     </div>
-
+    <!-- 分页 -->
     <th:block th:replace="~{modules/pagination :: pagination(data=${moments})}" />
   </th:block>
 </html>

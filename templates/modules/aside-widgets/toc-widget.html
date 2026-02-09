@@ -1,0 +1,176 @@
+<section
+  th:fragment="toc-widget"
+  class="widget toc-widget"
+  id="catalog-widget"
+  style="display: none"
+  th:if="${(post != null and theme.config.custom.enable_post_toc != false and #annotations.getOrDefault(post, 'toc', 'true') == 'true') or (singlePage != null and theme.config.custom.enable_page_toc != false and #annotations.getOrDefault(singlePage, 'toc', 'false') == 'true')}"
+>
+  <hgroup class="widget-title">
+    <span class="title-text">文章目录</span>
+    <a
+      th:if="${post != null}"
+      onclick="return false;"
+      aria-label="点赞文章"
+      x-data="postLike()"
+      x-init="init()"
+      @click="toggleLike()"
+      :data-title="liked ? '已点赞' : '点赞'"
+      :class="{ 'liked': liked }"
+      th:data-count="${post?.stats?.upvote ?: 0}"
+      th:data-name="${post?.metadata?.name}"
+    >
+      <span class="icon-[ph--heart-bold]" x-show="!liked"></span>
+      <span class="icon-[ph--heart-fill]" x-show="liked"></span>
+      <span class="like-count" x-show="count > 0" x-text="count"></span>
+    </a>
+    <a
+      href="#content"
+      aria-label="返回顶部"
+      data-title="返回顶部"
+      onclick="
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return false;
+      "
+    >
+      <span class="icon-[ph--arrow-circle-up-bold]"></span>
+    </a>
+    <a
+      href="#comment"
+      aria-label="评论区"
+      data-title="评论区"
+      onclick="
+        document.getElementById('comment').scrollIntoView({ behavior: 'smooth' });
+        return false;
+      "
+    >
+      <span class="icon-[ph--chat-circle-text-bold]"></span>
+    </a>
+  </hgroup>
+
+  <div class="widget-body widget-card toc-body">
+    <nav id="catalog-content" class="toc-nav"></nav>
+    <p id="no-toc-tip" class="no-toc" style="display: none">暂无目录信息</p>
+  </div>
+
+  <script>
+    (function () {
+      function generateCatalog() {
+        const article = document.querySelector(".article");
+        const catalogWidget = document.getElementById("catalog-widget");
+        const catalogContent = document.getElementById("catalog-content");
+        const noTocTip = document.getElementById("no-toc-tip");
+
+        if (!article || !catalogWidget || !catalogContent) return;
+
+        const headers = Array.from(article.querySelectorAll("h1, h2, h3, h4, h5, h6"));
+        if (headers.length === 0) {
+          catalogWidget.style.display = "block";
+          catalogContent.style.display = "none";
+          noTocTip.style.display = "block";
+          return;
+        }
+
+        catalogWidget.style.display = "block";
+        catalogContent.style.display = "block";
+        noTocTip.style.display = "none";
+        catalogContent.innerHTML = "";
+
+        const root = { children: [] };
+        const stack = [root];
+
+        headers.forEach((header, index) => {
+          if (!header.id) header.id = "heading-" + index;
+
+          const level = parseInt(header.tagName.substring(1));
+          const item = {
+            id: header.id,
+            text: header.textContent,
+            level: level,
+            children: [],
+          };
+
+          while (stack.length > 1 && stack[stack.length - 1].level >= level) {
+            stack.pop();
+          }
+
+          stack[stack.length - 1].children.push(item);
+          stack.push(item);
+        });
+
+        function renderTree(items) {
+          if (!items.length) return null;
+          const ol = document.createElement("ol");
+          items.forEach((item) => {
+            const li = document.createElement("li");
+            li.dataset.id = item.id;
+
+            const a = document.createElement("a");
+            a.href = "#" + item.id;
+            a.textContent = item.text;
+            a.title = item.text;
+            a.onclick = (e) => {
+              e.preventDefault();
+              const target = document.getElementById(item.id);
+              if (target) {
+                target.scrollIntoView({ behavior: "smooth" });
+                history.pushState(null, null, "#" + item.id);
+                target.classList.remove("toc-highlight");
+                void target.offsetWidth;
+                target.classList.add("toc-highlight");
+                setTimeout(() => target.classList.remove("toc-highlight"), 2000);
+              }
+            };
+
+            li.appendChild(a);
+
+            const childrenOl = renderTree(item.children);
+            if (childrenOl) {
+              li.appendChild(childrenOl);
+            }
+            ol.appendChild(li);
+          });
+          return ol;
+        }
+
+        const treeDom = renderTree(root.children);
+        if (treeDom) catalogContent.appendChild(treeDom);
+
+        if (window.tocObserver) window.tocObserver.disconnect();
+
+        const observerCallback = (entries) => {
+          entries.forEach((entry) => {
+            const li = catalogContent.querySelector(`li[data-id="${entry.target.id}"]`);
+            if (!li) return;
+
+            if (entry.isIntersecting) {
+              li.classList.add("active");
+            } else {
+              li.classList.remove("active");
+            }
+          });
+
+          const activeLis = catalogContent.querySelectorAll("li.active");
+
+          catalogContent.querySelectorAll(".has-active").forEach((el) => el.classList.remove("has-active"));
+
+          let currentActive = catalogContent.querySelector("li.active");
+
+          if (currentActive) {
+            let parent = currentActive.parentElement.closest("li");
+            while (parent) {
+              parent.classList.add("has-active");
+              parent = parent.parentElement.closest("li");
+            }
+          }
+        };
+
+        window.tocObserver = new IntersectionObserver(observerCallback, {
+          rootMargin: "-80px 0px -70% 0px",
+        });
+        headers.forEach((h) => window.tocObserver.observe(h));
+      }
+
+      generateCatalog();
+    })();
+  </script>
+</section>

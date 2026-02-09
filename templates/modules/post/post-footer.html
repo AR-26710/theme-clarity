@@ -1,0 +1,67 @@
+<th:block th:fragment="post-footer(post, theme)">
+  <div class="post-footer">
+    <section th:if="${not #lists.isEmpty(post.tags)}" class="tags-section">
+      <div class="title text-creative">文章标签</div>
+      <div class="content tags-list">
+        <a
+          th:each="tag : ${post.tags}"
+          th:href="${tag.status.permalink}"
+          class="tag-item"
+          th:text="'#' + ${tag.spec.displayName}"
+        ></a>
+      </div>
+    </section>
+
+    <section class="license">
+      <th:block th:with="isOriginal = ${#annotations.getOrDefault(post, 'post_author', 'true')}">
+        <th:block th:if="${isOriginal == 'true'}">
+          <div class="title text-creative">许可协议</div>
+          <div class="content">
+            本文采用
+            <a
+              th:with="hasPostLicense = ${#annotations.getOrDefault(post, 'post_license', 'false')}"
+              th:href="${hasPostLicense ? #annotations.getOrDefault(post, 'post_license_url', '') : (theme.config.aside.basic.license_url ?: 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans')}"
+              target="_blank"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1em"
+                height="1em"
+                viewBox="0 0 24 24"
+                style="vertical-align: -0.125em; display: inline"
+              >
+                <path
+                  fill="currentColor"
+                  d="M9 8c1.104 0 2.105.448 2.829 1.173l-1.414 1.413a2 2 0 1 0 0 2.828l1.413 1.414A4.001 4.001 0 0 1 5 12c0-2.208 1.792-4 4-4m9.829 1.173A4.001 4.001 0 0 0 12 12a4.001 4.001 0 0 0 6.828 2.828l-1.414-1.414a2 2 0 1 1 0-2.828zM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12m10-8a8 8 0 1 0 0 16a8 8 0 0 0 0-16"
+                />
+              </svg>
+              <th:block th:if="${hasPostLicense}">
+                <span th:text="${#annotations.getOrDefault(post, 'post_license_text', '')}"></span>
+              </th:block>
+              <th:block th:unless="${hasPostLicense}">
+                <span th:text="${theme.config.aside.basic.license ?: '署名-非商业性使用-相同方式共享 4.0 国际'}"></span>
+              </th:block>
+            </a>
+            许可协议，转载请注明出处。
+          </div>
+        </th:block>
+        <th:block
+          th:unless="${isOriginal == 'true'}"
+          th:with="originUrl=${#annotations.getOrDefault(post, 'post_original_url', '')},
+                    originName=${#annotations.getOrDefault(post, 'post_original', '')},
+                    replaceHtml=${'<a href=&quot;' + originUrl + '&quot; target=&quot;_blank&quot;>' + originName + '</a>'}"
+        >
+          <div class="title text-creative">文章来源</div>
+          <div
+            class="content"
+            th:utext="${#strings.replace(
+                    #annotations.getOrDefault(post, 'post_original_text', '此文来自 {post_original} ，侵删。'),
+                    '{post_original}',
+                    replaceHtml
+            )}"
+          ></div>
+        </th:block>
+      </th:block>
+    </section>
+  </div>
+</th:block>

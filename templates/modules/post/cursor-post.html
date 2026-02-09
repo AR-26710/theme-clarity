@@ -1,0 +1,39 @@
+<th:block th:fragment="cursor-post(post, theme, postFinder)">
+  <th:block
+    th:with="
+      cursor = ${postFinder.cursor(post.metadata.name)},
+      prevPost = ${(theme.config.post.cursor != null and theme.config.post.cursor) ? cursor.previous : cursor.next},
+      nextPost = ${(theme.config.post.cursor != null and theme.config.post.cursor) ? cursor.next : cursor.previous}
+    "
+  >
+    <div th:if="${prevPost != null or nextPost != null}" class="surround-post">
+      <a th:if="${prevPost != null}" th:href="${prevPost.status.permalink}" class="surround-link">
+        <span class="icon-[solar--rewind-back-bold-duotone] rtl-flip"></span>
+        <div class="surround-text">
+          <strong class="title text-creative" th:text="${prevPost.spec.title}"></strong>
+          <span class="date" th:text="${#temporals.format(prevPost.spec.publishTime, 'yyyy-MM-dd')}"></span>
+        </div>
+      </a>
+      <div th:unless="${prevPost != null}" class="surround-link no-link">
+        <span class="icon-[solar--document-add-bold-duotone]"></span>
+        <div class="surround-text">
+          <strong class="title">新故事即将发生</strong>
+        </div>
+      </div>
+
+      <a th:if="${nextPost != null}" th:href="${nextPost.status.permalink}" class="surround-link align-end">
+        <span class="icon-[solar--rewind-forward-bold-duotone] rtl-flip"></span>
+        <div class="surround-text">
+          <strong class="title text-creative" th:text="${nextPost.spec.title}"></strong>
+          <span class="date" th:text="${#temporals.format(nextPost.spec.publishTime, 'yyyy-MM-dd')}"></span>
+        </div>
+      </a>
+      <div th:unless="${nextPost != null}" class="surround-link align-end no-link">
+        <span class="icon-[solar--reel-bold-duotone]"></span>
+        <div class="surround-text">
+          <strong class="title">已抵达博客尽头</strong>
+        </div>
+      </div>
+    </div>
+  </th:block>
+</th:block>

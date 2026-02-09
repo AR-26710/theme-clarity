@@ -39,7 +39,8 @@
       </div>
     </div>
 
-    <th:block th:replace="~{modules/homepage-widgets :: homepage-widgets}" />
+    <!-- 首页顶部小组件 -->
+    <th:block th:replace="~{modules/home :: home}" />
 
     <th:block th:replace="~{modules/post-list :: list(posts=${posts}, caller='index')}" />
   </th:block>
