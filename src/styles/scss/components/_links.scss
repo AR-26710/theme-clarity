@@ -457,6 +457,7 @@ $breakpoint-phone: 528px !default;
 
   .prompt {
     flex-shrink: 0;
+    width: 60px;
     padding: 0 1em;
     border-inline-end: 1px solid var(--c-border);
     background-color: var(--c-bg-2);
