@@ -11,7 +11,9 @@
       <!-- 友链列表 -->
       <div th:replace="~{modules/links/link-list}"></div>
       <!-- 站长友链信息 -->
-      <div th:replace="~{modules/links/tabs-container}"></div>
+      <th:block th:if="${theme.config.links?.enable_info_submit_form ?: true}">
+        <div th:replace="~{modules/links/tabs-container}"></div>
+      </th:block>
       <!-- 提交友链弹窗 -->
       <div th:replace="~{modules/links/LinksSubmit-lywq/submit-modal}"></div>
       <!-- 更新友链弹窗 -->

@@ -829,6 +829,11 @@ spec:
           label: 启用随机访问
           value: true
           help: 开启后显示随机友链跳转按钮
+        - $formkit: switch
+          name: enable_info_submit_form
+          label: 启用我的博客信息与申请友链
+          value: true
+          help: 开启后在友链页面底部显示我的博客信息与申请友链
         - $formkit: group
           name: my_info
           label: 我的博客信息
