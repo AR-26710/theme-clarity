@@ -458,7 +458,6 @@ spec:
               value:
                 - widget: "stats"
                 - widget: "tech-info"
-                - widget: "community"
               children:
                 - $formkit: select
                   name: widget
