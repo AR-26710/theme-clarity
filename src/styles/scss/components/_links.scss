@@ -856,8 +856,10 @@ $breakpoint-phone: 528px !default;
 .form-group {
   margin-bottom: 0.875rem;
 
-  &:last-child {
-    margin-bottom: 0;
+  @media (min-width: 481px) {
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   label {
