@@ -1,5 +1,15 @@
 import type Alpine from "alpinejs";
 import { showToast } from "../utils/toast";
+import { getPjaxInstance } from "../pjax/pjax";
+
+function navigateWithPjax(url: string) {
+  const pjax = getPjaxInstance();
+  if (pjax && window.themeConfig?.custom?.enable_pjax) {
+    pjax.loadUrl(url);
+  } else {
+    window.location.href = url;
+  }
+}
 
 export function registerPagination(alpine: typeof Alpine) {
   alpine.data("pagination", (page: number, total: number) => ({
@@ -46,6 +56,12 @@ export function registerPagination(alpine: typeof Alpine) {
       }
       return baseUrl === "/" ? `/page/${p}` : `${baseUrl}/page/${p}`;
     },
+
+    goToPage(p: number | string) {
+      if (p === "...") return;
+      const url = this.getPageUrl(p);
+      navigateWithPjax(url);
+    },
   }));
 }
 
@@ -75,7 +91,7 @@ window.jumpToPage = function (button: HTMLElement) {
 
   if (params.has("page")) {
     params.set("page", String(targetPage));
-    window.location.href = `${path}?${params.toString()}`;
+    navigateWithPjax(`${path}?${params.toString()}`);
     return;
   }
 
@@ -86,9 +102,9 @@ window.jumpToPage = function (button: HTMLElement) {
     }
 
     if (targetPage === 1) {
-      window.location.href = `${baseUrl || "/"}?${params.toString()}`;
+      navigateWithPjax(`${baseUrl || "/"}?${params.toString()}`);
     } else {
-      window.location.href = `${baseUrl === "/" ? "" : baseUrl}/page/${targetPage}?${params.toString()}`;
+      navigateWithPjax(`${baseUrl === "/" ? "" : baseUrl}/page/${targetPage}?${params.toString()}`);
     }
     return;
   }
@@ -99,9 +115,9 @@ window.jumpToPage = function (button: HTMLElement) {
   }
 
   if (targetPage === 1) {
-    window.location.href = baseUrl || "/";
+    navigateWithPjax(baseUrl || "/");
   } else {
-    window.location.href = baseUrl === "/" ? `/page/${targetPage}` : `${baseUrl}/page/${targetPage}`;
+    navigateWithPjax(baseUrl === "/" ? `/page/${targetPage}` : `${baseUrl}/page/${targetPage}`);
   }
 };
 
@@ -142,5 +158,5 @@ window.jumpToPageWithPattern = function (button: HTMLElement) {
     targetUrl = `${targetUrl}${separator}${params.toString()}`;
   }
 
-  window.location.href = targetUrl;
+  navigateWithPjax(targetUrl);
 };

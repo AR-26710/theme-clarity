@@ -1,0 +1,64 @@
+/**
+ * 从 PJAX 事件中安全地获取 XMLHttpRequest 对象
+ * 使用运行时类型检查，避免 unsafe cast
+ *
+ * @param event - PJAX 事件对象
+ * @returns XMLHttpRequest 对象或 undefined
+ */
+export const getRequestFromPjaxEvent = (event: Event): XMLHttpRequest | undefined => {
+  if ("request" in event && event.request instanceof XMLHttpRequest) {
+    return event.request;
+  }
+  return undefined;
+};
+
+/**
+ * 生成 meta 标签的唯一键用于去重
+ *
+ * @param el - meta 或 link 元素
+ * @returns 唯一键字符串
+ */
+export const getMetaKey = (el: Element): string => {
+  const name = el.getAttribute("name") || "";
+  const property = el.getAttribute("property") || "";
+  const rel = el.getAttribute("rel") || "";
+  const content = el.getAttribute("content") || "";
+  const href = el.getAttribute("href") || "";
+
+  // 对于 link[rel="canonical"]，使用 rel + href 作为键
+  if (rel === "canonical") {
+    return `link:${rel}:${href}`;
+  }
+
+  // 对于 meta 标签，使用 name 或 property 作为键（只保留第一个）
+  if (property) {
+    return `meta:property:${property}`;
+  }
+
+  if (name) {
+    return `meta:name:${name}`;
+  }
+
+  // 其他情况使用内容作为键
+  return `meta:content:${content}`;
+};
+
+/**
+ * 检查当前路径是否匹配导航链接路径
+ * 确保 /post 不会匹配 /postman，但会匹配 /post/123
+ *
+ * @param currentPath - 当前页面路径
+ * @param href - 导航链接路径
+ * @returns 是否匹配
+ */
+export const isPathMatch = (currentPath: string, href: string): boolean => {
+  if (currentPath === href) return true;
+  if (!href.startsWith("/")) return false;
+
+  // 检查前缀匹配，确保是完整路径段匹配
+  // /post 应该匹配 /post/123，但不匹配 /postman
+  // 方法：确保 currentPath 以 href + "/" 开头，或者 currentPath 等于 href
+  if (currentPath.startsWith(href + "/")) return true;
+
+  return false;
+};

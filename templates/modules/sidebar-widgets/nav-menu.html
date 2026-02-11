@@ -10,19 +10,23 @@
       th:class="${menuItem.children != null and not #lists.isEmpty(menuItem.children)} ? 'has-submenu' : ''"
     >
       <th:block th:if="${menuItem.children != null and not #lists.isEmpty(menuItem.children)}">
-        <a
-          th:class="${currentPath != null and menuItem.status?.href != null and currentPath == menuItem.status.href ? 'sidebar-nav-item has-dropdown active' : 'sidebar-nav-item has-dropdown'}"
-          th:href="${menuItem.status.href}"
-          th:attr="target=${(menuItem.spec.target == '_blank' or menuItem.spec.target == 'BLANK' or menuItem.spec.target?.name == 'BLANK') ? '_blank' : ((menuItem.spec.target == '_parent' or menuItem.spec.target == 'PARENT' or menuItem.spec.target?.name == 'PARENT') ? '_parent' : ((menuItem.spec.target == '_top' or menuItem.spec.target == 'TOP' or menuItem.spec.target?.name == 'TOP') ? '_top' : ((menuItem.spec.target == '_self' or menuItem.spec.target == 'SELF' or menuItem.spec.target?.name == 'SELF') ? '_self' : null)))}"
-        >
-          <img
-            th:if="${not #strings.isEmpty(menuItem.metadata?.annotations?.get('icon'))}"
-            th:src="${menuItem.metadata.annotations.get('icon')}"
-            alt=""
-          />
-          <span class="nav-text" th:text="${menuItem.status.displayName}"></span>
-          <span class="icon-[ph--caret-down-bold] dropdown-arrow"></span>
-        </a>
+        <div class="nav-item-wrapper">
+          <a
+            th:class="${currentPath != null and menuItem.status?.href != null and currentPath == menuItem.status.href ? 'sidebar-nav-item has-dropdown active' : 'sidebar-nav-item has-dropdown'}"
+            th:href="${menuItem.status.href}"
+            th:attr="target=${(menuItem.spec.target == '_blank' or menuItem.spec.target == 'BLANK' or menuItem.spec.target?.name == 'BLANK') ? '_blank' : ((menuItem.spec.target == '_parent' or menuItem.spec.target == 'PARENT' or menuItem.spec.target?.name == 'PARENT') ? '_parent' : ((menuItem.spec.target == '_top' or menuItem.spec.target == 'TOP' or menuItem.spec.target?.name == 'TOP') ? '_top' : ((menuItem.spec.target == '_self' or menuItem.spec.target == 'SELF' or menuItem.spec.target?.name == 'SELF') ? '_self' : null)))}"
+          >
+            <img
+              th:if="${not #strings.isEmpty(menuItem.metadata?.annotations?.get('icon'))}"
+              th:src="${menuItem.metadata.annotations.get('icon')}"
+              alt=""
+            />
+            <span class="nav-text" th:text="${menuItem.status.displayName}"></span>
+          </a>
+          <button type="button" class="dropdown-toggle" aria-label="Toggle dropdown">
+            <span class="icon-[ph--caret-down-bold] dropdown-arrow"></span>
+          </button>
+        </div>
 
         <div class="dropdown-menu">
           <a

@@ -62,11 +62,12 @@
         --c-accent: [(${theme.config.style.accent_color})] !important;
       }
     </style>
-    <script th:inline="javascript">
+    <script th:inline="javascript" data-theme-config>
       window.themeConfig = window.themeConfig || {};
       window.themeConfig.custom = window.themeConfig.custom || {};
       window.themeConfig.custom.img_alt = /*[[${theme.config.custom.img_alt}]]*/ false;
       window.themeConfig.custom.enable_fancybox = /*[[${theme.config.custom.enable_fancybox}]]*/ true;
+      window.themeConfig.custom.enable_pjax = /*[[${theme.config.custom.enable_pjax}]]*/ false;
       window.themeConfig.style = window.themeConfig.style || {};
       window.themeConfig.style.theme_mode = /*[[${theme.config.style.theme_mode}]]*/ "light";
     </script>
@@ -138,7 +139,7 @@
         <span class="icon-[ph--sidebar-duotone] rtl-flip" style="display: block"></span>
       </button>
       <button
-        th:if="${showAside == null or showAside}"
+        th:if="${(showAside == null or showAside) and isLinksPage != true}"
         id="toggle-aside"
         aria-label="切换侧边栏"
         onclick="

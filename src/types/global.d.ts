@@ -16,8 +16,10 @@ declare global {
       custom?: {
         img_alt?: boolean;
         enable_fancybox?: boolean;
+        enable_pjax?: boolean;
       };
     };
+    reinitializeComponents?: () => void;
   }
 
   interface ShuttleOptions {

@@ -1,0 +1,54 @@
+// PJAX 加载动画和过渡效果
+
+.pjax-loading {
+  #main-content {
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  &::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--c-primary, #3b82f6), transparent);
+    z-index: 9999;
+    animation: pjax-progress 1s ease-in-out infinite;
+  }
+}
+
+@keyframes pjax-progress {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// PJAX 内容过渡动画
+.pjax-content {
+  animation: pjax-fade-in 0.3s ease-out;
+}
+
+@keyframes pjax-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 禁用 PJAX 的链接样式
+[data-no-pjax] {
+  cursor: pointer;
+}
