@@ -1,7 +1,7 @@
 <div
   class="z-slide"
   th:fragment="hot-post"
-  th:if="${theme.config.post.hot_post != null and theme.config.post.hot_post.post_number > 0}"
+  th:if="${theme.config.post.hot_post != null and T(java.lang.Integer).parseInt(theme.config.post.hot_post.post_number) > 0}"
 >
   <div
     th:replace="~{modules/home-widgets/slide-widget-base::header(${theme.config.post.hot_post.title ?: '热门文章'})}"
@@ -10,11 +10,12 @@
   <div class="z-slide-body">
     <div class="slide-list" id="hot-post-scroll-container">
       <th:block
-        th:with="posts = ${postFinder.list({
-        page: 1,
-        size: theme.config.post.hot_post.post_number,
-        sort: {'stats.visit,desc', 'metadata.creationTimestamp,asc'}
-      })}"
+        th:with="postNumber = ${T(java.lang.Integer).parseInt(theme.config.post.hot_post.post_number)},
+                 posts = ${postFinder.list({
+                   page: 1,
+                   size: postNumber,
+                   sort: {'stats.visit,desc', 'metadata.creationTimestamp,asc'}
+                 })}"
       >
         <th:block th:each="post : ${posts.items}">
           <div th:replace="~{modules/home-widgets/slide-widget-base::post-item(${post})}"></div>
