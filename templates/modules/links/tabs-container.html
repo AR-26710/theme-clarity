@@ -11,11 +11,11 @@
       <div
         class="link-tab"
         th:with="
-          myTitle = ${theme.config.links.my_info?.title} ?: ${site.title},
-          myUrl = ${theme.config.links.my_info?.url} ?: ${site.url},
-          myLogo = ${theme.config.links.my_info?.logo} ?: ${theme.config.header.logo},
-          myDesc = ${theme.config.links.my_info?.description} ?: ${theme.config.header.subtitle},
-          myRss = ${theme.config.links.my_info?.rss} ?: '/rss.xml'
+          myTitle = ${#strings.isEmpty(theme.config.links.my_info?.title)} ? ${site.title} : ${theme.config.links.my_info.title},
+          myUrl = ${#strings.isEmpty(theme.config.links.my_info?.url)} ? ${site.url} : ${theme.config.links.my_info.url},
+          myLogo = ${#strings.isEmpty(theme.config.links.my_info?.logo)} ? ${theme.config.header.logo} : ${theme.config.links.my_info.logo},
+          myDesc = ${#strings.isEmpty(theme.config.links.my_info?.description)} ? ${theme.config.header.subtitle} : ${theme.config.links.my_info.description},
+          myRss = ${#strings.isEmpty(theme.config.links.my_info?.rss)} ? '/rss.xml' : ${theme.config.links.my_info.rss}
         "
       >
         <div class="my-feed-card gradient-card">
