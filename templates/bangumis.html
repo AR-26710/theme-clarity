@@ -11,38 +11,45 @@
       </div>
     </div>
 
-    <nav class="bangumi-tags scrollcheck-x">
+    <nav class="bangumi-tags scrollcheck-x" th:with="allBangumis=${bangumiFinder.list({size: 1})}">
       <a
         th:href="@{/bangumis(status=0)}"
         class="tag-item"
         th:classappend="${#lists.isEmpty(param.status) or #lists.contains(param.status, '0') ? 'active' : ''}"
       >
         <span>全部</span>
-        <span class="tag-count" th:text="${#lists.size(bangumiFinder.getBiliDataAll(1,0))}"></span>
+        <span class="tag-count" th:if="${allBangumis != null && allBangumis.total > 0}" th:text="${allBangumis.total}"
+          >0</span
+        >
       </a>
       <a
         th:href="@{/bangumis(status=1)}"
         class="tag-item"
         th:classappend="${param.status != null and #lists.contains(param.status, '1') ? 'active' : ''}"
+        th:with="wantWatch=${bangumiFinder.list({status: 1, size: 1})}"
       >
         <span>想看</span>
-        <span class="tag-count" th:text="${#lists.size(bangumiFinder.getBiliDataAll(1,1))}"></span>
+        <span class="tag-count" th:if="${wantWatch != null && wantWatch.total > 0}" th:text="${wantWatch.total}"
+          >0</span
+        >
       </a>
       <a
         th:href="@{/bangumis(status=2)}"
         class="tag-item"
         th:classappend="${param.status != null and #lists.contains(param.status, '2') ? 'active' : ''}"
+        th:with="watching=${bangumiFinder.list({status: 2, size: 1})}"
       >
         <span>在看</span>
-        <span class="tag-count" th:text="${#lists.size(bangumiFinder.getBiliDataAll(1,2))}"></span>
+        <span class="tag-count" th:if="${watching != null && watching.total > 0}" th:text="${watching.total}">0</span>
       </a>
       <a
         th:href="@{/bangumis(status=3)}"
         class="tag-item"
         th:classappend="${param.status != null and #lists.contains(param.status, '3') ? 'active' : ''}"
+        th:with="watched=${bangumiFinder.list({status: 3, size: 1})}"
       >
         <span>已看</span>
-        <span class="tag-count" th:text="${#lists.size(bangumiFinder.getBiliDataAll(1,3))}"></span>
+        <span class="tag-count" th:if="${watched != null && watched.total > 0}" th:text="${watched.total}">0</span>
       </a>
     </nav>
 
