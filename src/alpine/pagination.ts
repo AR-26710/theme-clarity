@@ -155,7 +155,7 @@ function initKeyboardNavigation() {
       return;
     }
 
-    const paginationWrapper = document.querySelector(".pagination-wrapper");
+    const paginationWrapper = document.querySelector(".pagination-wrapper") || document.querySelector(".surround-post");
     if (!paginationWrapper) return;
 
     const prevUrl = paginationWrapper.getAttribute("data-prev-url");

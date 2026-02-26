@@ -6,7 +6,11 @@
       nextPost = ${(theme.config.post.cursor != null and theme.config.post.cursor) ? cursor.next : cursor.previous}
     "
   >
-    <div th:if="${prevPost != null or nextPost != null}" class="surround-post">
+    <div
+      th:if="${prevPost != null or nextPost != null}"
+      class="surround-post"
+      th:attr="data-prev-url=${prevPost != null ? prevPost.status.permalink : ''}, data-next-url=${nextPost != null ? nextPost.status.permalink : ''}"
+    >
       <a th:if="${prevPost != null}" th:href="${prevPost.status.permalink}" class="surround-link">
         <span class="icon-[solar--rewind-back-bold-duotone] rtl-flip"></span>
         <div class="surround-text">
