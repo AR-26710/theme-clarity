@@ -144,3 +144,31 @@ window.jumpToPageWithPattern = function (button: HTMLElement) {
 
   window.location.href = targetUrl;
 };
+
+function initKeyboardNavigation() {
+  document.addEventListener("keydown", (e: KeyboardEvent) => {
+    if (
+      e.target instanceof HTMLInputElement ||
+      e.target instanceof HTMLTextAreaElement ||
+      e.target instanceof HTMLSelectElement
+    ) {
+      return;
+    }
+
+    const paginationWrapper = document.querySelector(".pagination-wrapper");
+    if (!paginationWrapper) return;
+
+    const prevUrl = paginationWrapper.getAttribute("data-prev-url");
+    const nextUrl = paginationWrapper.getAttribute("data-next-url");
+
+    if (e.key === "ArrowLeft" && prevUrl) {
+      e.preventDefault();
+      window.location.href = prevUrl;
+    } else if (e.key === "ArrowRight" && nextUrl) {
+      e.preventDefault();
+      window.location.href = nextUrl;
+    }
+  });
+}
+
+initKeyboardNavigation();
