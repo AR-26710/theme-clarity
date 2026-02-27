@@ -11,7 +11,11 @@
 
 <!-- 标准版本：使用 data.prevUrl / data.nextUrl -->
 <th:block th:fragment="pagination(data)">
-  <nav class="pagination-wrapper" th:if="${data.totalPages > 1}">
+  <nav
+    class="pagination-wrapper"
+    th:if="${data.totalPages > 1}"
+    th:attr="data-prev-url=${data.hasPrevious ? data.prevUrl : ''}, data-next-url=${data.hasNext ? data.nextUrl : ''}"
+  >
     <div class="pagination">
       <!-- 上一页 -->
       <a th:if="${data.hasPrevious}" th:href="${data.prevUrl}" class="page-btn page-prev">
@@ -44,7 +48,11 @@
 
 <!-- 首页专用版本：自定义 URL -->
 <th:block th:fragment="paginationIndex(data)">
-  <nav class="pagination-wrapper" th:if="${data.totalPages > 1}">
+  <nav
+    class="pagination-wrapper"
+    th:if="${data.totalPages > 1}"
+    th:attr="data-prev-url=${data.hasPrevious ? (data.page == 2 ? '/' : '/page/' + (data.page - 1)) : ''}, data-next-url=${data.hasNext ? '/page/' + (data.page + 1) : ''}"
+  >
     <div class="pagination">
       <!-- 上一页 -->
       <a
@@ -127,6 +135,7 @@
     class="pagination-wrapper"
     th:if="${data.totalPages > 1}"
     th:with="firstUrl=${firstPageUrl != null ? firstPageUrl : #strings.replace(urlPattern, '{page}', '1')}"
+    th:attr="data-prev-url=${data.hasPrevious ? (data.page == 2 ? firstUrl : #strings.replace(urlPattern, '{page}', '' + (data.page - 1))) : ''}, data-next-url=${data.hasNext ? #strings.replace(urlPattern, '{page}', '' + (data.page + 1)) : ''}"
   >
     <div class="pagination">
       <!-- 上一页 -->
