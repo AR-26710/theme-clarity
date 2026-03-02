@@ -10,12 +10,16 @@ import { initFancybox } from "./utils/fancybox";
 import { initLinkSubmit } from "./links-submit";
 import { generateQRCode, generatePoster } from "./utils/poster";
 import { registerAlpineComponents } from "./alpine";
+import { initPjax } from "./pjax/pjax";
+import { registerPjaxHooks } from "./pjax/pjax-hooks";
+import { reinitializeComponents } from "./pjax/reinit";
 
 // 注册全局函数
 window.mountPhotoGallery = mountPhotoGallery;
 window.mountWeather = mountWeather;
 window.generateQRCode = generateQRCode;
 window.generatePoster = generatePoster;
+window.reinitializeComponents = reinitializeComponents;
 
 // 注册 Alpine.js 组件和插件
 registerAlpineComponents(Alpine);
@@ -36,6 +40,11 @@ document.addEventListener("keydown", (e) => {
 
 // 页面初始加载
 document.addEventListener("DOMContentLoaded", () => {
+  if (window.themeConfig?.custom?.enable_pjax) {
+    initPjax();
+    registerPjaxHooks();
+  }
+
   initDropdownMenus();
   if (window.themeConfig?.custom?.enable_fancybox !== true) {
     initFancybox();
@@ -63,7 +72,9 @@ function initActiveNavItem() {
 
     // 精确匹配或路径前缀匹配
     const isActive =
-      currentPath === href || (href !== "/" && currentPath.startsWith(href)) || (href === "/" && currentPath === "/");
+      currentPath === href ||
+      (href !== "/" && currentPath.startsWith(href)) ||
+      (href === "/" && (currentPath === "/" || currentPath.startsWith("/page/")));
 
     if (isActive) {
       link.classList.add("active");
@@ -121,21 +132,19 @@ function initImageCaption() {
 }
 
 function initDropdownMenus() {
+  // 使用事件委托处理下拉菜单点击
   document.addEventListener("click", (e) => {
     const target = e.target as HTMLElement;
-    const trigger = target.closest(".has-dropdown");
+    const toggleBtn = target.closest(".dropdown-toggle");
 
-    if (trigger) {
-      const parent = trigger.closest(".has-submenu");
+    if (toggleBtn) {
+      const parent = toggleBtn.closest(".has-submenu");
       if (parent) {
-        const arrow = trigger.querySelector(".dropdown-arrow");
-        const navText = trigger.querySelector(".nav-text");
-
-        if (target === arrow || target === trigger || !navText?.contains(target)) {
-          e.preventDefault();
-          parent.classList.toggle("expanded");
-        }
+        e.preventDefault();
+        e.stopPropagation();
+        parent.classList.toggle("expanded");
       }
+      return;
     }
   });
 }

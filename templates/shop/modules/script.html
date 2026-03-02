@@ -1,1 +1,9 @@
-<script th:src="|/shop-dist/main.iife.js?v=${site.version}|"></script>
+<script>
+  (function () {
+    if (!customElements.get("shop-buy-box")) {
+      var script = document.createElement("script");
+      script.src = "/shop-dist/main.iife.js?v=[[${site.version}]]";
+      document.head.appendChild(script);
+    }
+  })();
+</script>
