@@ -203,137 +203,136 @@ mark {
 	margin-top: 1rem;
 }
 
-.pagination {
+// ========================================
+// 悬浮分页（blog-v3 同款：非底部收起，底部展开归位）
+// ========================================
+.pagination-wrapper.sticky-pagination {
+	all: unset;
+	box-sizing: border-box;
 	display: flex;
-	align-items: center;
+	justify-content: flex-start;
+	align-items: stretch;
+	padding: 0;
 	overflow: hidden;
-	max-width: calc(100vw - 2rem);
+	overflow: clip;
+	max-width: calc(100vw);
+	margin: 1rem auto;
 	border: 1px solid var(--c-border);
 	border-radius: 0.5rem;
 	box-shadow: 0 0.1em 0.2em var(--ld-shadow);
 	background-color: var(--ld-bg-card);
 	font-variant-numeric: tabular-nums;
-	transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: max-width 0.2s var(--max-bezier-to-full);
+	position: sticky;
+	bottom: min(2em, 5%);
+	z-index: 98;
 }
 
-.page-btn {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	min-width: 3em;
-	height: 2.75em;
-	padding: 0 0.6em;
-	font-size: 0.9rem;
-	font-weight: 500;
-	color: var(--c-text-2);
-	background: transparent;
-	transition: all 0.2s ease;
-	text-decoration: none;
+.pagination-wrapper.sticky-pagination *,
+.pagination-wrapper.sticky-pagination *::before,
+.pagination-wrapper.sticky-pagination *::after {
+	box-sizing: border-box;
+}
+
+.pagination-wrapper.sticky-pagination:not(.expand) {
+	max-width: var(--collapsed-width, 26em);
+	transition-timing-function: var(--max-bezier-to-collapse);
+}
+
+.pagination-wrapper.sticky-pagination .button {
+	display: inline-block;
+	padding: 0.4em 0.6em;
+	border: 1px solid var(--c-bg-soft);
+	border-radius: 0.5em;
+	box-shadow: 0 2px 0.5em var(--ld-shadow);
+	background-color: var(--ld-bg-card);
+	line-height: 1.2;
+	vertical-align: middle;
+	transition: color 0.1s, background-color 0.2s;
 	cursor: pointer;
 
-	&:hover:not(.disabled):not(.active) {
-		background-color: var(--c-bg-soft);
+	&:hover:not(:disabled) {
+		background-color: var(--c-bg-2);
 		color: var(--c-text);
 	}
 
-	&:active:not(.disabled) {
-		background-color: var(--c-border);
+	&:active:not(:disabled) {
+		background-color: var(--ld-shadow);
 	}
 
-	&.active {
-		background-color: var(--c-primary);
-		color: white;
-		border-radius: 0.4em;
-		margin: 0.25em;
-		min-width: 2.5em;
-		box-shadow: 0 2px 8px rgba(var(--c-primary-rgb), 0.35);
-	}
-
-	&.disabled {
+	&:disabled {
+		background-color: var(--c-bg-1);
 		color: var(--c-text-3);
 		cursor: not-allowed;
-		pointer-events: none;
 	}
+}
+
+.pagination-wrapper.sticky-pagination > .pagination-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
 
 	[class^="icon-"] {
-		font-size: 1.1rem;
+		font-size: 1.2em;
 	}
 
-	// 上一页/下一页按钮 - 推到两端
 	&:first-child {
 		margin-inline-end: auto;
 	}
-	
+
 	&:last-child {
 		margin-inline-start: auto;
 	}
 }
 
-// 页码分隔符（省略号）
-.page-ellipsis {
-	min-width: 2em;
-	color: var(--c-text-3);
-	text-align: center;
-	pointer-events: none;
-}
-
-.page-info {
-	display: flex;
-	align-items: center;
-	gap: 0.25rem;
-	padding: 0 0.75rem;
-	font-size: 0.85rem;
-	font-weight: 500;
-	font-variant-numeric: tabular-nums;
-	color: var(--c-text-3);
-	white-space: nowrap;
-	
-	strong, span:first-child {
-		color: var(--c-text-2);
-	}
-}
-
-// 页码列表容器
-.page-numbers {
-	display: flex;
-	align-items: center;
-	gap: 0.25rem;
-	padding: 0 0.5rem;
-}
-
-// 单个页码
-.page-num {
-	display: flex;
+.pagination-wrapper.sticky-pagination > .pagination-num {
+	width: 3em;
+	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	min-width: 2.25em;
-	height: 2.25em;
-	padding: 0 0.5em;
-	font-size: 0.85rem;
-	font-weight: 500;
-	font-variant-numeric: tabular-nums;
-	color: var(--c-text-2);
+	border: none;
 	background: transparent;
-	border-radius: 0.375rem;
+	color: currentcolor;
+	transition: background-color 0.2s;
 	text-decoration: none;
-	transition: all 0.15s ease;
+	cursor: pointer;
 
-	&:hover:not(.active) {
-		background-color: var(--c-bg-soft);
-		color: var(--c-text);
+	&:hover:not(:disabled):not(.active) {
+		background-color: var(--c-border);
+	}
+
+	&:disabled {
+		pointer-events: none;
 	}
 
 	&.active {
-		background-color: var(--c-primary);
-		color: white;
-		box-shadow: 0 2px 6px rgba(var(--c-primary-rgb), 0.3);
+		background-color: var(--c-primary-soft);
+		color: var(--c-primary);
+	}
+
+	&.pagination-ellipsis {
+		color: var(--c-text-3);
 	}
 }
 
-// 文字版按钮
-.page-text {
-	margin: 0 0.25em;
-	font-size: 0.85rem;
+.pagination-anchor {
+	height: 1px;
+	pointer-events: none;
+}
+
+@media (max-width: $breakpoint-mobile) {
+	.pagination-wrapper.sticky-pagination {
+		position: static;
+		bottom: auto;
+		max-width: 100%;
+	}
+
+	.pagination-wrapper.sticky-pagination:not(.expand) {
+		max-width: 100%;
+	}
 }
 
 // ========================================
@@ -397,75 +396,5 @@ mark {
 
 	> span {
 		transition-duration: 0.3s;
-	}
-}
-
-// ========================================
-// 页码跳转样式
-// ========================================
-.page-jump {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	padding: 0 0.75rem;
-	margin-left: 0.5rem;
-	border-left: 1px solid var(--c-border);
-}
-
-.page-input {
-	width: 4.5em;
-	height: 2em;
-	padding: 0 0.6em;
-	font-size: 0.85rem;
-	font-weight: 500;
-	font-variant-numeric: tabular-nums;
-	color: var(--c-text);
-	background-color: var(--c-bg-2);
-	border: 1px solid var(--c-border);
-	border-radius: 0.375rem;
-	text-align: center;
-	transition: all 0.15s ease;
-
-	&:focus {
-		outline: none;
-		border-color: var(--c-primary);
-		box-shadow: 0 0 0 2px rgba(var(--c-primary-rgb), 0.2);
-	}
-
-	&::placeholder {
-		color: var(--c-text-3);
-		font-size: 0.8rem;
-		opacity: 0.8;
-	}
-}
-
-.page-jump-btn {
-	height: 2em;
-	width: 2em;
-	padding: 0;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 0.8rem;
-	font-weight: 500;
-	color: var(--c-text-2);
-	background-color: var(--c-bg-soft);
-	border: 1px solid var(--c-border);
-	border-radius: 0.375rem;
-	cursor: pointer;
-	transition: all 0.15s ease;
-
-	[class^="icon-"] {
-		font-size: 1rem;
-	}
-
-	&:hover {
-		background-color: var(--c-primary);
-		color: white;
-		border-color: var(--c-primary);
-	}
-
-	&:active {
-		transform: scale(0.95);
 	}
 }

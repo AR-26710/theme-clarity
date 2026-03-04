@@ -64,6 +64,6 @@
     <th:block th:replace="~{modules/pagination :: pagination(data=${posts})}" />
   </th:block>
   <th:block th:if="${caller == 'index'}">
-    <th:block th:replace="~{modules/pagination :: paginationIndex(data=${posts})}" />
+    <th:block th:replace="~{modules/pagination :: pagination(data=${posts})}" />
   </th:block>
 </div>

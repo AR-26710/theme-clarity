@@ -1028,13 +1028,6 @@ spec:
         - $formkit: switch
           onValue: true
           offValue: false
-          name: enable_page_jump
-          label: 启用分页跳转
-          value: false
-          help: 开启后分页将显示跳转功能
-        - $formkit: switch
-          onValue: true
-          offValue: false
           name: enable_pjax
           label: 启用 PJAX
           value: false

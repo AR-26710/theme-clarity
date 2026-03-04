@@ -1,5 +1,4 @@
 import type Alpine from "alpinejs";
-import { showToast } from "../utils/toast";
 import { getPjaxInstance } from "../pjax/pjax";
 
 function navigateWithPjax(url: string) {
@@ -9,6 +8,39 @@ function navigateWithPjax(url: string) {
   } else {
     window.location.href = url;
   }
+}
+
+function buildPageUrl(targetPage: number): string {
+  const path = window.location.pathname;
+  const search = window.location.search;
+  const params = new URLSearchParams(search);
+
+  if (params.has("page")) {
+    if (targetPage <= 1) {
+      params.delete("page");
+    } else {
+      params.set("page", String(targetPage));
+    }
+    const queryString = params.toString();
+    return queryString ? `${path}?${queryString}` : path;
+  }
+
+  let baseUrl = path.replace(/\/page\/\d+\/?$/, "");
+  if (baseUrl.length > 1 && baseUrl.endsWith("/")) {
+    baseUrl = baseUrl.slice(0, -1);
+  }
+
+  if (params.size > 0) {
+    if (targetPage === 1) {
+      return `${baseUrl || "/"}?${params.toString()}`;
+    }
+    return `${baseUrl === "/" ? "" : baseUrl}/page/${targetPage}?${params.toString()}`;
+  }
+
+  if (targetPage === 1) {
+    return baseUrl || "/";
+  }
+  return baseUrl === "/" ? `/page/${targetPage}` : `${baseUrl}/page/${targetPage}`;
 }
 
 export function registerPagination(alpine: typeof Alpine) {
@@ -36,25 +68,7 @@ export function registerPagination(alpine: typeof Alpine) {
 
     getPageUrl(p: number | string): string {
       if (p === "...") return "javascript:void(0)";
-
-      const path = window.location.pathname;
-      const search = window.location.search;
-      const params = new URLSearchParams(search);
-
-      if (params.has("keyword")) {
-        params.set("page", String(p));
-        return `${path}?${params.toString()}`;
-      }
-
-      let baseUrl = path.replace(/\/page\/\d+$/, "");
-      if (baseUrl.length > 1 && baseUrl.endsWith("/")) {
-        baseUrl = baseUrl.slice(0, -1);
-      }
-
-      if (p === 1) {
-        return baseUrl || "/";
-      }
-      return baseUrl === "/" ? `/page/${p}` : `${baseUrl}/page/${p}`;
+      return buildPageUrl(Number(p));
     },
 
     goToPage(p: number | string) {
@@ -65,100 +79,19 @@ export function registerPagination(alpine: typeof Alpine) {
   }));
 }
 
-window.jumpToPage = function (button: HTMLElement) {
-  const container = button.closest(".page-jump");
-  if (!container) return;
+window.goToPageNumber = function (button: HTMLElement) {
+  const pagination = button.closest(".pagination-wrapper");
+  if (!pagination) return;
 
-  const input = container.querySelector(".page-input") as HTMLInputElement;
-  if (!input) return;
+  const targetPage = parseInt(button.dataset.page || "0", 10);
+  const currentPage = parseInt(pagination.getAttribute("data-current-page") || "1", 10);
+  const totalPages = parseInt(pagination.getAttribute("data-total-pages") || "1", 10);
 
-  const targetPage = parseInt(input.value);
-  const currentPage = parseInt(input.dataset.currentPage || "1");
-  const totalPages = parseInt(input.dataset.totalPages || "1");
-
-  if (isNaN(targetPage) || targetPage < 1 || targetPage > totalPages) {
-    showToast("请输入有效页码", "warning");
+  if (isNaN(targetPage) || targetPage < 1 || targetPage > totalPages || targetPage === currentPage) {
     return;
   }
 
-  if (targetPage === currentPage) {
-    return;
-  }
-
-  const path = window.location.pathname;
-  const search = window.location.search;
-  const params = new URLSearchParams(search);
-
-  if (params.has("page")) {
-    params.set("page", String(targetPage));
-    navigateWithPjax(`${path}?${params.toString()}`);
-    return;
-  }
-
-  if (params.size > 0) {
-    let baseUrl = path.replace(/\/page\/\d+$/, "");
-    if (baseUrl.length > 1 && baseUrl.endsWith("/")) {
-      baseUrl = baseUrl.slice(0, -1);
-    }
-
-    if (targetPage === 1) {
-      navigateWithPjax(`${baseUrl || "/"}?${params.toString()}`);
-    } else {
-      navigateWithPjax(`${baseUrl === "/" ? "" : baseUrl}/page/${targetPage}?${params.toString()}`);
-    }
-    return;
-  }
-
-  let baseUrl = path.replace(/\/page\/\d+$/, "");
-  if (baseUrl.length > 1 && baseUrl.endsWith("/")) {
-    baseUrl = baseUrl.slice(0, -1);
-  }
-
-  if (targetPage === 1) {
-    navigateWithPjax(baseUrl || "/");
-  } else {
-    navigateWithPjax(baseUrl === "/" ? `/page/${targetPage}` : `${baseUrl}/page/${targetPage}`);
-  }
-};
-
-window.jumpToPageWithPattern = function (button: HTMLElement) {
-  const container = button.closest(".page-jump");
-  if (!container) return;
-
-  const input = container.querySelector(".page-input") as HTMLInputElement;
-  if (!input) return;
-
-  const targetPage = parseInt(input.value);
-  const currentPage = parseInt(input.dataset.currentPage || "1");
-  const totalPages = parseInt(input.dataset.totalPages || "1");
-  const urlPattern = input.dataset.urlPattern || "/page/{page}";
-  const firstPageUrl = input.dataset.firstPageUrl || "/";
-
-  if (isNaN(targetPage) || targetPage < 1 || targetPage > totalPages) {
-    showToast("请输入有效页码", "warning");
-    return;
-  }
-
-  if (targetPage === currentPage) {
-    return;
-  }
-
-  const search = window.location.search;
-  const params = new URLSearchParams(search);
-
-  let targetUrl: string;
-  if (targetPage === 1) {
-    targetUrl = firstPageUrl;
-  } else {
-    targetUrl = urlPattern.replace("{page}", String(targetPage));
-  }
-
-  if (params.size > 0) {
-    const separator = targetUrl.includes("?") ? "&" : "?";
-    targetUrl = `${targetUrl}${separator}${params.toString()}`;
-  }
-
-  navigateWithPjax(targetUrl);
+  navigateWithPjax(buildPageUrl(targetPage));
 };
 
 function initKeyboardNavigation() {
@@ -179,10 +112,10 @@ function initKeyboardNavigation() {
 
     if (e.key === "ArrowLeft" && prevUrl) {
       e.preventDefault();
-      window.location.href = prevUrl;
+      navigateWithPjax(prevUrl);
     } else if (e.key === "ArrowRight" && nextUrl) {
       e.preventDefault();
-      window.location.href = nextUrl;
+      navigateWithPjax(nextUrl);
     }
   });
 }

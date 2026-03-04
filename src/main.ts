@@ -55,6 +55,13 @@ document.addEventListener("DOMContentLoaded", () => {
   initImageCaption();
   initActiveNavItem();
   moments_tags();
+  initFloatingPagination();
+});
+
+window.addEventListener("pjax:success", () => {
+  window.setTimeout(() => {
+    initFloatingPagination();
+  }, 0);
 });
 
 // 侧边栏菜单激活状态
@@ -308,4 +315,59 @@ function moments_tags() {
       observer.observe(tag, { attributes: true, attributeFilter: ["class"] });
     });
   });
+}
+
+let floatingPaginationCleanup: (() => void) | null = null;
+
+function initFloatingPagination() {
+  if (floatingPaginationCleanup) {
+    floatingPaginationCleanup();
+    floatingPaginationCleanup = null;
+  }
+
+  const paginations = Array.from(
+    document.querySelectorAll<HTMLElement>(".pagination-wrapper.sticky-pagination"),
+  );
+  if (!paginations.length) return;
+
+  const cleanups: Array<() => void> = [];
+
+  paginations.forEach((pagination) => {
+    const anchor = pagination.nextElementSibling as HTMLElement | null;
+    if (!anchor || !anchor.classList.contains("pagination-anchor")) return;
+
+    const updateExpanded = (expanded: boolean) => {
+      pagination.classList.toggle("expand", expanded);
+    };
+
+    const updateCollapsedWidth = () => {
+      const pageUnits = pagination.querySelectorAll(".pagination-num").length;
+      const collapsedWidth = pageUnits * 2 + 6;
+      pagination.style.setProperty("--collapsed-width", `${collapsedWidth}em`);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isAnchorVisible = entries.some((entry) => entry.isIntersecting);
+        updateExpanded(isAnchorVisible);
+      },
+      { threshold: 0.05 },
+    );
+
+    observer.observe(anchor);
+    updateCollapsedWidth();
+    updateExpanded(false);
+    window.addEventListener("resize", updateCollapsedWidth);
+
+    cleanups.push(() => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateCollapsedWidth);
+      pagination.classList.remove("expand");
+      pagination.style.removeProperty("--collapsed-width");
+    });
+  });
+
+  floatingPaginationCleanup = () => {
+    cleanups.forEach((cleanup) => cleanup());
+  };
 }
