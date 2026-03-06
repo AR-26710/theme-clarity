@@ -29,6 +29,7 @@ export default ({ mode }: { mode: string }) => {
     main: path.resolve(__dirname, "src/main.ts"),
     shop: path.resolve(__dirname, "src/styles/shop/main.scss"),
     moments: path.resolve(__dirname, "src/styles/moments/main.scss"),
+    links: path.resolve(__dirname, "src/styles/links/main.scss"),
     ...getAuthEntries(),
   };
 
