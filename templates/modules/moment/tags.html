@@ -1,7 +1,10 @@
 <th:block th:fragment="content">
   <div th:if="${not #lists.isEmpty(tags)}" class="moments-tags-wrapper">
     <nav class="moments-tags scrollcheck-x">
-      <a th:href="@{/moments}" class="tag-item" th:classappend="${#lists.isEmpty(param.tag)} ? 'active' : ''"> 全部 </a>
+      <a th:href="@{/moments}" class="tag-item" th:classappend="${#lists.isEmpty(param.tag)} ? 'active' : ''">
+        全部
+        <span class="tag-count" th:text="${moments.total}"></span>
+      </a>
       <a
         th:each="tag : ${tags}"
         th:href="|/moments?tag=${tag.name}|"
