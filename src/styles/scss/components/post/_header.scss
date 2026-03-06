@@ -1,6 +1,9 @@
 // ========================================
 // 文章头部 (PostHeader)
 // ========================================
+
+$breakpoint-mobile: 768px !default;
+
 .post-header {
 	display: flex;
 	flex-direction: column;

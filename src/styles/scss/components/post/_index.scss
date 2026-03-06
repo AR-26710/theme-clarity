@@ -2,10 +2,14 @@
 // Post 文章
 // ========================================
 
+$breakpoint-mobile: 768px !default;
+
 // 文章基础样式
 @use 'base';
 // 文章标题样式
-@use 'header';
+@use 'header' with (
+  $breakpoint-mobile: $breakpoint-mobile
+);
 //  excerpt 引言样式
 @use 'excerpt';
 // 提示样式

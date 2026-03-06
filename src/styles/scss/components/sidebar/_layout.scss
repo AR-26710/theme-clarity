@@ -2,6 +2,8 @@
 // 侧边栏基础布局
 // ========================================
 
+$breakpoint-mobile: 768px !default;
+
 // 左侧边栏背景遮罩
 #z-sidebar-bgmask {
 	position: fixed;
