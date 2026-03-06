@@ -2,6 +2,9 @@
 // 朋友圈头部样式 (Friends Header)
 // ========================================
 
+@use 'variables' as *;
+@use 'mixins' as *;
+
 // 页面头部
 .friends-header {
 	@include flex(row, center, space-between, $spacing-md);

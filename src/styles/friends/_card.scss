@@ -2,6 +2,9 @@
 // 朋友圈卡片组件 (Friend Card)
 // ========================================
 
+@use 'variables' as *;
+@use 'mixins' as *;
+
 // 卡片进入动画
 @keyframes card-enter {
 	from {

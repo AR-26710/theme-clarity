@@ -3,6 +3,9 @@
 // 包含：作者信息、文章内容、底部操作
 // ========================================
 
+@use 'variables' as *;
+@use 'mixins' as *;
+
 // 作者信息头部
 .friend-header {
 	@include flex(row, center, space-between, $spacing-md);

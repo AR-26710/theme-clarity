@@ -2,6 +2,8 @@
 // 朋友圈列表布局 (Friends List Layout)
 // ========================================
 
+@use 'variables' as *;
+
 // 朋友圈列表 - 瀑布流双列布局
 .friends-list {
 	display: grid;

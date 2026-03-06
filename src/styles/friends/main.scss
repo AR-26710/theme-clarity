@@ -2,14 +2,13 @@
 // 朋友圈页面样式 (Friends Circle)
 // ========================================
 
-// 基础
-@import 'variables';
-@import 'mixins';
+// 基础样式（包含变量和工具类）
+@use 'variables';
 
 // 组件模块
-@import 'header';
-@import 'list';
-@import 'card';
-@import 'content';
-@import 'empty';
-@import 'pagination';
+@use 'header';
+@use 'list';
+@use 'card';
+@use 'content';
+@use 'empty';
+@use 'pagination';

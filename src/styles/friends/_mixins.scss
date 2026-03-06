@@ -2,6 +2,8 @@
 // 朋友圈页面混合宏 (Friends Mixins)
 // ========================================
 
+@use 'variables' as *;
+
 // 多行文本截断
 @mixin text-clamp($lines: 2) {
 	display: -webkit-box;

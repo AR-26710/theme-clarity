@@ -2,6 +2,9 @@
 // 朋友圈分页 (Friends Pagination)
 // ========================================
 
+@use 'variables' as *;
+@use 'mixins' as *;
+
 .friends-pagination {
 	@include flex(row, center, center, $spacing-md);
 	padding: 1.5rem $spacing-lg;
