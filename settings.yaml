@@ -1019,6 +1019,14 @@ spec:
           label: 启用分页跳转
           value: false
           help: 开启后分页将显示跳转功能
+        - $formkit: number
+          name: page_side_count
+          id: page_side_count
+          label: 当前页两边显示数量（不包含首尾）
+          value: 2
+          min: 2
+          max: 5
+          help: 当前页左右两边各显示的页码数量，输入的最大值建议为 5
         - $formkit: switch
           name: archives_years
           id: archives_years

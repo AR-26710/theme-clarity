@@ -42,7 +42,7 @@ $breakpoint-mobile: 768px !default;
 }
 
 .pagination-wrapper.sticky-pagination:not(.expand) {
-	max-width: var(--collapsed-width, 26em);
+	max-width: var(--collapsed-width, 38em);
 	transition-timing-function: var(--max-bezier-to-collapse);
 }
 

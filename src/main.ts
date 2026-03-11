@@ -339,9 +339,10 @@ function initFloatingPagination() {
     };
 
     const updateCollapsedWidth = () => {
-      const pageUnits = pagination.querySelectorAll(".pagination-num").length;
+      const pageCount = parseInt(pagination.getAttribute("data-page-count") || "10", 10);
       const hasJump = pagination.querySelector(".pagination-jump") !== null;
-      const baseWidth = pageUnits * 2 + 6;
+      // 页码按钮宽度 3em，加上首页/尾页/省略号等额外空间
+      const baseWidth = pageCount * 3 + 10;
       const jumpWidth = hasJump ? 10 : 0;
       const collapsedWidth = baseWidth + jumpWidth;
       pagination.style.setProperty("--collapsed-width", `${collapsedWidth}em`);

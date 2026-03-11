@@ -1,132 +1,120 @@
 <!--
   统一分页组件（应用于首页、归档、分类、标签、作者、相册、瞬间等所有分页场景）
+  支持自定义页码显示数量：theme.config.custom.page_side_count
 -->
 
 <th:block th:fragment="pagination(data)">
-  <nav
-    class="pagination-wrapper sticky-pagination"
-    th:if="${data.totalPages > 1}"
-    th:aria-label="|第${data.page}页，共${data.totalPages}页|"
-    th:attr="data-prev-url=${data.hasPrevious ? data.prevUrl : ''}, data-next-url=${data.hasNext ? data.nextUrl : ''}, data-current-page=${data.page}, data-total-pages=${data.totalPages}"
+  <th:block
+    th:with="sideCountStr=${theme.config.custom.page_side_count},
+                     sideCount=${sideCountStr != null ? T(java.lang.Integer).parseInt(sideCountStr) : 5},
+                     showStartEllipsis=${data.page > sideCount + 1},
+                     showEndEllipsis=${data.page < data.totalPages - sideCount}"
   >
-    <a
-      th:if="${data.hasPrevious}"
-      th:href="${data.prevUrl}"
-      class="button pagination-button rtl-flip"
-      aria-label="上一页"
+    <nav
+      class="pagination-wrapper sticky-pagination"
+      th:if="${data.totalPages > 1}"
+      th:aria-label="|第${data.page}页，共${data.totalPages}页|"
+      th:attr="data-prev-url=${data.hasPrevious ? data.prevUrl : ''}, data-next-url=${data.hasNext ? data.nextUrl : ''}, data-current-page=${data.page}, data-total-pages=${data.totalPages}, data-page-count=${sideCount * 2 + 1}"
     >
-      <span class="icon-[ph--arrow-fat-left-duotone]"></span>
-    </a>
-    <button
-      th:unless="${data.hasPrevious}"
-      class="button pagination-button rtl-flip"
-      type="button"
-      aria-label="上一页"
-      disabled
-    >
-      <span class="icon-[ph--arrow-fat-left-duotone]"></span>
-    </button>
-
-    <button
-      th:if="${data.page > 3}"
-      class="pagination-num"
-      type="button"
-      data-page="1"
-      aria-label="第1页"
-      onclick="goToPageNumber(this)"
-    >
-      1
-    </button>
-    <button th:if="${data.page > 4}" class="pagination-num pagination-ellipsis" type="button" disabled>…</button>
-
-    <button
-      th:if="${data.page > 2}"
-      class="pagination-num"
-      type="button"
-      th:attr="data-page=${data.page - 2}, aria-label=|第${data.page - 2}页|"
-      th:text="${data.page - 2}"
-      onclick="goToPageNumber(this)"
-    ></button>
-
-    <button
-      th:if="${data.page > 1}"
-      class="pagination-num"
-      type="button"
-      th:attr="data-page=${data.page - 1}, aria-label=|第${data.page - 1}页|"
-      th:text="${data.page - 1}"
-      onclick="goToPageNumber(this)"
-    ></button>
-
-    <button class="pagination-num active" type="button" th:attr="aria-label=|第${data.page}页|" disabled>
-      <span th:text="${data.page}"></span>
-    </button>
-
-    <button
-      th:if="${data.page < data.totalPages}"
-      class="pagination-num"
-      type="button"
-      th:attr="data-page=${data.page + 1}, aria-label=|第${data.page + 1}页|"
-      th:text="${data.page + 1}"
-      onclick="goToPageNumber(this)"
-    ></button>
-
-    <button
-      th:if="${data.page < data.totalPages - 1}"
-      class="pagination-num"
-      type="button"
-      th:attr="data-page=${data.page + 2}, aria-label=|第${data.page + 2}页|"
-      th:text="${data.page + 2}"
-      onclick="goToPageNumber(this)"
-    ></button>
-
-    <button
-      th:if="${data.page < data.totalPages - 3}"
-      class="pagination-num pagination-ellipsis"
-      type="button"
-      disabled
-    >
-      …
-    </button>
-    <button
-      th:if="${data.page < data.totalPages - 2}"
-      class="pagination-num"
-      type="button"
-      th:attr="data-page=${data.totalPages}, aria-label=|第${data.totalPages}页|"
-      th:text="${data.totalPages}"
-      onclick="goToPageNumber(this)"
-    ></button>
-
-    <a th:if="${data.hasNext}" th:href="${data.nextUrl}" class="button pagination-button rtl-flip" aria-label="下一页">
-      <span class="icon-[ph--arrow-fat-right-duotone]"></span>
-    </a>
-    <button
-      th:unless="${data.hasNext}"
-      class="button pagination-button rtl-flip"
-      type="button"
-      aria-label="下一页"
-      disabled
-    >
-      <span class="icon-[ph--arrow-fat-right-duotone]"></span>
-    </button>
-    <!-- 分页跳转 start -->
-    <div th:if="${theme.config.custom.enable_page_jump}" class="pagination-jump">
-      <input
-        type="number"
-        id="pagination-jump-input"
-        class="pagination-jump-input"
-        min="1"
-        th:max="${data.totalPages}"
-        th:attr="data-total-pages=${data.totalPages}"
-        placeholder="页码"
-        aria-label="输入页码"
-      />
-      <button type="button" class="pagination-jump-btn" aria-label="跳转到指定页" title="跳转">
-        <span class="icon-[ph--paper-plane-tilt]"></span>
+      <a
+        th:if="${data.hasPrevious}"
+        th:href="${data.prevUrl}"
+        class="button pagination-button rtl-flip"
+        aria-label="上一页"
+      >
+        <span class="icon-[ph--arrow-fat-left-duotone]"></span>
+      </a>
+      <button
+        th:unless="${data.hasPrevious}"
+        class="button pagination-button rtl-flip"
+        type="button"
+        aria-label="上一页"
+        disabled
+      >
+        <span class="icon-[ph--arrow-fat-left-duotone]"></span>
       </button>
-    </div>
-    <!-- 分页跳转 end -->
-  </nav>
-  <div th:if="${data.totalPages > 1}" class="pagination-anchor" aria-hidden="true"></div>
+
+      <!-- 首页按钮 -->
+      <button
+        th:if="${showStartEllipsis}"
+        class="pagination-num"
+        type="button"
+        data-page="1"
+        aria-label="第1页"
+        onclick="goToPageNumber(this)"
+      >
+        1
+      </button>
+      <!-- 前省略号 -->
+      <button th:if="${showStartEllipsis}" class="pagination-num pagination-ellipsis" type="button" disabled>…</button>
+
+      <!-- 中间页码 - 使用迭代生成，左右对称 -->
+      <th:block th:each="i : ${#numbers.sequence(1, sideCount * 2 + 1)}">
+        <th:block
+          th:with="pageOffset=${i - sideCount - 1},
+                           targetPage=${data.page + pageOffset}"
+        >
+          <button
+            th:if="${targetPage >= 1 && targetPage <= data.totalPages && !(showStartEllipsis && targetPage <= 1) && !(showEndEllipsis && targetPage >= data.totalPages)}"
+            th:class="${targetPage == data.page} ? 'pagination-num active' : 'pagination-num'"
+            type="button"
+            th:attr="data-page=${targetPage}, aria-label=|第${targetPage}页|"
+            th:text="${targetPage}"
+            th:disabled="${targetPage == data.page}"
+            onclick="goToPageNumber(this)"
+          ></button>
+        </th:block>
+      </th:block>
+
+      <!-- 后省略号 -->
+      <button th:if="${showEndEllipsis}" class="pagination-num pagination-ellipsis" type="button" disabled>…</button>
+      <!-- 尾页按钮 -->
+      <button
+        th:if="${showEndEllipsis}"
+        class="pagination-num"
+        type="button"
+        th:attr="data-page=${data.totalPages}, aria-label=|第${data.totalPages}页|"
+        th:text="${data.totalPages}"
+        onclick="goToPageNumber(this)"
+      ></button>
+
+      <a
+        th:if="${data.hasNext}"
+        th:href="${data.nextUrl}"
+        class="button pagination-button rtl-flip"
+        aria-label="下一页"
+      >
+        <span class="icon-[ph--arrow-fat-right-duotone]"></span>
+      </a>
+      <button
+        th:unless="${data.hasNext}"
+        class="button pagination-button rtl-flip"
+        type="button"
+        aria-label="下一页"
+        disabled
+      >
+        <span class="icon-[ph--arrow-fat-right-duotone]"></span>
+      </button>
+      <!-- 分页跳转 start -->
+      <div th:if="${theme.config.custom.enable_page_jump}" class="pagination-jump">
+        <input
+          type="number"
+          id="pagination-jump-input"
+          class="pagination-jump-input"
+          min="1"
+          th:max="${data.totalPages}"
+          th:attr="data-total-pages=${data.totalPages}"
+          placeholder="页码"
+          aria-label="输入页码"
+        />
+        <button type="button" class="pagination-jump-btn" aria-label="跳转到指定页" title="跳转">
+          <span class="icon-[ph--paper-plane-tilt]"></span>
+        </button>
+      </div>
+      <!-- 分页跳转 end -->
+    </nav>
+    <div th:if="${data.totalPages > 1}" class="pagination-anchor" aria-hidden="true"></div>
+  </th:block>
 </th:block>
 
 <th:block th:fragment="paginationIndex(data)">
