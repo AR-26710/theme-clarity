@@ -1,45 +1,47 @@
 <th:block th:replace="~{modules/aside-widgets/aside-bgmask :: aside-bgmask}"></th:block>
 
 <aside th:fragment="aside" id="z-aside">
-  <th:block th:if="${post != null or singlePage != null}">
-    <!-- 目录组件 -->
-    <div th:replace="~{modules/aside-widgets/toc-widget :: toc-widget}"></div>
-  </th:block>
+  <div id="z-aside-dynamic">
+    <th:block th:if="${post != null or singlePage != null}">
+      <div th:replace="~{modules/aside-widgets/toc-widget :: toc-widget}"></div>
+    </th:block>
+  </div>
 
-  <!-- 侧边栏组件 -->
-  <th:block th:unless="${post != null or singlePage != null}">
-    <th:block th:each="item : ${theme.config.aside.widgets.index}">
-      <th:block th:switch="${item.widget}">
-        <th:block th:case="'stats'">
-          <th:block th:replace="~{modules/aside-widgets/stats-widget :: stats-widget}"></th:block>
-        </th:block>
-        <th:block th:case="'tech-info'">
-          <th:block th:replace="~{modules/aside-widgets/tech-info-widget :: tech-info-widget}"></th:block>
-        </th:block>
-        <th:block th:case="'weather'">
-          <th:block th:replace="~{modules/aside-widgets/weather-widget :: weather-widget}"></th:block>
-        </th:block>
-        <th:block th:case="'moments'">
-          <th:block th:replace="~{modules/aside-widgets/moments-widget :: moments-widget}"></th:block>
-        </th:block>
-        <th:block th:case="'community'">
-          <th:block th:replace="~{modules/aside-widgets/community-widget :: community-widget}"></th:block>
-        </th:block>
-        <th:block th:case="'sponsor'">
-          <th:block th:replace="~{modules/aside-widgets/sponsor-widget :: sponsor-widget}"></th:block>
-        </th:block>
-        <th:block th:case="'promotion'">
-          <th:block th:replace="~{modules/aside-widgets/promotion-widget :: promotion-widget}"></th:block>
-        </th:block>
-        <th:block th:case="'activity-calendar'">
-          <th:block
-            th:replace="~{modules/aside-widgets/activity-calendar-widget :: activity-calendar-widget}"
-          ></th:block>
-        </th:block>
-        <th:block th:case="'custom'">
-          <th:block th:replace="~{modules/aside-widgets/custom-widget :: custom-widget(item=${item})}"></th:block>
+  <div id="z-aside-static" data-no-pjax>
+    <th:block th:unless="${post != null or singlePage != null}">
+      <th:block th:each="item : ${theme.config.aside.widgets.index}">
+        <th:block th:switch="${item.widget}">
+          <th:block th:case="'stats'">
+            <th:block th:replace="~{modules/aside-widgets/stats-widget :: stats-widget}"></th:block>
+          </th:block>
+          <th:block th:case="'tech-info'">
+            <th:block th:replace="~{modules/aside-widgets/tech-info-widget :: tech-info-widget}"></th:block>
+          </th:block>
+          <th:block th:case="'weather'">
+            <th:block th:replace="~{modules/aside-widgets/weather-widget :: weather-widget}"></th:block>
+          </th:block>
+          <th:block th:case="'moments'">
+            <th:block th:replace="~{modules/aside-widgets/moments-widget :: moments-widget}"></th:block>
+          </th:block>
+          <th:block th:case="'community'">
+            <th:block th:replace="~{modules/aside-widgets/community-widget :: community-widget}"></th:block>
+          </th:block>
+          <th:block th:case="'sponsor'">
+            <th:block th:replace="~{modules/aside-widgets/sponsor-widget :: sponsor-widget}"></th:block>
+          </th:block>
+          <th:block th:case="'promotion'">
+            <th:block th:replace="~{modules/aside-widgets/promotion-widget :: promotion-widget}"></th:block>
+          </th:block>
+          <th:block th:case="'activity-calendar'">
+            <th:block
+              th:replace="~{modules/aside-widgets/activity-calendar-widget :: activity-calendar-widget}"
+            ></th:block>
+          </th:block>
+          <th:block th:case="'custom'">
+            <th:block th:replace="~{modules/aside-widgets/custom-widget :: custom-widget(item=${item})}"></th:block>
+          </th:block>
         </th:block>
       </th:block>
     </th:block>
-  </th:block>
+  </div>
 </aside>

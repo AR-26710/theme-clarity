@@ -4,6 +4,26 @@ import { executeNewScripts } from "./scripts";
 import { updateMetaTags } from "./meta";
 import { updateActiveNavItem } from "./navigation";
 
+// 存储新页面的 showAside 状态
+let nextPageShowAside: boolean | null = null;
+
+/**
+ * 设置下一个页面的 showAside 状态
+ * 在 PJAX 请求响应时调用
+ */
+export const setNextPageShowAside = (showAside: boolean) => {
+  nextPageShowAside = showAside;
+};
+
+/**
+ * 获取并清除下一个页面的 showAside 状态
+ */
+export const getNextPageShowAside = (): boolean | null => {
+  const value = nextPageShowAside;
+  nextPageShowAside = null;
+  return value;
+};
+
 // 重试配置
 const MAX_RETRIES = 3;
 const RETRY_COUNT_KEY = "pjax_retry_count";
@@ -73,7 +93,44 @@ export const createPjaxSuccessHandler = (reinitializeComponents: () => void, syn
     updateActiveNavItem();
     const request = getRequestFromPjaxEvent(event);
     updateMetaTags(request);
+    updateAsideVisibility();
   };
+};
+
+/**
+ * 更新侧边栏静态组件的可见性
+ * 根据动态区域内容判断是否显示静态组件
+ * 文章页（有TOC）隐藏静态组件，列表页显示静态组件
+ * 当 showAside = false 时，整个 aside 区域不显示
+ */
+export const updateAsideVisibility = () => {
+  const aside = document.getElementById("z-aside");
+  const asideDynamic = document.getElementById("z-aside-dynamic");
+  const asideStatic = document.getElementById("z-aside-static");
+
+  if (!aside || !asideDynamic || !asideStatic) return;
+
+  // 获取新页面的 showAside 状态
+  const newShowAside = getNextPageShowAside();
+
+  // 如果新页面明确设置了 showAside = false，隐藏整个 aside
+  if (newShowAside === false) {
+    aside.style.display = "none";
+    return;
+  }
+
+  // 如果新页面 showAside = true 或 null（默认显示），确保 aside 显示
+  if (newShowAside === true || newShowAside === null) {
+    aside.style.display = "";
+  }
+
+  const hasTocWidget = asideDynamic.querySelector("#catalog-widget") !== null;
+
+  if (hasTocWidget) {
+    asideStatic.style.display = "none";
+  } else {
+    asideStatic.style.display = "";
+  }
 };
 
 /**

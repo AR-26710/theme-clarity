@@ -1,5 +1,6 @@
 import Pjax from "pjax";
 import { preloadConditionalStyles } from "./hooks/meta";
+import { setNextPageShowAside } from "./hooks/events";
 
 let pjaxInstance: Pjax | null = null;
 
@@ -15,10 +16,10 @@ export const initPjax = () => {
 
   pjaxInstance = new Pjax({
     elements: "a:not([data-no-pjax]):not([target='_blank']):not([href^='#']):not([href^='javascript:'])",
-    selectors: ["title", "#main-content", "#z-aside"],
+    selectors: ["title", "#main-content", "#z-aside-dynamic"],
     switches: {
       "#main-content": Pjax.switches.outerHTML,
-      "#z-aside": Pjax.switches.outerHTML,
+      "#z-aside-dynamic": Pjax.switches.outerHTML,
     },
     switchesOptions: {
       "#main-content": {
@@ -30,7 +31,7 @@ export const initPjax = () => {
     timeout: 5000,
   });
 
-  // 拦截 handleResponse 方法，在加载内容前预加载样式
+  // 拦截 handleResponse 方法，在加载内容前预加载样式并解析 showAside 状态
   if (pjaxInstance) {
     const originalHandleResponse = pjaxInstance.handleResponse.bind(pjaxInstance);
     pjaxInstance.handleResponse = (
@@ -39,6 +40,21 @@ export const initPjax = () => {
       href: string,
       options?: Pjax.IOptions,
     ) => {
+      // 解析新页面的 showAside 状态
+      const parser = new DOMParser();
+      const newDoc = parser.parseFromString(requestText, "text/html");
+      const asideElement = newDoc.getElementById("z-aside");
+      // 如果新页面有 z-aside 元素，检查其显示状态
+      if (asideElement) {
+        // 检查 aside 是否有 style="display: none"
+        const displayStyle = asideElement.style.display;
+        const hasDisplayNone = displayStyle === "none";
+        setNextPageShowAside(!hasDisplayNone);
+      } else {
+        // 如果没有 z-aside 元素，认为 showAside = false
+        setNextPageShowAside(false);
+      }
+
       // 预加载条件样式，等待完成后再继续
       preloadConditionalStyles(requestText).then(() => {
         originalHandleResponse(requestText, request, href, options);

@@ -129,7 +129,10 @@
         <th:block th:replace="~{modules/aside :: aside}" />
       </th:block>
       <th:block th:unless="${showAside == null or showAside}">
-        <aside id="z-aside" style="display: none"></aside>
+        <aside id="z-aside" style="display: none">
+          <div id="z-aside-dynamic"></div>
+          <div id="z-aside-static" data-no-pjax></div>
+        </aside>
       </th:block>
     </div>
 
