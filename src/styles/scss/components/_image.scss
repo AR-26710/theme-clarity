@@ -42,7 +42,7 @@ img:not(.fancybox__image, .tk-owo-emotion) {
 
 // 减少动画 - 尊重用户偏好
 @media (prefers-reduced-motion: reduce) {
-  img:not(.fancybox__image) {
+  img:not(.fancybox__image, .tk-owo-emotion) {
     animation: none;
   }
 }
