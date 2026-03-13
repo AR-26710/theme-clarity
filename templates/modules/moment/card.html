@@ -66,13 +66,5 @@
         ></th:block>
       </div>
     </footer>
-
-    <div th:if="${haloCommentEnabled and !twikooEnabled}" class="moment-comment" th:id="|comment-${moment.metadata.name}|">
-      <div class="comment-header">
-        <span class="icon-[ph--chat-circle-text-bold]"></span>
-        <span>评论</span>
-      </div>
-      <halo:comment group="moment.halo.run" kind="Moment" th:attr="name=${moment.metadata.name}" />
-    </div>
   </article>
 </th:block>
