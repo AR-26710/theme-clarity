@@ -10,7 +10,13 @@
     :class="{ 'expanded': expanded, 'playing': playing, 'is-dragging': dragState.isDragging, 'is-ready': isReady }"
     :style="playerPosition.left !== null && playerPosition.top !== null ? `position: fixed; left: ${playerPosition.left}px; top: ${playerPosition.top}px; right: auto; bottom: auto;` : ''"
   >
-    <div class="drag-handle" @mousedown="onDragStart($event)" @touchstart="onDragStart($event)" title="拖动移动位置">
+    <div
+      class="drag-handle"
+      th:if="${theme.config.music?.enabled_drag == true}"
+      @mousedown="onDragStart($event)"
+      @touchstart="onDragStart($event)"
+      title="拖动移动位置"
+    >
       <span class="icon-[ph--dots-six-vertical-bold]"></span>
     </div>
     <div class="capsule-body" @click="toggleExpand()">
@@ -107,7 +113,12 @@
           <span x-text="'播放列表 (' + playlist.length + ')'"></span>
           <span class="icon-[ph--caret-down-bold]" :class="{ 'rotate': showPlaylist }"></span>
         </button>
-        <button @click="resetPlayerPosition()" class="reset-position-btn" title="重置位置">
+        <button
+          th:if="${theme.config.music?.enabled_drag == true}"
+          @click="resetPlayerPosition()"
+          class="reset-position-btn"
+          title="重置位置"
+        >
           <span class="icon-[ph--arrows-out-cardinal-bold]"></span>
         </button>
       </div>
@@ -151,6 +162,7 @@
       position: /*[[${theme.config.music.position}]]*/ "right",
       autoplay: /*[[${theme.config.music.autoplay}]]*/ false,
       showLrc: /*[[${theme.config.music.show_lrc}]]*/ true,
+      enabledDrag: /*[[${theme.config.music.enabled_drag}]]*/ false,
     };
   </script>
 </th:block>

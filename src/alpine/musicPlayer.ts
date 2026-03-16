@@ -60,6 +60,7 @@ interface MusicPlayerState {
   dragState: DragState;
   playerPosition: { left: number | null; top: number | null };
   isReady: boolean;
+  enabledDrag?: boolean;
   readonly currentSong: Song | null;
   readonly progress: number;
 
@@ -274,9 +275,12 @@ export function musicPlayer(): MusicPlayerState {
       this.orderMode = config.order === "random" ? "random" : "list";
       this.apiUrl = toOptionalString(config.api_url);
       this.customParams = toOptionalString(config.custom_params);
+      this.enabledDrag = config.enabledDrag === true;
 
       // 先恢复位置，再加载播放列表，确保位置在显示前已设置
-      this.restorePlayerPosition();
+      if (this.enabledDrag) {
+        this.restorePlayerPosition();
+      }
 
       await this.loadPlaylist(config.server, config.type, config.id, this.apiUrl);
 
