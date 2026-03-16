@@ -3,6 +3,9 @@
   xmlns:th="https://www.thymeleaf.org"
   th:replace="~{modules/layout :: html(content = ~{::content}, showAside = false, pageTitle = '商品列表', head = ~{::head})}"
 >
+  <th:block th:fragment="head">
+    <th:block th:replace="~{modules/head :: shop-head}" />
+  </th:block>
   <th:block th:fragment="content">
     <th:block th:replace="~{shop/modules/breadcrumb}" />
 
@@ -108,7 +111,6 @@
       </a>
     </div>
 
-    <th:block th:replace="~{shop/modules/style}" />
     <th:block th:replace="~{shop/modules/script}" />
   </th:block>
 </html>
