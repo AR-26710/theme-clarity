@@ -5,6 +5,12 @@
     data-pjax-conditional="moments"
     th:href="@{/assets/dist/moments.css?v={version}(version=${theme.spec.version})}"
   />
+  <script
+    defer
+    th:if="${pluginFinder.available('PluginMoments')}"
+    data-pjax-conditional="moments"
+    th:src="@{/assets/dist/moments.js?v={version}(version=${theme.spec.version})}"
+  ></script>
 </th:block>
 
 <th:block th:fragment="photos-head">
@@ -21,6 +27,11 @@
     data-pjax-conditional="links"
     th:href="@{/assets/dist/links.css?v={version}(version=${theme.spec.version})}"
   />
+  <script
+    defer
+    data-pjax-conditional="links"
+    th:src="@{/assets/dist/links.js?v={version}(version=${theme.spec.version})}"
+  ></script>
 </th:block>
 
 <th:block th:fragment="friends-head">

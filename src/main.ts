@@ -7,7 +7,6 @@ import collapse from "@alpinejs/collapse";
 
 import { mountPhotoGallery, mountWeather } from "./preact";
 import { initFancybox } from "./utils/fancybox";
-import { initLinkSubmit } from "./modules/links-submit";
 import { generateQRCode, generatePoster } from "./utils/poster";
 import { initActivityCalendar } from "./utils/activity-calendar";
 import { initTwikooComments } from "./utils/twikoo";
@@ -19,7 +18,6 @@ import { initImageLoaded, initImageCaption } from "./utils/image";
 import {
   initDropdownMenus,
   initBackToTop,
-  initMomentsTags,
   initFloatingPagination,
   initActiveNavItem,
   initSearchShortcut,
@@ -54,11 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
     initFancybox();
   }
   initBackToTop();
-  initLinkSubmit();
   initImageLoaded();
   initImageCaption();
   initActiveNavItem();
-  initMomentsTags();
   initActivityCalendar();
   void initTwikooComments();
   initFloatingPagination();
