@@ -7,7 +7,7 @@ import collapse from "@alpinejs/collapse";
 
 import { mountPhotoGallery, mountWeather } from "./preact";
 import { initFancybox } from "./utils/fancybox";
-import { initLinkSubmit } from "./links-submit";
+import { initLinkSubmit } from "./modules/links-submit";
 import { generateQRCode, generatePoster } from "./utils/poster";
 import { initActivityCalendar } from "./utils/activity-calendar";
 import { initTwikooComments } from "./utils/twikoo";

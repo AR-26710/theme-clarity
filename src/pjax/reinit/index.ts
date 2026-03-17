@@ -1,6 +1,6 @@
 import { mountCustomElements } from "../../preact";
 import { initFancybox } from "../../utils/fancybox";
-import { initLinkSubmit } from "../../links-submit";
+import { initLinkSubmit } from "../../modules/links-submit";
 import { reinitializeAlpineComponents } from "./alpine";
 import { initImageLoaded, initImageCaption } from "./image";
 import { initActiveNavItem, initDropdownMenus } from "./navigation";
