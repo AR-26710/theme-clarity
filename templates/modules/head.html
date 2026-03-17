@@ -6,7 +6,7 @@
     th:href="@{/assets/dist/moments.css?v={version}(version=${theme.spec.version})}"
   />
   <script
-    defer
+    type="module"
     th:if="${pluginFinder.available('PluginMoments')}"
     data-pjax-conditional="moments"
     th:src="@{/assets/dist/moments.js?v={version}(version=${theme.spec.version})}"
@@ -28,7 +28,7 @@
     th:href="@{/assets/dist/links.css?v={version}(version=${theme.spec.version})}"
   />
   <script
-    defer
+    type="module"
     data-pjax-conditional="links"
     th:src="@{/assets/dist/links.js?v={version}(version=${theme.spec.version})}"
   ></script>
