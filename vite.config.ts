@@ -30,7 +30,7 @@ export default ({ mode }: { mode: string }) => {
     shop: path.resolve(__dirname, "src/styles/shop/main.scss"),
     moments: path.resolve(__dirname, "src/pages/moments.ts"),
     links: path.resolve(__dirname, "src/pages/links.ts"),
-    friends: path.resolve(__dirname, "src/styles/friends/main.scss"),
+    friends: path.resolve(__dirname, "src/pages/friends.ts"),
     bangumis: path.resolve(__dirname, "src/styles/bangumis/main.scss"),
     photos: path.resolve(__dirname, "src/styles/photos/main.scss"),
     steam: path.resolve(__dirname, "src/styles/steam/main.scss"),

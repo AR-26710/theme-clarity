@@ -1,81 +1,156 @@
 <!doctype html>
 <html
   xmlns:th="https://www.thymeleaf.org"
-  th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = '朋友圈', head = ~{::head})}"
+  th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = ${theme.config.plugins?.friends?.title ?: '朋友圈'}, head = ~{::head})}"
 >
   <th:block th:fragment="head">
     <th:block th:replace="~{modules/head :: friends-head}" />
   </th:block>
-  <th:block th:fragment="content">
-    <div class="friends-header">
-      <div class="friends-title">
-        <span class="icon-[ph--rss-bold]"></span>
-        <h1 class="text-creative">朋友圈</h1>
+  <th:block th:fragment="content" th:with="friendsConfig=${theme.config.plugins?.friends}">
+    <!--/* ========== 卡片模式（默认） ========== */-->
+    <th:block th:if="${friendsConfig == null or friendsConfig.template == null or friendsConfig.template == 'card'}">
+      <div class="friends-header">
+        <div class="friends-title">
+          <span class="icon-[ph--rss-bold]"></span>
+          <h1 class="text-creative">朋友圈</h1>
+        </div>
+        <div class="friends-actions">
+          <span class="friends-count" th:if="${friends.total > 0}">
+            共 <strong th:text="${friends.total}"></strong> 篇订阅
+          </span>
+          <a th:if="${theme.config.links?.enable_submit}" href="/links#add" class="apply-link" title="申请友链">
+            <span class="icon-[ph--handshake-bold]"></span>
+            申请友链
+          </a>
+        </div>
       </div>
-      <div class="friends-actions">
-        <span class="friends-count" th:if="${friends.total > 0}">
-          共 <strong th:text="${friends.total}"></strong> 篇订阅
-        </span>
-        <a th:if="${theme.config.links?.enable_submit}" href="/links#add" class="apply-link" title="申请友链">
-          <span class="icon-[ph--handshake-bold]"></span>
-          申请友链
-        </a>
-      </div>
-    </div>
 
-    <div class="friends-list proper-height">
-      <article
-        th:each="friend,iterStat : ${friends.items}"
-        th:with="spec=${friend.spec}"
-        class="friend-card"
-        th:style="'--delay: ' + ${iterStat.index * 0.03} + 's'"
+      <div class="friends-list proper-height">
+        <article
+          th:each="friend,iterStat : ${friends.items}"
+          th:with="spec=${friend.spec}"
+          class="friend-card"
+          th:style="'--delay: ' + ${iterStat.index * 0.03} + 's'"
+        >
+          <header class="friend-header">
+            <a th:href="${spec.authorUrl}" target="_blank" rel="noopener" class="author-info">
+              <img
+                th:if="${spec.logo != null and spec.logo != ''}"
+                th:src="${spec.logo}"
+                th:alt="${spec.author}"
+                class="author-avatar"
+                loading="lazy"
+              />
+              <span th:unless="${spec.logo != null and spec.logo != ''}" class="author-avatar-placeholder">
+                <span class="icon-[ph--user-bold]"></span>
+              </span>
+              <span class="author-name" th:text="${spec.author}">作者</span>
+            </a>
+            <time
+              th:if="${spec.pubDate != null}"
+              class="friend-time"
+              th:datetime="${spec.pubDate}"
+              th:text="${#temporals.format(spec.pubDate, 'MM-dd')}"
+            ></time>
+          </header>
+
+          <a th:href="${spec.postLink}" target="_blank" rel="noopener" class="friend-content">
+            <h2 class="friend-title" th:text="${spec.title}">文章标题</h2>
+            <p
+              th:if="${spec.description != null and spec.description != ''}"
+              class="friend-desc"
+              th:text="${spec.description}"
+            ></p>
+          </a>
+
+          <footer class="friend-footer">
+            <a th:href="${spec.postLink}" target="_blank" rel="noopener" class="read-more">
+              <span>阅读原文</span>
+              <span class="icon-[ph--arrow-up-right-bold]"></span>
+            </a>
+          </footer>
+        </article>
+
+        <div th:if="${#lists.isEmpty(friends.items)}" class="friends-empty">
+          <span class="icon-[ph--rss-bold]"></span>
+          <p>暂无订阅内容</p>
+          <span class="empty-hint">去添加一些友链的 RSS 订阅吧</span>
+        </div>
+
+        <th:block th:replace="~{modules/pagination :: pagination(data=${friends})}" />
+      </div>
+    </th:block>
+
+    <!--/* ========== 列表模式 ========== */-->
+    <th:block th:if="${friendsConfig != null and friendsConfig.template == 'list'}">
+      <div
+        class="fcircle-banner"
+        th:style="${friendsConfig.banner_image != null and friendsConfig.banner_image != ''} ? 'background-image: url(' + ${friendsConfig.banner_image} + ')' : ''"
       >
-        <header class="friend-header">
-          <a th:href="${spec.authorUrl}" target="_blank" rel="noopener" class="author-info">
-            <img
-              th:if="${spec.logo != null and spec.logo != ''}"
-              th:src="${spec.logo}"
-              th:alt="${spec.author}"
-              class="author-avatar"
-              loading="lazy"
-            />
-            <span th:unless="${spec.logo != null and spec.logo != ''}" class="author-avatar-placeholder">
+        <div class="fcircle-banner-content">
+          <h1 class="fcircle-banner-title" th:text="${friendsConfig.title ?: '朋友圈'}">朋友圈</h1>
+          <div class="fcircle-banner-bottom">
+            <p class="fcircle-banner-desc" th:text="${friendsConfig.banner_desc ?: '发现更多有趣的博主。'}">
+              发现更多有趣的博主。
+            </p>
+            <span class="fcircle-banner-count" th:if="${friends.total > 0}">
+              <strong th:text="${friends.total}"></strong> 篇文章
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-fcircle proper-height">
+        <div class="fcircle-random-wrapper" id="fcircle-random" style="display: none">
+          <span class="fcircle-random-title">随机阅读</span>
+          <a class="fcircle-random-card" href="#" target="_blank" rel="noopener">
+            <!-- 由 JS 填充 -->
+          </a>
+          <button class="fcircle-random-refresh" title="换一个">
+            <span class="icon-[ph--arrows-clockwise-bold]"></span>
+          </button>
+        </div>
+        <div class="fcircle-articles">
+          <div
+            th:each="friend,iterStat : ${friends.items}"
+            th:with="spec=${friend.spec}"
+            class="fcircle-item"
+            th:style="'--delay: ' + ${iterStat.index * 0.03} + 's'"
+          >
+            <div th:if="${spec.logo != null and spec.logo != ''}" class="fcircle-item-image">
+              <img th:src="${spec.logo}" th:alt="${spec.author}" loading="lazy" />
+            </div>
+            <span th:unless="${spec.logo != null and spec.logo != ''}" class="fcircle-avatar-placeholder">
               <span class="icon-[ph--user-bold]"></span>
             </span>
-            <span class="author-name" th:text="${spec.author}">作者</span>
-          </a>
-          <time
-            th:if="${spec.pubDate != null}"
-            class="friend-time"
-            th:datetime="${spec.pubDate}"
-            th:text="${#temporals.format(spec.pubDate, 'MM-dd')}"
-          ></time>
-        </header>
+            <a th:href="${spec.postLink}" target="_blank" rel="noopener" class="fcircle-item-container gradient-card">
+              <div class="fcircle-item-header">
+                <span class="fcircle-item-author" th:text="${spec.author}">网站名</span>
+                <span class="fcircle-item-title" th:text="${spec.title}">文章标题</span>
+                <time
+                  th:if="${spec.pubDate != null}"
+                  class="fcircle-item-date"
+                  th:datetime="${spec.pubDate}"
+                  th:text="${#temporals.format(spec.pubDate, 'yyyy-MM-dd')}"
+                ></time>
+              </div>
+              <span
+                th:if="${spec.description != null and spec.description != ''}"
+                class="fcircle-item-desc"
+                th:text="${spec.description}"
+              ></span>
+            </a>
+          </div>
+        </div>
 
-        <a th:href="${spec.postLink}" target="_blank" rel="noopener" class="friend-content">
-          <h2 class="friend-title" th:text="${spec.title}">文章标题</h2>
-          <p
-            th:if="${spec.description != null and spec.description != ''}"
-            class="friend-desc"
-            th:text="${spec.description}"
-          ></p>
-        </a>
+        <div th:if="${#lists.isEmpty(friends.items)}" class="friends-empty">
+          <span class="icon-[ph--rss-bold]"></span>
+          <p>暂无订阅内容</p>
+          <span class="empty-hint">去添加一些友链的 RSS 订阅吧</span>
+        </div>
 
-        <footer class="friend-footer">
-          <a th:href="${spec.postLink}" target="_blank" rel="noopener" class="read-more">
-            <span>阅读原文</span>
-            <span class="icon-[ph--arrow-up-right-bold]"></span>
-          </a>
-        </footer>
-      </article>
-
-      <div th:if="${#lists.isEmpty(friends.items)}" class="friends-empty">
-        <span class="icon-[ph--rss-bold]"></span>
-        <p>暂无订阅内容</p>
-        <span class="empty-hint">去添加一些友链的 RSS 订阅吧</span>
+        <th:block th:replace="~{modules/pagination :: pagination(data=${friends})}" />
       </div>
-
-      <th:block th:replace="~{modules/pagination :: pagination(data=${friends})}" />
-    </div>
+    </th:block>
   </th:block>
 </html>

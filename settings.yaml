@@ -1191,6 +1191,42 @@ spec:
               label: 页面描述
               value: 记录生活中的美好瞬间
               placeholder: 记录生活中的美好瞬间
+        - $formkit: group
+          name: friends
+          label: 朋友圈
+          help: RSS 订阅聚合
+          children:
+            - $formkit: select
+              name: template
+              id: friends_template
+              key: friends_template
+              label: 模板样式
+              value: card
+              help: 选择朋友圈页面的展示模板
+              options:
+                - value: card
+                  label: 卡片模式（默认）
+                - value: list
+                  label: 列表模式
+            - $formkit: text
+              name: title
+              label: 页面标题
+              value: 朋友圈
+              placeholder: 朋友圈
+            - $formkit: text
+              if: "$get(friends_template).value === 'list'"
+              name: banner_desc
+              label: Banner 描述
+              value: 发现更多有趣的博主。
+              placeholder: 发现更多有趣的博主。
+              help: 目前仅列表模式生效
+            - $formkit: attachment
+              if: "$get(friends_template).value === 'list'"
+              name: banner_image
+              label: Banner 背景图
+              accepts:
+                - "image/*"
+              help: Banner 背景图片，目前仅列表模式生效
     - group: custom
       label: 自定义
       formSchema:
