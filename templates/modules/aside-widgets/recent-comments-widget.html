@@ -29,7 +29,7 @@
           <th:block th:if="${comment.spec.subjectRef != null}">
             <th:block th:if="${comment.spec.subjectRef.kind == 'SinglePage'}">
               <th:block th:with="singlePage = ${singlePageFinder.getByName(comment.spec.subjectRef.name)}">
-                <a class="comment-link" th:href="${singlePage.status.permalink}">
+                <a class="comment-link" th:href="${singlePage.status.permalink} + '#comment'">
                   <script type="text/plain" class="comment-raw-content" th:utext="${comment.spec.content}"></script>
                   <div class="comment-content"></div>
                 </a>
@@ -37,20 +37,20 @@
             </th:block>
             <th:block th:if="${comment.spec.subjectRef.kind == 'Post'}">
               <th:block th:with="post = ${postFinder.getByName(comment.spec.subjectRef.name)}">
-                <a class="comment-link" th:href="${post.status.permalink}">
+                <a class="comment-link" th:href="${post.status.permalink} + '#comment'">
                   <script type="text/plain" class="comment-raw-content" th:utext="${comment.spec.content}"></script>
                   <div class="comment-content"></div>
                 </a>
               </th:block>
             </th:block>
             <th:block th:if="${comment.spec.subjectRef.kind == 'Moment'}">
-              <a class="comment-link" th:href="@{/moments}">
+              <a class="comment-link" th:href="|/moments/${comment.spec.subjectRef.name}|+ '#comment'">
                 <script type="text/plain" class="comment-raw-content" th:utext="${comment.spec.content}"></script>
                 <div class="comment-content"></div>
               </a>
             </th:block>
             <th:block th:if="${comment.spec.subjectRef.kind == 'Plugin'}">
-              <a class="comment-link" th:href="@{/links}">
+              <a class="comment-link" th:href="@{/links}+ '#comment'">
                 <script type="text/plain" class="comment-raw-content" th:utext="${comment.spec.content}"></script>
                 <div class="comment-content"></div>
               </a>
