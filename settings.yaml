@@ -672,6 +672,20 @@ spec:
                   min: 1
                   max: 10
                   if: "$value.widget === 'recent-comments'"
+                - $formkit: switch
+                  name: show_replies
+                  label: 显示回复
+                  value: true
+                  help: 是否显示评论的回复内容
+                  if: "$value.widget === 'recent-comments'"
+                - $formkit: number
+                  name: reply_count
+                  label: 回复显示条数
+                  value: 3
+                  min: 1
+                  max: 5
+                  help: 每条评论最多显示几条回复
+                  if: "$value.widget === 'recent-comments'"
                 - $formkit: text
                   name: title
                   label: 自定义标题

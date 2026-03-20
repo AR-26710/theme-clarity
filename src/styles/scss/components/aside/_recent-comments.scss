@@ -70,3 +70,39 @@
 	transition: color .2s;
 	word-break: break-all;
 }
+
+// 回复列表
+.comment-replies {
+	margin-top: 0.5rem;
+	padding-left: 0.75rem;
+	border-left: 2px solid var(--c-border);
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+
+.reply-item {
+	display: flex;
+	align-items: baseline;
+	gap: 0.35rem;
+	font-size: 0.8em;
+	line-height: 1.5;
+}
+
+.reply-author {
+	font-weight: 600;
+	color: var(--c-text-2);
+	white-space: nowrap;
+	flex-shrink: 0;
+
+	&::after {
+		content: ":";
+	}
+}
+
+.reply-content {
+	color: var(--c-text-3);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
