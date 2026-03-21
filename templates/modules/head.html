@@ -40,6 +40,11 @@
     data-pjax-conditional="friends"
     th:href="@{/assets/dist/friends.css?v={version}(version=${theme.spec.version})}"
   />
+  <script
+    type="module"
+    data-pjax-conditional="friends"
+    th:src="@{/assets/dist/friends.js?v={version}(version=${theme.spec.version})}"
+  ></script>
 </th:block>
 
 <th:block th:fragment="bangumis-head">
