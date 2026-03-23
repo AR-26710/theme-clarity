@@ -1,7 +1,7 @@
 <script th:fragment="toc-scripts" th:inline="javascript">
   (function () {
     function generateCatalog() {
-      const article = document.querySelector(".article");
+      const article = document.querySelector(".article") || document.getElementById("article-content");
       const catalogWidget = document.getElementById("catalog-widget");
       const catalogContent = document.getElementById("catalog-content");
       const noTocTip = document.getElementById("no-toc-tip");

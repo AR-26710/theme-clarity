@@ -1,0 +1,33 @@
+@media (max-width: 1024px) {
+  .doc-sidebar {
+    position: fixed;
+    left: -300px;
+    top: 0;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    background: var(--c-bg);
+
+    &.show {
+      left: 0;
+    }
+  }
+
+  .doc-content-wrapper {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .docs-page {
+    padding: 1rem;
+  }
+
+  .docs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .doc-navigation {
+    flex-direction: column;
+  }
+}
