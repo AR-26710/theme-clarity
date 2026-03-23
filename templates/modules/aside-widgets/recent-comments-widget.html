@@ -81,6 +81,14 @@
                   <div class="comment-content"></div>
                 </a>
               </th:block>
+              <!-- TODO 文档插件未完全适配评论插件 -->
+              <th:block th:if="${comment.spec.subjectRef.kind == 'Doc'}">
+                <a class="comment-link" href="/docs">
+                  <script type="text/plain" class="comment-raw-content" th:utext="${comment.spec.content}"></script>
+                  <div class="comment-content"></div>
+                </a>
+              </th:block>
+              <!-- TODO 友链插件未适配评论插件 -->
               <th:block th:if="${comment.spec.subjectRef.kind == 'Plugin'}">
                 <a class="comment-link" th:href="@{/links}+ '#comment'">
                   <script type="text/plain" class="comment-raw-content" th:utext="${comment.spec.content}"></script>
