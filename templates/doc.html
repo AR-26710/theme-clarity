@@ -25,7 +25,13 @@
             </th:block>
           </nav>
 
-          <h1 class="doc-title" th:text="${docTree.spec.title}">文档标题</h1>
+          <h1
+            th:if="${theme.config.plugins?.docs?.enable_docs_h1} != false"
+            class="doc-title"
+            th:text="${docTree.spec.title}"
+          >
+            文档标题
+          </h1>
 
           <article class="doc-article">
             <div id="article-content" class="prose" th:utext="${docInfo.content.content}"></div>

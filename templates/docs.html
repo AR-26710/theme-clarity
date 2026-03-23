@@ -1,7 +1,7 @@
 <!doctype html>
 <html
   xmlns:th="https://www.thymeleaf.org"
-  th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = '文档', head = ~{::head})}"
+  th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = (${theme.config.plugins?.docs?.title} ?: '文档'), head = ~{::head})}"
 >
   <th:block th:fragment="head">
     <th:block th:replace="~{modules/head :: docs-head}" />
@@ -11,7 +11,7 @@
       <div class="docs-header">
         <div class="docs-title">
           <span class="icon-[ph--book-open-bold]"></span>
-          <h1 class="text-creative">文档</h1>
+          <h1 class="text-creative" th:text="${theme.config.plugins?.docs?.title} ?: '文档'">文档</h1>
         </div>
       </div>
 

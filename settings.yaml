@@ -1272,6 +1272,21 @@ spec:
               accepts:
                 - "image/*"
               help: Banner 背景图片，目前仅列表模式生效
+        - $formkit: group
+          name: docs
+          label: 文档插件
+          help: plugin-docs
+          children:
+            - $formkit: text
+              name: title
+              label: 页面标题
+              value: 文档
+              placeholder: 文档
+            - $formkit: switch
+              name: enable_docs_h1
+              label: 在文档内容启用 H1 标题
+              help: 开启后文档内容将显示 H1 标题
+              value: true
     - group: custom
       label: 自定义
       formSchema:
