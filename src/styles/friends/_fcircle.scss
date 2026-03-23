@@ -16,7 +16,7 @@
 	background-size: cover;
 	background-position: center;
 	background-color: var(--c-primary);
-	margin: 0 $spacing-lg $spacing-lg;
+	margin: $spacing-xl $spacing-lg $spacing-lg;
 }
 
 // 整体内容层：左上标题 + 左下描述/右下数目
@@ -296,7 +296,7 @@
 @media (max-width: $breakpoint-mobile) {
 	.fcircle-banner {
 		min-height: 180px;
-		margin: 0 $spacing-sm $spacing-sm;
+		margin: $spacing-xl $spacing-sm $spacing-sm;
 		border-radius: 6px;
 	}
 
@@ -344,9 +344,12 @@
 	}
 
 	.fcircle-random-wrapper {
-		flex-direction: column;
-		align-items: stretch;
+		flex-wrap: wrap;
 		gap: 8px;
+	}
+
+	.fcircle-random-title {
+		width: 100%;
 	}
 
 	.fcircle-random-title {
