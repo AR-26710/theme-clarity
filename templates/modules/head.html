@@ -70,3 +70,11 @@
     th:href="@{/assets/dist/shop.css?v={version}(version=${theme.spec.version})}"
   />
 </th:block>
+
+<th:block th:fragment="docs-head">
+  <link
+    rel="stylesheet"
+    data-pjax-conditional="docs"
+    th:href="@{/assets/dist/docs.css?v={version}(version=${theme.spec.version})}"
+  />
+</th:block>

@@ -34,6 +34,7 @@ export default ({ mode }: { mode: string }) => {
     bangumis: path.resolve(__dirname, "src/styles/bangumis/main.scss"),
     photos: path.resolve(__dirname, "src/styles/photos/main.scss"),
     steam: path.resolve(__dirname, "src/styles/steam/main.scss"),
+    docs: path.resolve(__dirname, "src/styles/docs/main.scss"),
     ...getAuthEntries(),
   };
 
