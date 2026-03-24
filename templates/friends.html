@@ -12,7 +12,7 @@
       <div class="friends-header">
         <div class="friends-title">
           <span class="icon-[ph--rss-bold]"></span>
-          <h1 class="text-creative">朋友圈</h1>
+          <h1 class="text-creative" th:text="${friendsConfig?.title ?: '朋友圈'}">朋友圈</h1>
         </div>
         <div class="friends-actions">
           <span class="friends-count" th:if="${friends.total > 0}">
@@ -117,12 +117,24 @@
             class="fcircle-item"
             th:style="'--delay: ' + ${iterStat.index * 0.03} + 's'"
           >
-            <div th:if="${spec.logo != null and spec.logo != ''}" class="fcircle-item-image">
+            <a
+              th:href="${spec.authorUrl}"
+              target="_blank"
+              rel="noopener"
+              class="fcircle-item-image"
+              th:if="${spec.logo != null and spec.logo != ''}"
+            >
               <img th:src="${spec.logo}" th:alt="${spec.author}" loading="lazy" />
-            </div>
-            <span th:unless="${spec.logo != null and spec.logo != ''}" class="fcircle-avatar-placeholder">
+            </a>
+            <a
+              th:href="${spec.authorUrl}"
+              target="_blank"
+              rel="noopener"
+              th:unless="${spec.logo != null and spec.logo != ''}"
+              class="fcircle-avatar-placeholder"
+            >
               <span class="icon-[ph--user-bold]"></span>
-            </span>
+            </a>
             <a th:href="${spec.postLink}" target="_blank" rel="noopener" class="fcircle-item-container gradient-card">
               <div class="fcircle-item-header">
                 <span class="fcircle-item-author" th:text="${spec.author}">网站名</span>
