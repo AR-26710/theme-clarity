@@ -1,6 +1,12 @@
 import Pjax from "pjax";
 import { preloadConditionalStyles } from "./hooks/meta";
 
+declare global {
+  interface Window {
+    __pjax__?: Pjax;
+  }
+}
+
 let pjaxInstance: Pjax | null = null;
 
 /**
@@ -32,7 +38,10 @@ export const initPjax = () => {
   });
 
   // 拦截 handleResponse 方法，在加载内容前预加载样式
+  // 将 pjax 实例暴露到全局，供 HTML 模板中的脚本使用
   if (pjaxInstance) {
+    window.__pjax__ = pjaxInstance;
+
     const originalHandleResponse = pjaxInstance.handleResponse.bind(pjaxInstance);
     pjaxInstance.handleResponse = (
       requestText: string,
@@ -63,6 +72,7 @@ export const disablePjax = () => {
   if (pjaxInstance) {
     pjaxInstance.disable();
     pjaxInstance = null;
+    window.__pjax__ = undefined;
   }
 };
 
