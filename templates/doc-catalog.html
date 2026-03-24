@@ -21,7 +21,13 @@
             </th:block>
           </nav>
 
-          <h1 class="doc-title" th:text="${docTree.spec.title}">目录标题</h1>
+          <h1
+            th:if="${theme.config.plugins?.docs?.enable_docs_h1} != false"
+            class="doc-title"
+            th:text="${docTree.spec.title}"
+          >
+            目录标题
+          </h1>
 
           <div class="doc-catalog-list">
             <th:block th:if="${sonNodes != null}">
