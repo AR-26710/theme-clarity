@@ -308,6 +308,11 @@
 
               list.appendChild(li);
             });
+
+            // 为动态创建的链接绑定 pjax
+            if (window.themeConfig?.custom?.enable_pjax && window.__pjax__) {
+              window.__pjax__.refresh(list);
+            }
           } catch (error) {
             console.error("加载 Twikoo 最新评论失败:", error);
             if (loadingTip) {
