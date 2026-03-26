@@ -1,7 +1,7 @@
 <!doctype html>
 <html
   xmlns:th="https://www.thymeleaf.org"
-  th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = ${docTree?.spec?.title}, head = ~{::head})}"
+  th:replace="${theme.config.plugins?.docs?.enable_template != false} ? ~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = ${docTree?.spec?.title}, head = ~{::head})} : ~{plugin:plugin-docsme:doc-catalog}"
 >
   <th:block th:fragment="head">
     <th:block th:replace="~{modules/head :: docs-head}" />
