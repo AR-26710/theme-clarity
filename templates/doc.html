@@ -12,6 +12,8 @@
   </th:block>
   <th:block th:fragment="content">
     <div class="doc-page">
+      <th:block th:replace="~{modules/doc/doc-tree :: doc-tree}" />
+
       <main class="doc-main">
         <div class="doc-content-wrapper">
           <nav class="doc-breadcrumb">

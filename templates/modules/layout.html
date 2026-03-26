@@ -174,6 +174,9 @@
       >
         <span class="icon-[ph--shuffle-bold]" style="display: block"></span>
       </button>
+      <button th:if="${docTree != null}" id="mobile-doc-tree-btn" aria-label="文档树" onclick="openDocTreeModal()">
+        <span class="icon-[ph--list-duotone]" style="display: block"></span>
+      </button>
       <button id="back-to-top" aria-label="返回顶部" style="display: none">
         <span class="icon-[ph--arrow-up-bold]" style="display: block"></span>
       </button>
