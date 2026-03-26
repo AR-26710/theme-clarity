@@ -22,10 +22,11 @@ export const initPjax = () => {
   const timeout = window.themeConfig?.custom?.pjax_timeout || 5000;
   pjaxInstance = new Pjax({
     elements: "a:not([data-no-pjax]):not([target='_blank']):not([href^='#']):not([href^='javascript:'])",
-    selectors: ["title", "#main-content", "#z-aside"],
+    selectors: ["title", "#main-content", "#z-aside", "#z-panel"],
     switches: {
       "#main-content": Pjax.switches.outerHTML,
       "#z-aside": Pjax.switches.outerHTML,
+      "#z-panel": Pjax.switches.outerHTML,
     },
     switchesOptions: {
       "#main-content": {
