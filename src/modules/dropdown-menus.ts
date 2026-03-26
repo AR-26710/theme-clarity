@@ -32,6 +32,7 @@ export const initDropdownMenus = () => {
         const hasSubmenu = target.closest(".has-submenu");
 
         if (hasSubmenu) {
+          hasSubmenu.classList.add("hover-expanded");
           hasSubmenu.classList.add("expanded");
         }
       },
@@ -46,7 +47,12 @@ export const initDropdownMenus = () => {
         const hasSubmenu = target.closest(".has-submenu");
 
         if (hasSubmenu) {
-          hasSubmenu.classList.remove("expanded");
+          hasSubmenu.classList.remove("hover-expanded");
+          // 如果不是活动菜单项的父菜单，则收起
+          const hasActiveChild = hasSubmenu.querySelector(".dropdown-item.active, .sidebar-nav-item.active");
+          if (!hasActiveChild) {
+            hasSubmenu.classList.remove("expanded");
+          }
         }
       },
       true,
