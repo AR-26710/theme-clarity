@@ -18,31 +18,38 @@ export const initDropdownMenus = () => {
     }
   });
 
-  // 鼠标悬浮自动展开
-  document.addEventListener(
-    "mouseenter",
-    (e) => {
-      const target = e.target as HTMLElement;
-      const hasSubmenu = target.closest(".has-submenu");
+  // 检查是否启用了鼠标悬浮自动展开功能
+  const isHoverEnabled =
+    (window as Window & { themeConfig?: { header?: { menu_mouse_hover?: boolean } } }).themeConfig?.header
+      ?.menu_mouse_hover === true;
 
-      if (hasSubmenu) {
-        hasSubmenu.classList.add("expanded");
-      }
-    },
-    true,
-  );
+  if (isHoverEnabled) {
+    // 鼠标悬浮自动展开
+    document.addEventListener(
+      "mouseenter",
+      (e) => {
+        const target = e.target as HTMLElement;
+        const hasSubmenu = target.closest(".has-submenu");
 
-  // 鼠标离开自动收起
-  document.addEventListener(
-    "mouseleave",
-    (e) => {
-      const target = e.target as HTMLElement;
-      const hasSubmenu = target.closest(".has-submenu");
+        if (hasSubmenu) {
+          hasSubmenu.classList.add("expanded");
+        }
+      },
+      true,
+    );
 
-      if (hasSubmenu) {
-        hasSubmenu.classList.remove("expanded");
-      }
-    },
-    true,
-  );
+    // 鼠标离开自动收起
+    document.addEventListener(
+      "mouseleave",
+      (e) => {
+        const target = e.target as HTMLElement;
+        const hasSubmenu = target.closest(".has-submenu");
+
+        if (hasSubmenu) {
+          hasSubmenu.classList.remove("expanded");
+        }
+      },
+      true,
+    );
+  }
 };
