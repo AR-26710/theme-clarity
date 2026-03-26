@@ -9,16 +9,16 @@
   <th:block th:fragment="content" th:with="friendsConfig=${theme.config.plugins?.friends}">
     <!--/* ========== 卡片模式（默认） ========== */-->
     <th:block th:if="${friendsConfig == null or friendsConfig.template == null or friendsConfig.template == 'card'}">
-      <div class="friends-header">
-        <div class="friends-title">
+      <div class="page-header">
+        <div class="page-title">
           <span class="icon-[ph--rss-bold]"></span>
           <h1 class="text-creative" th:text="${friendsConfig?.title ?: '朋友圈'}">朋友圈</h1>
         </div>
-        <div class="friends-actions">
-          <span class="friends-count" th:if="${friends.total > 0}">
+        <div class="page-actions">
+          <span class="page-count" th:if="${friends.total > 0}">
             共 <strong th:text="${friends.total}"></strong> 篇订阅
           </span>
-          <a th:if="${theme.config.links?.enable_submit}" href="/links#add" class="apply-link" title="申请友链">
+          <a th:if="${theme.config.links?.enable_submit}" href="/links#add" class="page-action-link" title="申请友链">
             <span class="icon-[ph--handshake-bold]"></span>
             申请友链
           </a>

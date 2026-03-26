@@ -19,6 +19,7 @@ $breakpoint-widescreen: 1080px;
   $breakpoint-widescreen: $breakpoint-widescreen
 );
 @use "./scss/components/header";
+@use "./scss/components/page-header";
 @use "./scss/components/sidebar" with (
   $breakpoint-mobile: $breakpoint-mobile
 );
