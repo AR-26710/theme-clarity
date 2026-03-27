@@ -28,7 +28,9 @@ export const initDropdownMenus = () => {
     document.addEventListener(
       "mouseenter",
       (e) => {
-        const target = e.target as HTMLElement;
+        const target = e.target;
+        // 确保 target 是 HTMLElement 才调用 closest
+        if (!(target instanceof HTMLElement)) return;
         const hasSubmenu = target.closest(".has-submenu");
 
         if (hasSubmenu) {
@@ -43,7 +45,9 @@ export const initDropdownMenus = () => {
     document.addEventListener(
       "mouseleave",
       (e) => {
-        const target = e.target as HTMLElement;
+        const target = e.target;
+        // 确保 target 是 HTMLElement 才调用 closest
+        if (!(target instanceof HTMLElement)) return;
         const hasSubmenu = target.closest(".has-submenu");
 
         if (hasSubmenu) {
