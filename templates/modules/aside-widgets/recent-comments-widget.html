@@ -8,7 +8,8 @@
     replyCount=${T(java.lang.Integer).parseInt(item.reply_count ?: '3')},
     showAvatar=${item.show_avatar != null ? item.show_avatar : true},
     commentProvider=${theme.config.comment?.provider ?: 'halo'},
-    twikooEnvId=${theme.config.comment?.twikoo?.env_id ?: ''}
+    twikooEnvId=${theme.config.comment?.twikoo?.env_id ?: ''},
+    twikooCustomUrl=${theme.config.comment?.twikoo?.custom_js_url ?: '/themes/theme-clarity/assets/libs/twikoo/twikoo.min.js'}
   "
 >
   <hgroup class="widget-title">
@@ -240,7 +241,7 @@
                 return;
               }
               const script = document.createElement("script");
-              script.src = "/themes/theme-clarity/assets/libs/twikoo/twikoo.min.js";
+              script.src = "[[${twikooCustomUrl}]]";
               script.async = true;
               script.onload = () => resolve();
               script.onerror = () => reject(new Error("Twikoo 脚本加载失败"));
