@@ -65,6 +65,12 @@
           window.location.href = url.toString();
         }
 
+        function goToPage(page) {
+          const url = new URL(window.location.href);
+          url.searchParams.set("page", page);
+          window.location.href = url.toString();
+        }
+
         categorySelect.addEventListener("change", function () {
           updateFilters({ categoryId: this.value });
         });
@@ -84,7 +90,7 @@
 
     <div class="shop-product-list">
       <a
-        th:each="product : ${productPage.content}"
+        th:each="product : ${productPage.items}"
         th:href="@{/shop/product/{id}(id=${product.id})}"
         class="shop-product-card"
       >
@@ -110,6 +116,8 @@
         </div>
       </a>
     </div>
+
+    <th:block th:replace="~{modules/pagination :: pagination(data=${productPage})}" />
 
     <th:block th:replace="~{shop/modules/script}" />
   </th:block>
