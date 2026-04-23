@@ -1191,6 +1191,22 @@ spec:
               label: 页面描述
               value: 记录生活中的美好瞬间
               placeholder: 记录生活中的美好瞬间
+        - $formkit: group
+          name: equipments
+          label: 装备插件
+          help: plugin-equipments
+          children:
+            - $formkit: text
+              name: title
+              label: 页面标题
+              value: 装备
+              placeholder: 装备
+              validation: required
+            - $formkit: text
+              name: description
+              label: 页面描述
+              value: 记录正在使用和推荐的设备、软件与工具
+              placeholder: 记录正在使用和推荐的设备、软件与工具
     - group: custom
       label: 自定义
       formSchema:

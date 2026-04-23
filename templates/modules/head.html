@@ -21,6 +21,14 @@
   />
 </th:block>
 
+<th:block th:fragment="equipments-head">
+  <link
+    rel="stylesheet"
+    data-pjax-conditional="equipments"
+    th:href="@{/assets/dist/equipments.css?v={version}(version=${theme.spec.version})}"
+  />
+</th:block>
+
 <th:block th:fragment="links-head">
   <link
     rel="stylesheet"

@@ -27,15 +27,15 @@
   --halo-cw-primary-1-color: var(--c-primary);
   --halo-cw-primary-2-color: color-mix(in srgb, var(--c-primary) 20%, transparent);
   --halo-cw-primary-3-color: color-mix(in srgb, var(--c-primary) 10%, transparent);
-  
+
   --halo-cw-text-1-color: var(--c-text);
   --halo-cw-text-2-color: var(--c-text-2);
   --halo-cw-text-3-color: var(--c-text-3);
-  
+
   --halo-cw-muted-1-color: var(--c-border);
   --halo-cw-muted-2-color: var(--c-bg-soft);
   --halo-cw-muted-3-color: var(--c-bg);
-  
+
   --halo-cw-base-rounded: 0.75rem;
   --halo-cw-avatar-rounded: 50%;
   --halo-cw-avatar-size: 2.5rem;
@@ -50,7 +50,7 @@
       border-radius: 0.75rem;
       border-color: var(--c-border);
       background: var(--c-bg);
-      
+
       &:focus-within {
         border-color: var(--c-primary);
         box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-primary) 15%, transparent);
@@ -61,7 +61,7 @@
     [class*="toolbar"] button,
     .toolbar button {
       border-radius: 0.375rem;
-      
+
       &:hover {
         background: var(--c-bg-soft);
         color: var(--c-primary);
@@ -74,7 +74,7 @@
       border-radius: 0.5rem;
       font-weight: 500;
       transition: all 0.2s;
-      
+
       &:hover {
         filter: brightness(1.05);
         transform: translateY(-1px);
@@ -89,7 +89,7 @@
       border-radius: 1em;
       background: var(--c-bg-soft);
       color: var(--c-text-2);
-      
+
       &:hover {
         background: var(--c-bg);
         color: var(--c-text);
@@ -105,7 +105,7 @@
     [class*="comment-item"] {
       padding: 1rem 0;
       border-bottom: 1px solid var(--c-border-soft);
-      
+
       &:last-child {
         border-bottom: none;
       }
@@ -145,10 +145,11 @@
     // 操作按钮（点赞、回复）
     .actions,
     [class*="actions"] {
-      button, a {
+      button,
+      a {
         font-size: 0.85rem;
         color: var(--c-text-3);
-        
+
         &:hover {
           color: var(--c-primary);
         }
@@ -165,10 +166,44 @@
     margin-bottom: 1rem;
   }
 
-  // Twikoo markdown 内容默认被全局 reset 影响，这里恢复基础排版语义
-  .twikoo .tk-content {
+  // Twikoo markdown 内容和预览默认被全局 reset 影响，这里恢复基础排版语义
+  .twikoo :where(.tk-content, .tk-preview) {
+    --twikoo-code-bg: var(--c-bg-2);
+    --twikoo-code-border: var(--c-border);
+    --twikoo-code-text: var(--c-text-1);
+    --twikoo-code-muted: var(--c-text-3);
+    --twikoo-code-keyword: #7c3aed;
+    --twikoo-code-string: #15803d;
+    --twikoo-code-function: #2563eb;
+    --twikoo-code-number: #c2410c;
+    --twikoo-code-operator: #be123c;
+
+    .dark & {
+      --twikoo-code-keyword: #c084fc;
+      --twikoo-code-string: #86efac;
+      --twikoo-code-function: #7dd3fc;
+      --twikoo-code-number: #fdba74;
+      --twikoo-code-operator: #fda4af;
+    }
+
     p {
       margin: 0.5rem 0;
+    }
+
+    :where(strong, b) {
+      font-weight: 700;
+      color: var(--c-text);
+    }
+
+    :where(em, i) {
+      font-style: italic;
+      color: var(--c-text-2);
+    }
+
+    :where(del, s) {
+      opacity: 0.65;
+      text-decoration: line-through;
+      text-decoration-color: var(--c-text-3);
     }
 
     :where(ol, ul) {
@@ -195,10 +230,30 @@
 
     pre {
       margin: 0.75rem 0;
-      padding: 0.75rem;
-      border-radius: 0.5rem;
-      background: var(--c-bg-soft);
+      padding: 0.9rem;
+      border: 1px solid var(--twikoo-code-border);
+      border-radius: 0.65rem;
+      background: var(--twikoo-code-bg);
+      color: var(--twikoo-code-text);
       overflow-x: auto;
+      font-family: var(--font-monospace);
+      font-size: 0.875rem;
+      line-height: 1.7;
+      tab-size: 2;
+      text-shadow: none;
+    }
+
+    pre code {
+      display: block;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      white-space: pre;
+      word-break: normal;
+      overflow-wrap: normal;
     }
 
     :not(pre) > code {
@@ -209,6 +264,89 @@
       border: 1px solid var(--c-border);
       font-family: var(--font-monospace);
       font-size: 0.9em;
+    }
+
+    div.code-toolbar {
+      position: relative;
+      margin: 0.75rem 0;
+      border: 1px solid var(--twikoo-code-border);
+      border-radius: 0.65rem;
+      background: var(--twikoo-code-bg);
+      overflow: hidden;
+
+      > pre {
+        margin: 0;
+        padding-top: 2.35rem;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+      }
+
+      > .toolbar {
+        top: 0.45rem;
+        right: 0.55rem;
+        opacity: 1;
+
+        .toolbar-item {
+          display: inline-flex;
+          align-items: center;
+        }
+
+        .toolbar-item > span,
+        .toolbar-item > button {
+          padding: 0.15rem 0.45rem;
+          border: 1px solid var(--twikoo-code-border);
+          border-radius: 0.35rem;
+          background: var(--c-bg);
+          color: var(--twikoo-code-muted);
+          box-shadow: none;
+          font: 0.75rem/1.4 var(--font-sans);
+        }
+
+        .toolbar-item > button:hover {
+          color: var(--c-primary);
+          border-color: var(--c-primary);
+        }
+      }
+    }
+
+    :where(pre[class*="language-"], code[class*="language-"]) {
+      background: transparent;
+      color: var(--twikoo-code-text);
+      text-shadow: none;
+    }
+
+    :where(.token.comment, .token.prolog, .token.doctype, .token.cdata) {
+      color: var(--twikoo-code-muted);
+      font-style: italic;
+    }
+
+    :where(.token.punctuation) {
+      color: var(--c-text-2);
+    }
+
+    :where(.token.property, .token.tag, .token.boolean, .token.number, .token.constant, .token.symbol, .token.deleted) {
+      color: var(--twikoo-code-number);
+    }
+
+    :where(.token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted) {
+      color: var(--twikoo-code-string);
+    }
+
+    :where(.token.operator, .token.entity, .token.url, .token.variable) {
+      color: var(--twikoo-code-operator);
+    }
+
+    :where(.token.atrule, .token.attr-value, .token.keyword) {
+      color: var(--twikoo-code-keyword);
+    }
+
+    :where(.token.function, .token.class-name) {
+      color: var(--twikoo-code-function);
+    }
+
+    :where(.token.regex, .token.important) {
+      color: var(--c-primary);
     }
 
     hr {
@@ -224,12 +362,25 @@
       line-height: 1.4;
     }
 
-    h1 { font-size: 1.5em; }
-    h2 { font-size: 1.3em; }
-    h3 { font-size: 1.15em; }
-    h4 { font-size: 1.05em; }
-    h5 { font-size: 1em; }
-    h6 { font-size: 0.95em; color: var(--c-text-2); }
+    h1 {
+      font-size: 1.5em;
+    }
+    h2 {
+      font-size: 1.3em;
+    }
+    h3 {
+      font-size: 1.15em;
+    }
+    h4 {
+      font-size: 1.05em;
+    }
+    h5 {
+      font-size: 1em;
+    }
+    h6 {
+      font-size: 0.95em;
+      color: var(--c-text-2);
+    }
   }
 }
 
