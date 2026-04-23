@@ -106,6 +106,11 @@ spec:
           label: 主导航菜单
           help: 不选择则不显示导航菜单
         - $formkit: switch
+          name: menu_mouse_hover
+          label: 启用鼠标悬浮自动展开功能
+          value: false
+          help: 鼠标悬停在菜单上时自动展开子菜单
+        - $formkit: switch
           name: menu_icon_color_invert
           label: 菜单图标颜色反转
           value: false
@@ -622,6 +627,8 @@ spec:
                       label: 推广轮播
                     - value: "activity-calendar"
                       label: 活跃日历
+                    - value: "recent-comments"
+                      label: 最新评论
                     - value: "custom"
                       label: 自定义
                 - $formkit: text
@@ -657,6 +664,49 @@ spec:
                   max: 1000
                   help: 统计最近 N 条文章、瞬间、评论数据，数值越大越完整
                   if: "$value.widget === 'activity-calendar'"
+                - $formkit: text
+                  name: comments_title
+                  id: comments_title
+                  key: comments_title
+                  label: 标题
+                  value: "最新评论"
+                  placeholder: 最新评论
+                  if: "$value.widget === 'recent-comments'"
+                - $formkit: number
+                  name: count
+                  id: count
+                  key: count
+                  label: 显示条数
+                  value: 5
+                  min: 1
+                  max: 10
+                  if: "$value.widget === 'recent-comments'"
+                - $formkit: switch
+                  name: show_replies
+                  id: show_replies
+                  key: show_replies
+                  label: 显示回复
+                  value: true
+                  help: 是否显示评论的回复内容
+                  if: "$value.widget === 'recent-comments'"
+                - $formkit: number
+                  name: reply_count
+                  id: reply_count
+                  key: reply_count
+                  label: 回复显示条数
+                  value: 3
+                  min: 1
+                  max: 5
+                  help: 每条评论最多显示几条回复
+                  if: "$value.widget === 'recent-comments'"
+                - $formkit: switch
+                  name: show_avatar
+                  id: show_avatar
+                  key: show_avatar
+                  label: 显示头像
+                  value: true
+                  help: 是否显示评论者头像
+                  if: "$value.widget === 'recent-comments'"
                 - $formkit: text
                   name: title
                   label: 自定义标题
@@ -1163,6 +1213,18 @@ spec:
           label: 瞬间插件
           help: plugin-moments
           children:
+            - $formkit: select
+              name: template
+              id: moments_template
+              key: moments_template
+              label: 模板样式
+              value: card
+              help: 选择瞬间页面的展示模板
+              options:
+                - value: card
+                  label: 卡片模式（默认）
+                - value: list
+                  label: 列表模式
             - $formkit: text
               name: title
               label: 页面标题
@@ -1175,6 +1237,20 @@ spec:
               value: 瞬间详情
               placeholder: 瞬间详情
               validation: required
+            - $formkit: text
+              if: "$get(moments_template).value === 'list'"
+              name: banner_desc
+              label: Banner 描述
+              value: 记录生活中的点滴瞬间。
+              placeholder: 记录生活中的点滴瞬间。
+              help: 仅列表模式生效
+            - $formkit: attachment
+              if: "$get(moments_template).value === 'list'"
+              name: banner_image
+              label: Banner 背景图
+              accepts:
+                - "image/*"
+              help: Banner 背景图片，仅列表模式生效
         - $formkit: group
           name: photos
           label: 图库插件
@@ -1207,6 +1283,62 @@ spec:
               label: 页面描述
               value: 记录正在使用和推荐的设备、软件与工具
               placeholder: 记录正在使用和推荐的设备、软件与工具
+        - $formkit: group
+          name: friends
+          label: 朋友圈
+          help: RSS 订阅聚合
+          children:
+            - $formkit: select
+              name: template
+              id: friends_template
+              key: friends_template
+              label: 模板样式
+              value: card
+              help: 选择朋友圈页面的展示模板
+              options:
+                - value: card
+                  label: 卡片模式（默认）
+                - value: list
+                  label: 列表模式
+            - $formkit: text
+              name: title
+              label: 页面标题
+              value: 朋友圈
+              placeholder: 朋友圈
+            - $formkit: text
+              if: "$get(friends_template).value === 'list'"
+              name: banner_desc
+              label: Banner 描述
+              value: 发现更多有趣的博主。
+              placeholder: 发现更多有趣的博主。
+              help: 目前仅列表模式生效
+            - $formkit: attachment
+              if: "$get(friends_template).value === 'list'"
+              name: banner_image
+              label: Banner 背景图
+              accepts:
+                - "image/*"
+              help: Banner 背景图片，目前仅列表模式生效
+        - $formkit: group
+          name: docs
+          label: 文档插件
+          help: plugin-docs
+          children:
+            - $formkit: text
+              name: title
+              label: 页面标题
+              value: 文档
+              placeholder: 文档
+            - $formkit: switch
+              name: enable_template
+              label: 启用主题模板
+              help: 开启后使用主题模板，关闭后使用默认模板
+              value: true
+            - $formkit: switch
+              name: enable_docs_h1
+              label: 在文档内容启用 H1 标题
+              help: 开启后文档内容将显示 H1 标题
+              value: true
     - group: custom
       label: 自定义
       formSchema:

@@ -1,0 +1,28 @@
+.docs-empty {
+  text-align: center;
+  padding: 4rem;
+  background: var(--c-bg-card);
+  border-radius: 1rem;
+  border: 1px solid var(--c-border);
+  margin: 0 1rem;
+
+  span:first-child {
+    font-size: 64px;
+    color: var(--c-text-tertiary);
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: var(--c-text-secondary);
+
+    &:first-of-type {
+      font-size: 1.125rem;
+      margin-bottom: 0.5rem;
+    }
+
+    &:last-of-type {
+      font-size: 0.875rem;
+    }
+  }
+}

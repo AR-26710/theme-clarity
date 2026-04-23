@@ -3,10 +3,10 @@
   class="widget toc-widget"
   id="catalog-widget"
   style="display: none"
-  th:if="${(post != null and theme.config.custom.enable_post_toc != false and #annotations.getOrDefault(post, 'toc', 'true') == 'true') or (singlePage != null and theme.config.custom.enable_page_toc != false and #annotations.getOrDefault(singlePage, 'toc', 'false') == 'true')}"
+  th:if="${(post != null and theme.config.custom.enable_post_toc != false and #annotations.getOrDefault(post, 'toc', 'true') == 'true') or (singlePage != null and theme.config.custom.enable_page_toc != false and #annotations.getOrDefault(singlePage, 'toc', 'false') == 'true') or docTree != null}"
 >
   <hgroup class="widget-title">
-    <span class="title-text">文章目录</span>
+    <span class="title-text" th:text="${docTree != null ? '文档目录' : '文章目录'}">文章目录</span>
     <a
       th:if="${post != null}"
       onclick="return false;"
@@ -35,11 +35,12 @@
       <span class="icon-[ph--arrow-circle-up-bold]"></span>
     </a>
     <a
+      th:if="${post != null or docTree != null}"
       href="#comment"
       aria-label="评论区"
       data-title="评论区"
       onclick="
-        document.getElementById('comment').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('comment')?.scrollIntoView({ behavior: 'smooth' });
         return false;
       "
     >

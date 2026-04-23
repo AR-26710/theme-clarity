@@ -1,0 +1,71 @@
+.docs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin: 0 1rem;
+}
+
+.docs-card {
+  display: block;
+  padding: 1.5rem;
+  background: var(--c-bg-card);
+  border-radius: 1rem;
+  border: 1px solid var(--c-border);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    border-color: var(--c-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.docs-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--c-primary) 15%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+
+  img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+
+  span {
+    font-size: 28px;
+    color: var(--c-primary);
+  }
+}
+
+.docs-card h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.docs-card-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--c-text-secondary);
+  font-size: 0.875rem;
+}
+
+.docs-card-arrow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  color: var(--c-text-tertiary);
+  transition: color 0.3s ease;
+
+  .docs-card:hover & {
+    color: var(--c-primary);
+  }
+}

@@ -80,6 +80,29 @@ src/pjax/
 | `disablePjax()` | 禁用 PJAX 功能 |
 | `enablePjax()` | 启用 PJAX 功能 |
 
+**全局实例**：
+
+PJAX 实例会暴露到全局 `window.__pjax__`，供 HTML 模板中的脚本使用：
+
+```typescript
+// 类型声明
+declare global {
+  interface Window {
+    __pjax__?: Pjax;
+  }
+}
+```
+
+在 HTML 模板中可以通过 `window.__pjax__` 访问：
+
+```javascript
+// 检查 pjax 是否启用并获取实例
+if (window.themeConfig?.custom?.enable_pjax && window.__pjax__) {
+  // 使用 pjax 实例
+  window.__pjax__.refresh(element);
+}
+```
+
 ### 2. 事件注册 (hooks/index.ts)
 
 使用 `registerPjaxHooks()` 注册所有 PJAX 生命周期事件监听器。该函数使用标志位防止重复注册。
@@ -403,6 +426,29 @@ PJAX 只更新配置的选择器内容（`#main-content`, `#z-aside`），因此
 - 放在 `<head>` 中的脚本不会被重新执行
 - 内联在 `#main-content` 中的脚本会被提取并执行
 - 外部脚本（`<script src="...">`）需要特殊处理
+
+### 7. 为动态创建的链接绑定 PJAX
+
+当通过 JavaScript 动态创建 DOM 元素（如 AJAX 加载的评论列表）时，需要手动为这些链接绑定 PJAX：
+
+```javascript
+// 动态创建内容后，调用 refresh 方法
+function loadDynamicContent() {
+  // ... 创建 DOM 元素 ...
+  const container = document.querySelector('.dynamic-content');
+  container.innerHTML = '<a href="/page">链接</a>';
+  
+  // 为动态创建的链接绑定 pjax
+  if (window.themeConfig?.custom?.enable_pjax && window.__pjax__) {
+    window.__pjax__.refresh(container);
+  }
+}
+```
+
+**使用场景**：
+- AJAX 加载的评论列表（如 Twikoo）
+- 无限滚动加载的新内容
+- 动态生成的分页链接
 
 ---
 

@@ -1,26 +1,9 @@
 // ========================================
-// Steam 页面头部样式 (Steam Header)
+// Steam 页面特定样式 (Steam Specific Styles)
 // ========================================
 
 @use 'variables' as *;
 @use 'mixins' as *;
 
-// 页面头部
-.steam-header {
-  @include flex(row, center, space-between, 1rem);
-  flex-wrap: wrap;
-  margin-bottom: $spacing-2xl;
-  padding-bottom: $spacing-lg;
-  border-bottom: 1px solid var(--c-border);
-}
-
-// 标题
-.steam-title {
-  @include flex(row, center, flex-start, 0.6rem);
-
-  > [class^="icon-"],
-  > .iconify {
-    font-size: 1.5em;
-    color: var(--c-primary);
-  }
-}
+// Steam 页面特定样式可以在这里添加
+// 通用的 .page-header 和 .page-title 样式已移至 _page-header.scss

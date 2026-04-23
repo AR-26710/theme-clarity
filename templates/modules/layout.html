@@ -82,6 +82,8 @@
       window.themeConfig.custom.caption_blacklist = /*[[${theme.config.custom.caption_blacklist}]]*/ [];
       window.themeConfig.style = window.themeConfig.style || {};
       window.themeConfig.style.theme_mode = /*[[${theme.config.style.theme_mode}]]*/ "light";
+      window.themeConfig.header = window.themeConfig.header || {};
+      window.themeConfig.header.menu_mouse_hover = /*[[${theme.config.header.menu_mouse_hover}]]*/ false;
     </script>
     <script>
       (function () {
@@ -173,6 +175,9 @@
         onclick="randomVisitLink()"
       >
         <span class="icon-[ph--shuffle-bold]" style="display: block"></span>
+      </button>
+      <button th:if="${docTree != null}" id="mobile-doc-tree-btn" aria-label="文档树" onclick="openDocTreeModal()">
+        <span class="icon-[ph--list-duotone]" style="display: block"></span>
       </button>
       <button id="back-to-top" aria-label="返回顶部" style="display: none">
         <span class="icon-[ph--arrow-up-bold]" style="display: block"></span>

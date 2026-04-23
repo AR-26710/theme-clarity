@@ -1,0 +1,25 @@
+.docs-page {
+  padding: 0;
+  max-width: none;
+  margin: 0;
+}
+
+.doc-page {
+  display: flex;
+  min-height: calc(100vh - var(--header-height));
+}
+
+.doc-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-main-full {
+  width: 100%;
+}
+
+.doc-comments {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--c-border);
+}
