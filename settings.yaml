@@ -425,7 +425,13 @@ spec:
                   label: 链接
                   placeholder: https://github.com
                   validation: required
-
+        - $formkit: switch
+          name: halo_version
+          label: 显示 Halo 版本
+          value: false
+          offValue: false
+          onValue: true
+          help: 启用后可以在页脚显示 Halo 版本信息
         - $formkit: text
           name: beian
           label: ICP 备案号
