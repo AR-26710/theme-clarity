@@ -939,7 +939,7 @@ spec:
           id: random_post
           key: random_post
           label: 随机文章配置
-          help: halo 版本需要 >= 2.24.1 才支持（文章数量大于1时是随机的连续文章，完全随机需要等待后续支持）
+          help: halo 版本需要 >= 2.24.1 才支持
           children:
             - $formkit: text
               name: title
