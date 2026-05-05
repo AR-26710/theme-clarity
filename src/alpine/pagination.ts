@@ -1,11 +1,11 @@
 import type Alpine from "alpinejs";
-import { getPjaxInstance } from "../pjax/pjax";
+import { getSwupInstance } from "../swup/swup";
 import { showToast } from "../utils/toast";
 
-function navigateWithPjax(url: string) {
-  const pjax = getPjaxInstance();
-  if (pjax && window.themeConfig?.custom?.enable_pjax) {
-    pjax.loadUrl(url);
+function navigateWithSwup(url: string) {
+  const swup = getSwupInstance();
+  if (swup && window.themeConfig?.custom?.enable_swup) {
+    swup.navigate(url);
   } else {
     window.location.href = url;
   }
@@ -75,7 +75,7 @@ export function registerPagination(alpine: typeof Alpine) {
     goToPage(p: number | string) {
       if (p === "...") return;
       const url = this.getPageUrl(p);
-      navigateWithPjax(url);
+      navigateWithSwup(url);
     },
   }));
 }
@@ -92,7 +92,7 @@ window.goToPageNumber = function (button: HTMLElement) {
     return;
   }
 
-  navigateWithPjax(buildPageUrl(targetPage));
+  navigateWithSwup(buildPageUrl(targetPage));
 };
 
 function initKeyboardNavigation() {
@@ -113,10 +113,10 @@ function initKeyboardNavigation() {
 
     if (e.key === "ArrowLeft" && prevUrl) {
       e.preventDefault();
-      navigateWithPjax(prevUrl);
+      navigateWithSwup(prevUrl);
     } else if (e.key === "ArrowRight" && nextUrl) {
       e.preventDefault();
-      navigateWithPjax(nextUrl);
+      navigateWithSwup(nextUrl);
     }
   });
 }
@@ -169,7 +169,7 @@ function initPaginationJump() {
       return;
     }
 
-    navigateWithPjax(buildPageUrl(targetPage));
+    navigateWithSwup(buildPageUrl(targetPage));
   });
 
   document.addEventListener("keydown", (e: KeyboardEvent) => {

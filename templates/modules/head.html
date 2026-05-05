@@ -2,13 +2,13 @@
   <link
     rel="stylesheet"
     th:if="${pluginFinder.available('PluginMoments')}"
-    data-pjax-conditional="moments"
+    data-swup-conditional="moments"
     th:href="@{/assets/dist/moments.css?v={version}(version=${theme.spec.version})}"
   />
   <script
     type="module"
     th:if="${pluginFinder.available('PluginMoments')}"
-    data-pjax-conditional="moments"
+    data-swup-conditional="moments"
     th:src="@{/assets/dist/moments.js?v={version}(version=${theme.spec.version})}"
   ></script>
 </th:block>
@@ -16,7 +16,7 @@
 <th:block th:fragment="photos-head">
   <link
     rel="stylesheet"
-    data-pjax-conditional="photos"
+    data-swup-conditional="photos"
     th:href="@{/assets/dist/photos.css?v={version}(version=${theme.spec.version})}"
   />
 </th:block>
@@ -24,7 +24,7 @@
 <th:block th:fragment="equipments-head">
   <link
     rel="stylesheet"
-    data-pjax-conditional="equipments"
+    data-swup-conditional="equipments"
     th:href="@{/assets/dist/equipments.css?v={version}(version=${theme.spec.version})}"
   />
 </th:block>
@@ -32,12 +32,12 @@
 <th:block th:fragment="links-head">
   <link
     rel="stylesheet"
-    data-pjax-conditional="links"
+    data-swup-conditional="links"
     th:href="@{/assets/dist/links.css?v={version}(version=${theme.spec.version})}"
   />
   <script
     type="module"
-    data-pjax-conditional="links"
+    data-swup-conditional="links"
     th:src="@{/assets/dist/links.js?v={version}(version=${theme.spec.version})}"
   ></script>
 </th:block>
@@ -45,12 +45,12 @@
 <th:block th:fragment="friends-head">
   <link
     rel="stylesheet"
-    data-pjax-conditional="friends"
+    data-swup-conditional="friends"
     th:href="@{/assets/dist/friends.css?v={version}(version=${theme.spec.version})}"
   />
   <script
     type="module"
-    data-pjax-conditional="friends"
+    data-swup-conditional="friends"
     th:src="@{/assets/dist/friends.js?v={version}(version=${theme.spec.version})}"
   ></script>
 </th:block>
@@ -58,7 +58,7 @@
 <th:block th:fragment="bangumis-head">
   <link
     rel="stylesheet"
-    data-pjax-conditional="bangumis"
+    data-swup-conditional="bangumis"
     th:href="@{/assets/dist/bangumis.css?v={version}(version=${theme.spec.version})}"
   />
 </th:block>
@@ -66,7 +66,7 @@
 <th:block th:fragment="steam-head">
   <link
     rel="stylesheet"
-    data-pjax-conditional="steam"
+    data-swup-conditional="steam"
     th:href="@{/assets/dist/steam.css?v={version}(version=${theme.spec.version})}"
   />
 </th:block>
@@ -74,7 +74,7 @@
 <th:block th:fragment="shop-head">
   <link
     rel="stylesheet"
-    data-pjax-conditional="shop"
+    data-swup-conditional="shop"
     th:href="@{/assets/dist/shop.css?v={version}(version=${theme.spec.version})}"
   />
 </th:block>
@@ -82,7 +82,7 @@
 <th:block th:fragment="docs-head">
   <link
     rel="stylesheet"
-    data-pjax-conditional="docs"
+    data-swup-conditional="docs"
     th:href="@{/assets/dist/docs.css?v={version}(version=${theme.spec.version})}"
   />
 </th:block>

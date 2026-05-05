@@ -310,10 +310,7 @@
               list.appendChild(li);
             });
 
-            // 为动态创建的链接绑定 pjax
-            if (window.themeConfig?.custom?.enable_pjax && window.__pjax__) {
-              window.__pjax__.refresh(list);
-            }
+            // Swup 使用事件委托处理动态创建的链接，无需重新绑定
           } catch (error) {
             console.error("加载 Twikoo 最新评论失败:", error);
             if (loadingTip) {

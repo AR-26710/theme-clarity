@@ -74,7 +74,7 @@ export default ({ mode }: { mode: string }) => {
               if (id.includes("twikoo")) return "twikoo";
               if (id.includes("html2canvas")) return "html2canvas";
               if (id.includes("qrcode")) return "qrcode";
-              if (id.includes("pjax")) return "pjax";
+              if (id.includes("swup")) return "swup";
               if (id.includes("@chinese-fonts")) return "chinese-fonts";
               return "vendor";
             }

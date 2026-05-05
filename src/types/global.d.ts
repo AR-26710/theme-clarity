@@ -30,8 +30,8 @@ declare global {
       custom?: {
         img_alt?: boolean;
         enable_fancybox?: boolean;
-        enable_pjax?: boolean;
-        pjax_timeout?: number;
+        enable_swup?: boolean;
+        swup_timeout?: number;
         caption_blacklist?: Array<{ class_name?: string; realNode?: { class_name?: string } }>;
       };
       style?: {

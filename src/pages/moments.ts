@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMomentsTags();
 });
 
-// 支持 PJAX 页面切换后的重新初始化
-window.addEventListener("pjax:success", () => {
+// 支持 Swup 页面切换后的重新初始化
+window.addEventListener("swup:success", () => {
   initMomentsTags();
 });

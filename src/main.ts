@@ -11,9 +11,8 @@ import { generateQRCode, generatePoster } from "./utils/poster";
 import { initActivityCalendar } from "./utils/activity-calendar";
 import { initTwikooComments } from "./utils/twikoo";
 import { registerAlpineComponents } from "./alpine";
-import { initPjax } from "./pjax/pjax";
-import { registerPjaxHooks } from "./pjax/pjax-hooks";
-import { reinitializeComponents } from "./pjax/reinit";
+import { initSwup } from "./swup/swup";
+import { reinitializeComponents } from "./swup/reinit";
 import { initImageLoaded, initImageCaption } from "./utils/image";
 import {
   initDropdownMenus,
@@ -42,9 +41,8 @@ initSearchShortcut();
 
 // 页面初始加载
 document.addEventListener("DOMContentLoaded", () => {
-  if (window.themeConfig?.custom?.enable_pjax) {
-    initPjax();
-    registerPjaxHooks();
+  if (window.themeConfig?.custom?.enable_swup) {
+    initSwup();
   }
 
   initDropdownMenus();
@@ -60,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initFloatingPagination();
 });
 
-window.addEventListener("pjax:success", () => {
+window.addEventListener("swup:success", () => {
   window.setTimeout(() => {
     initFloatingPagination();
   }, 0);

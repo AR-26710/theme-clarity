@@ -20,9 +20,9 @@
     "@fancyapps/ui": "^6.1.6",
     "alpinejs": "^3.15.1",
     "html2canvas": "^1.4.1",
-    "pjax": "^0.2.8",
     "preact": "10.28.2",
     "qrcode": "^1.5.4",
+    "swup": "^4.8.3",
     "twikoo": "1.7.2"
   },
   "devDependencies": {

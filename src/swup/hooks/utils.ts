@@ -1,18 +1,4 @@
 /**
- * 从 PJAX 事件中安全地获取 XMLHttpRequest 对象
- * 使用运行时类型检查，避免 unsafe cast
- *
- * @param event - PJAX 事件对象
- * @returns XMLHttpRequest 对象或 undefined
- */
-export const getRequestFromPjaxEvent = (event: Event): XMLHttpRequest | undefined => {
-  if ("request" in event && event.request instanceof XMLHttpRequest) {
-    return event.request;
-  }
-  return undefined;
-};
-
-/**
  * 生成 meta 标签的唯一键用于去重
  *
  * @param el - meta 或 link 元素
@@ -65,13 +51,13 @@ export const isPathMatch = (currentPath: string, href: string): boolean => {
 
 /**
  * 获取条件资源的唯一键
- * 用于 data-pjax-conditional 属性的资源标识
+ * 用于 data-swup-conditional 属性的资源标识
  *
  * @param el - link 或 script 元素
- * @returns 资源的唯一键，如果没有 data-pjax-conditional 属性则返回 null
+ * @returns 资源的唯一键，如果没有 data-swup-conditional 属性则返回 null
  */
 export const getResourceKey = (el: Element): string | null => {
-  const conditionalValue = el.getAttribute("data-pjax-conditional");
+  const conditionalValue = el.getAttribute("data-swup-conditional");
   if (!conditionalValue) return null;
 
   const tagName = el.tagName.toLowerCase();
@@ -79,7 +65,7 @@ export const getResourceKey = (el: Element): string | null => {
   const src = el.getAttribute("src") || "";
   const href = el.getAttribute("href") || "";
 
-  // 使用 data-pjax-conditional 值作为基础键
+  // 使用 data-swup-conditional 值作为基础键
   // 结合标签类型和资源路径确保唯一性
   if (tagName === "link" && rel === "stylesheet") {
     return `css:${conditionalValue}:${href}`;

@@ -1,6 +1,6 @@
-// PJAX 加载动画和过渡效果
+// Swup 加载动画和过渡效果
 
-.pjax-loading {
+.swup-loading {
   #main-content {
     opacity: 0.5;
     pointer-events: none;
@@ -16,11 +16,11 @@
     height: 3px;
     background: linear-gradient(90deg, transparent, var(--c-primary, #3b82f6), transparent);
     z-index: 9999;
-    animation: pjax-progress 1s ease-in-out infinite;
+    animation: swup-progress 1s ease-in-out infinite;
   }
 }
 
-@keyframes pjax-progress {
+@keyframes swup-progress {
   0% {
     transform: translateX(-100%);
   }
@@ -32,12 +32,12 @@
   }
 }
 
-// PJAX 内容过渡动画
-.pjax-content {
-  animation: pjax-fade-in 0.3s ease-out;
+// Swup 内容过渡动画
+.swup-content {
+  animation: swup-fade-in 0.3s ease-out;
 }
 
-@keyframes pjax-fade-in {
+@keyframes swup-fade-in {
   from {
     opacity: 0;
     transform: translateY(10px);
@@ -48,7 +48,7 @@
   }
 }
 
-// 禁用 PJAX 的链接样式
-[data-no-pjax] {
+// 禁用 Swup 的链接样式
+[data-no-swup] {
   cursor: pointer;
 }
