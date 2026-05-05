@@ -10,6 +10,7 @@ import { initMermaid } from "./mermaid";
 import { syncThemeConfig } from "./theme-config";
 import { initTwikooComments } from "../../utils/twikoo";
 import { initActivityCalendar } from "../../utils/activity-calendar";
+import { initAsideScrollSync } from "../../modules/aside-scroll-sync";
 
 export { syncThemeConfig } from "./theme-config";
 export { reinitializeAlpineComponents } from "./alpine";
@@ -42,4 +43,5 @@ export const reinitializeComponents = () => {
   syncThemeConfig();
   initMermaid();
   void initTwikooComments();
+  initAsideScrollSync();
 };

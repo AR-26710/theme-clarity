@@ -20,6 +20,7 @@ import {
   initFloatingPagination,
   initActiveNavItem,
   initSearchShortcut,
+  initAsideScrollSync,
 } from "./modules";
 
 // 注册全局函数
@@ -56,10 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
   initActivityCalendar();
   void initTwikooComments();
   initFloatingPagination();
+  initAsideScrollSync();
 });
 
 window.addEventListener("swup:success", () => {
   window.setTimeout(() => {
     initFloatingPagination();
+    initAsideScrollSync();
   }, 0);
 });

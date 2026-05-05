@@ -9,3 +9,4 @@ export { initMomentsTags } from "./moments-tags";
 export { initFloatingPagination } from "./floating-pagination";
 export { initActiveNavItem } from "./active-nav";
 export { initSearchShortcut } from "./search-shortcut";
+export { initAsideScrollSync } from "./aside-scroll-sync";
