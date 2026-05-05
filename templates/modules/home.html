@@ -10,6 +10,9 @@
         <!-- 热门文章组件 -->
         <section th:case="hot-post" th:insert="~{modules/home-widgets/hot-post-widget :: hot-post}"></section>
 
+        <!-- 随机文章组件 -->
+        <section th:case="random-post" th:insert="~{modules/home-widgets/random-post-widget :: random-post}"></section>
+
         <!-- 自定义组件 -->
         <section
           th:case="custom"

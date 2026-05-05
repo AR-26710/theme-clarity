@@ -68,7 +68,8 @@
         <li>
           <a href="https://halo.run" target="_blank">
             <span class="icon-[ph--cube-bold]"></span>
-            <span class="nav-text">架构于 Halo</span>
+            <span class="nav-text" th:if="${!theme.config.footer.halo_version}">架构于 Halo</span>
+            <span class="nav-text" th:if="${theme.config.footer.halo_version}" th:text="'架构于 Halo ' + ${site.version}"></span>
           </a>
         </li>
         <li>
