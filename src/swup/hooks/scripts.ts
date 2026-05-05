@@ -1,11 +1,14 @@
 /**
- * 执行新加载的脚本
+ * 执行指定容器中的脚本
  *
- * 遍历主内容区域中的所有script标签，重新创建并执行这些脚本，
+ * 遍历指定容器中的所有script标签，重新创建并执行这些脚本，
  * 确保动态加载的内容中的JavaScript能够正确运行。
  */
-export const executeNewScripts = () => {
-  const scripts = document.querySelectorAll("#main-content script");
+const executeScriptsInContainer = (containerSelector: string) => {
+  const container = document.querySelector(containerSelector);
+  if (!container) return;
+
+  const scripts = container.querySelectorAll("script");
   scripts.forEach((oldScript) => {
     const newScript = document.createElement("script");
     Array.from(oldScript.attributes).forEach((attr) => {
@@ -16,4 +19,15 @@ export const executeNewScripts = () => {
     }
     oldScript.parentNode?.replaceChild(newScript, oldScript);
   });
+};
+
+/**
+ * 执行新加载的脚本
+ *
+ * 遍历主内容区域和侧边栏中的所有script标签，重新创建并执行这些脚本，
+ * 确保动态加载的内容中的JavaScript能够正确运行。
+ */
+export const executeNewScripts = () => {
+  executeScriptsInContainer("#main-content");
+  executeScriptsInContainer("#z-aside");
 };
