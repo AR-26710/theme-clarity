@@ -21,16 +21,16 @@
       <th:block th:if="${groups != null and not #lists.isEmpty(groups)}">
         <div class="photo-tabs">
           <a
-            th:href="@{/photos}"
+            th:href="@{${photoUrl.list()}}"
             th:class="${param.group == null or #lists.isEmpty(param.group) ? 'photo-tab active' : 'photo-tab'}"
           >
             <span class="icon-[ph--squares-four-bold]"></span>
             <span>全部</span>
-            <span class="tab-count" th:text="${#lists.size(photoFinder.listAll())}">0</span>
+            <span class="tab-count" th:text="${photoFinder.list(1, 1).total}">0</span>
           </a>
           <a
             th:each="group : ${groups}"
-            th:href="@{/photos(group=${group.metadata.name})}"
+            th:href="@{${photoUrl.list(group.metadata.name)}}"
             th:class="${param.group != null and not #lists.isEmpty(param.group) and param.group[0] == group.metadata.name ? 'photo-tab active' : 'photo-tab'}"
           >
             <span class="icon-[ph--images-bold]"></span>
@@ -46,19 +46,22 @@
 
       <th:block th:if="${photos != null and not #lists.isEmpty(photos.items)}">
         <div class="photo-masonry">
-          <!--https://www.w3school.com.cn/tags/tag_figure.asp-->
           <figure
             th:each="photo, iterStat : ${photos.items}"
             class="photo-item gallery-item"
             th:style="'--delay: ' + (${iterStat.index} * 0.05) + 's'"
           >
-            <img
-              th:src="${photo.spec.cover != null and not #strings.isEmpty(photo.spec.cover) ? photo.spec.cover : photo.spec.url}"
-              th:alt="${photo.spec.displayName}"
-              loading="lazy"
-            />
+            <a th:href="@{${photoUrl.detail(photo)}}" class="photo-link">
+              <img
+                th:src="${photo.spec.cover != null and not #strings.isEmpty(photo.spec.cover) ? photo.spec.cover : photo.spec.url}"
+                th:alt="${photo.spec.displayName}"
+                loading="lazy"
+              />
+            </a>
             <figcaption th:if="${photo.spec.displayName != null and not #strings.isEmpty(photo.spec.displayName)}">
-              <span th:text="${photo.spec.displayName}">图片标题</span>
+              <a th:href="@{${photoUrl.detail(photo)}}" class="photo-link">
+                <span th:text="${photo.spec.displayName}">图片标题</span>
+              </a>
               <p
                 th:if="${photo.spec.description != null and not #strings.isEmpty(photo.spec.description)}"
                 th:text="${photo.spec.description}"

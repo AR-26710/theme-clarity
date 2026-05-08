@@ -1,0 +1,151 @@
+<!doctype html>
+<html
+  xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{modules/layout :: html(content = ~{::content}, showAside = false, pageTitle = ${photo.spec.displayName}, head = ~{::head})}"
+>
+  <th:block th:fragment="head">
+    <th:block th:replace="~{modules/head :: photos-head}" />
+  </th:block>
+  <th:block th:fragment="content">
+    <div class="photo-detail">
+      <div class="photo-detail-back">
+        <a th:href="@{${backUrl}}" class="back-link">
+          <span class="icon-[ph--arrow-left-bold]"></span>
+          <span>返回图库</span>
+        </a>
+        <span class="photo-position" th:text="${position + ' / ' + total}"></span>
+      </div>
+
+      <div class="photo-detail-main gallery-item">
+        <img th:src="${photo.spec.url}" th:alt="${photo.spec.displayName}" class="photo-detail-image" loading="lazy" />
+      </div>
+
+      <div
+        class="photo-detail-info"
+        th:if="${photo.spec.displayName != null and not #strings.isEmpty(photo.spec.displayName)}"
+      >
+        <h1 class="photo-detail-title" th:text="${photo.spec.displayName}">图片标题</h1>
+        <p
+          th:if="${photo.spec.description != null and not #strings.isEmpty(photo.spec.description)}"
+          class="photo-detail-desc"
+          th:text="${photo.spec.description}"
+        >
+          图片描述
+        </p>
+      </div>
+
+      <th:block th:if="${photo.exif != null}">
+        <div class="photo-detail-exif">
+          <div class="exif-title">
+            <span class="icon-[ph--camera-bold]"></span>
+            <span>EXIF 信息</span>
+          </div>
+          <div class="exif-grid">
+            <div class="exif-item" th:if="${photo.exif.make != null and not #strings.isEmpty(photo.exif.make)}">
+              <span class="exif-label">制造商</span>
+              <span class="exif-value" th:text="${photo.exif.make}"></span>
+            </div>
+            <div class="exif-item" th:if="${photo.exif.model != null and not #strings.isEmpty(photo.exif.model)}">
+              <span class="exif-label">型号</span>
+              <span class="exif-value" th:text="${photo.exif.model}"></span>
+            </div>
+            <div
+              class="exif-item"
+              th:if="${photo.exif.lensModel != null and not #strings.isEmpty(photo.exif.lensModel)}"
+            >
+              <span class="exif-label">镜头</span>
+              <span class="exif-value" th:text="${photo.exif.lensModel}"></span>
+            </div>
+            <div class="exif-item" th:if="${photo.exif.fNumber != null}">
+              <span class="exif-label">光圈</span>
+              <span class="exif-value" th:text="'f/' + ${photo.exif.fNumber}"></span>
+            </div>
+            <div
+              class="exif-item"
+              th:if="${photo.exif.exposureTime != null and not #strings.isEmpty(photo.exif.exposureTime)}"
+            >
+              <span class="exif-label">快门</span>
+              <span class="exif-value" th:text="${photo.exif.exposureTime + 's'}"></span>
+            </div>
+            <div class="exif-item" th:if="${photo.exif.iso != null}">
+              <span class="exif-label">ISO</span>
+              <span class="exif-value" th:text="${photo.exif.iso}"></span>
+            </div>
+            <div class="exif-item" th:if="${photo.exif.focalLength != null}">
+              <span class="exif-label">焦距</span>
+              <span class="exif-value" th:text="${photo.exif.focalLength + 'mm'}"></span>
+            </div>
+            <div class="exif-item" th:if="${photo.exif.focalLengthIn35mm != null}">
+              <span class="exif-label">等效焦距</span>
+              <span class="exif-value" th:text="${photo.exif.focalLengthIn35mm + 'mm'}"></span>
+            </div>
+            <div class="exif-item" th:if="${photo.exif.dateTimeOriginal != null}">
+              <span class="exif-label">拍摄时间</span>
+              <span
+                class="exif-value"
+                th:text="${#temporals.format(photo.exif.dateTimeOriginal, 'yyyy-MM-dd HH:mm:ss')}"
+              ></span>
+            </div>
+            <div class="exif-item" th:if="${photo.exif.imageWidth != null and photo.exif.imageHeight != null}">
+              <span class="exif-label">分辨率</span>
+              <span class="exif-value" th:text="${photo.exif.imageWidth + ' × ' + photo.exif.imageHeight}"></span>
+            </div>
+          </div>
+        </div>
+      </th:block>
+
+      <div
+        th:if="${prev != null or next != null}"
+        class="surround-post"
+        th:attr="data-prev-url=${prev != null ? photoUrl.detail(prev) : ''}, data-next-url=${next != null ? photoUrl.detail(next) : ''}"
+      >
+        <a th:if="${prev != null}" th:href="@{${photoUrl.detail(prev)}}" class="surround-link">
+          <span class="icon-[solar--rewind-back-bold-duotone] rtl-flip"></span>
+          <div class="surround-text">
+            <strong class="title text-creative" th:text="${prev.spec.displayName}"></strong>
+          </div>
+        </a>
+        <div th:unless="${prev != null}" class="surround-link no-link">
+          <span class="icon-[solar--document-add-bold-duotone]"></span>
+          <div class="surround-text">
+            <strong class="title">新图片即将发布</strong>
+          </div>
+        </div>
+
+        <a th:if="${next != null}" th:href="@{${photoUrl.detail(next)}}" class="surround-link align-end">
+          <span class="icon-[solar--rewind-forward-bold-duotone] rtl-flip"></span>
+          <div class="surround-text">
+            <strong class="title text-creative" th:text="${next.spec.displayName}"></strong>
+          </div>
+        </a>
+        <div th:unless="${next != null}" class="surround-link align-end no-link">
+          <span class="icon-[solar--reel-bold-duotone]"></span>
+          <div class="surround-text">
+            <strong class="title">已抵达图片尽头</strong>
+          </div>
+        </div>
+      </div>
+
+      <th:block th:if="${neighbors != null and not #lists.isEmpty(neighbors)}">
+        <div class="photo-detail-neighbors">
+          <a
+            th:each="neighbor : ${neighbors}"
+            th:href="@{${photoUrl.detail(neighbor)}}"
+            class="neighbor-thumb"
+            th:classappend="${neighbor.metadata.name == photo.metadata.name} ? 'active' : ''"
+          >
+            <img
+              th:src="${neighbor.spec.cover != null and not #strings.isEmpty(neighbor.spec.cover) ? neighbor.spec.cover : neighbor.spec.url}"
+              th:alt="${neighbor.spec.displayName}"
+              loading="lazy"
+            />
+          </a>
+        </div>
+      </th:block>
+
+      <th:block
+        th:replace="~{modules/common/comment :: comment(title='评论区', haloComment=${ {group: 'core.halo.run', kind: 'Photo', name: photo.metadata.name} })}"
+      ></th:block>
+    </div>
+  </th:block>
+</html>
