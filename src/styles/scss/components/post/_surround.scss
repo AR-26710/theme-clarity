@@ -6,6 +6,12 @@
 	justify-content: space-between;
 	gap: 1rem;
 	margin: 3rem 1rem;
+
+	@media (max-width: 640px) {
+		flex-direction: column;
+		gap: 0.75rem;
+		margin: 2rem 0.5rem;
+	}
 }
 
 .surround-link {
@@ -13,6 +19,7 @@
 	align-items: center;
 	gap: 0.5em;
 	transition: color 0.2s;
+	-webkit-tap-highlight-color: transparent;
 
 	&.no-link {
 		opacity: 0.4;
@@ -26,9 +33,15 @@
 
 	> .surround-text {
 		transition: transform 0.2s;
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
 
 		> .title {
 			display: block;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 
 		> .date {
