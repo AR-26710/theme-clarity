@@ -59,14 +59,14 @@
               />
             </a>
             <figcaption th:if="${photo.spec.displayName != null and not #strings.isEmpty(photo.spec.displayName)}">
-              <a th:href="@{${photoUrl.detail(photo)}}" class="photo-link">
-                <span th:text="${photo.spec.displayName}">图片标题</span>
+              <a th:href="@{${photoUrl.detail(photo)}}" class="photo-link" th:title="${photo.spec.displayName}">
+                <span class="photo-title-text" th:text="${photo.spec.displayName}">图片标题</span>
               </a>
-              <p
-                th:if="${photo.spec.description != null and not #strings.isEmpty(photo.spec.description)}"
-                th:text="${photo.spec.description}"
-              >
-                图片描述
+              <p class="photo-view-detail">
+                <a th:href="@{${photoUrl.detail(photo)}}" class="view-detail-link">
+                  <span class="icon-[ph--arrow-right-bold]"></span>
+                  <span>查看详情</span>
+                </a>
               </p>
             </figcaption>
           </figure>
