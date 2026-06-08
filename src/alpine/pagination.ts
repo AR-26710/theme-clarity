@@ -97,11 +97,24 @@ window.goToPageNumber = function (button: HTMLElement) {
 
 function initKeyboardNavigation() {
   document.addEventListener("keydown", (e: KeyboardEvent) => {
+    const target = e.target as HTMLElement;
+
+    // 忽略标准输入元素
     if (
-      e.target instanceof HTMLInputElement ||
-      e.target instanceof HTMLTextAreaElement ||
-      e.target instanceof HTMLSelectElement
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLTextAreaElement ||
+      target instanceof HTMLSelectElement
     ) {
+      return;
+    }
+
+    // 忽略可编辑元素
+    if (target.isContentEditable) {
+      return;
+    }
+
+    // 忽略评论区的输入
+    if (target.closest(".z-comment")) {
       return;
     }
 
