@@ -3,7 +3,7 @@
   class="widget"
   th:with="
     calendarTitle=${item.calendar_title ?: '活跃日历'},
-    activityLimit=${T(java.lang.Integer).parseInt((item.activity_limit ?: 240).toString())},
+    activityLimit=${item.activity_limit ?: 240},
     postItems=${postFinder.list(1, activityLimit).items},
     momentItems=${pluginFinder.available('PluginMoments') ? momentFinder.list(1, activityLimit).items : {}},
     commentItems=${commentFinder.list(null, 1, activityLimit).items}

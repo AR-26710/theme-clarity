@@ -69,30 +69,23 @@ export function Weather({ apiKey, iconBase }: WeatherProps) {
 
     setStatus('loading');
     try {
-      // 获取 IP
-      const ipRes = await fetch('https://api.ipify.cn/?format=json');
-      const ipData = await ipRes.json();
-      
-      if (!ipData.ip) throw new Error('IP Error');
-
-      // 获取天气
       const weatherRes = await fetch(
-        `https://api.seniverse.com/v3/weather/now.json?key=${apiKey}&location=${ipData.ip}&language=zh-Hans&unit=c`
+        `https://api.seniverse.com/v3/weather/now.json?key=${apiKey}&location=ip&language=zh-Hans&unit=c`
       );
       const weatherData = await weatherRes.json();
 
       if (weatherData.results && weatherData.results[0]) {
         const result = weatherData.results[0];
         const updateTime = new Date(result.last_update);
-        
+
         const newData: WeatherData = {
           temperature: result.now.temperature,
           text: result.now.text,
           code: result.now.code,
           city: result.location.name,
-          updateTime: `${updateTime.getHours().toString().padStart(2, '0')}:${updateTime.getMinutes().toString().padStart(2, '0')} 更新`
+          updateTime: `${updateTime.getHours().toString().padStart(2, '0')}:${updateTime.getMinutes().toString().padStart(2, '0')} 更新`,
         };
-        
+
         setData(newData);
         setCache(newData);
         setStatus('success');
