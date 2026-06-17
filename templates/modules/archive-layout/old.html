@@ -10,7 +10,7 @@
         <div class="archive-meta">
           <span class="meta-item">
             <span class="icon-[ph--article-bold]"></span>
-            <span th:text="${postCount + ' 篇文章'}">0 篇文章</span>
+            <span th:text="${(postCount ?: 0) + ' 篇文章'}">0 篇文章</span>
           </span>
         </div>
       </div>
