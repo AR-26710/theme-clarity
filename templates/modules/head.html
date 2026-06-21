@@ -55,6 +55,19 @@
   ></script>
 </th:block>
 
+<th:block th:fragment="page-friends-head">
+  <link
+    rel="stylesheet"
+    data-swup-conditional="page-friends"
+    th:href="@{/assets/dist/friends.css?v={version}(version=${theme.spec.version})}"
+  />
+  <script
+    type="module"
+    data-swup-conditional="page-friends"
+    th:src="@{/assets/dist/page-friends.js?v={version}(version=${theme.spec.version})}"
+  ></script>
+</th:block>
+
 <th:block th:fragment="bangumis-head">
   <link
     rel="stylesheet"
