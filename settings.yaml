@@ -1336,6 +1336,12 @@ spec:
               label: 页面标题
               value: 朋友圈
               placeholder: 朋友圈
+            - $formkit: number
+              name: feed_limit
+              label: 每次加载条数
+              value: 30
+              validation: "required|number|min:1|max:100"
+              help: 卡片 / 列表模式均生效；首屏及每次「加载更多」获取的动态条数，上限 100（链接插件单次查询上限）
             - $formkit: text
               if: "$get(friends_template).value === 'list'"
               name: banner_desc
@@ -1350,6 +1356,12 @@ spec:
               accepts:
                 - "image/*"
               help: Banner 背景图片，目前仅列表模式生效
+            - $formkit: switch
+              if: "$get(friends_template).value === 'list'"
+              name: enable_random
+              label: 启用随机阅读
+              value: true
+              help: 仅列表模式支持；开启后在朋友圈页显示「随机阅读」入口
         - $formkit: group
           name: docs
           label: 文档插件

@@ -16,6 +16,11 @@ spec:
   configMapName: "theme-clarity-configMap"
   version: "1.6.2"
   requires: ">=2.22.0"
+  customTemplates:
+    page:
+      - name: 朋友圈
+        description: 友链 RSS 动态聚合，需安装链接插件（plugin-links ≥2.2.0）并开启「公开 RSS 订阅动态」
+        file: page_friends.html
   license:
     - name: "GPL-3.0"
       url: "https://github.com/acanyo/theme-clarity/blob/main/LICENSE"
