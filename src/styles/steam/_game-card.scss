@@ -25,6 +25,7 @@
 
   // 链接
   &__link {
+    position: relative;
     display: block;
     text-decoration: none;
     color: inherit;
@@ -36,6 +37,20 @@
     aspect-ratio: 460 / 215;
     object-fit: cover;
     display: block;
+  }
+
+  // 库外标识角标（叠加在封面右上角）
+  &__library-badge {
+    position: absolute;
+    top: $spacing-sm;
+    right: $spacing-sm;
+    padding: 2px $spacing-sm;
+    background: var(--c-primary);
+    color: #fff;
+    border-radius: $radius-md;
+    font-size: $font-size-xs;
+    font-weight: 600;
+    line-height: 1.4;
   }
 
   // 信息区域

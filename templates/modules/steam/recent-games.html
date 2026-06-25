@@ -20,6 +20,12 @@
           class="steam-game-card__link"
         >
           <img class="steam-game-card__img" th:src="${game.headerImageUrl}" th:alt="${game.name}" loading="lazy" />
+          <span
+            class="steam-game-card__library-badge"
+            th:if="${game.inLibrary != null and !game.inLibrary}"
+            title="该游戏不在你的 Steam 游戏库中"
+            >库外</span
+          >
           <div class="steam-game-card__info">
             <div class="steam-game-card__name" th:text="${game.name}">Game</div>
             <div class="steam-game-card__meta">
@@ -39,6 +45,12 @@
         </a>
         <div th:unless="${enableGameLink}" class="steam-game-card__link">
           <img class="steam-game-card__img" th:src="${game.headerImageUrl}" th:alt="${game.name}" loading="lazy" />
+          <span
+            class="steam-game-card__library-badge"
+            th:if="${game.inLibrary != null and !game.inLibrary}"
+            title="该游戏不在你的 Steam 游戏库中"
+            >库外</span
+          >
           <div class="steam-game-card__info">
             <div class="steam-game-card__name" th:text="${game.name}">Game</div>
             <div class="steam-game-card__meta">
