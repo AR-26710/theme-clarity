@@ -24,6 +24,12 @@
             class="steam-game-card__link"
           >
             <img class="steam-game-card__img" th:src="${game.headerImageUrl}" th:alt="${game.name}" loading="lazy" />
+            <span
+              class="steam-game-card__delisted-badge"
+              th:if="${game.delisted}"
+              title="该游戏已从 Steam 商店下架或暂不可用"
+              >不可用</span
+            >
             <div class="steam-game-card__info">
               <div class="steam-game-card__name" th:text="${game.name}">Game</div>
               <div class="steam-game-card__meta">
@@ -38,6 +44,12 @@
           </a>
           <div th:unless="${enableGameLink}" class="steam-game-card__link">
             <img class="steam-game-card__img" th:src="${game.headerImageUrl}" th:alt="${game.name}" loading="lazy" />
+            <span
+              class="steam-game-card__delisted-badge"
+              th:if="${game.delisted}"
+              title="该游戏已从 Steam 商店下架或暂不可用"
+              >不可用</span
+            >
             <div class="steam-game-card__info">
               <div class="steam-game-card__name" th:text="${game.name}">Game</div>
               <div class="steam-game-card__meta">

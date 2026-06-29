@@ -53,6 +53,21 @@
     line-height: 1.4;
   }
 
+  // 不可用标识角标（叠加在封面左上角，灰色调；与库外角标左右错开避免重叠）
+  &__delisted-badge {
+    position: absolute;
+    top: $spacing-sm;
+    left: $spacing-sm;
+    padding: 2px $spacing-sm;
+    background: rgba(60, 60, 60, 0.88);
+    color: #d4d4d4;
+    border: 1px solid rgba(200, 200, 200, 0.4);
+    border-radius: $radius-md;
+    font-size: $font-size-xs;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
   // 信息区域
   &__info {
     padding: $spacing-md;
