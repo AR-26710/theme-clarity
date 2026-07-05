@@ -25,7 +25,7 @@
 
         <div class="article-body">
           <h2 class="article-title text-creative">
-            <a th:href="${post.status.permalink}" th:text="${post.spec.title}"></a>
+            <a th:href="${post.status.permalink}" th:text="${post.spec.title}" th:title="${post.spec.title}"></a>
             <th:block th:if="${post.spec.pinned}" th:insert="~{modules/common/pinned-icon :: pinned-icon}" />
           </h2>
 
