@@ -55,6 +55,12 @@
 // 文章标题
 .article-title {
 	color: var(--c-text);
+	display: inline-block;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	line-height: 1.4;
 }
 
 // 文章链接卡片
