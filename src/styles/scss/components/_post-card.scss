@@ -57,7 +57,10 @@ $breakpoint-phone: 528px !default;
 	}
 }
 
-.article-title {
+.article-card .article-title {
+	display: flex;
+	align-items: center;
+	gap: 4px;
 	font-size: 1.2em;
 	color: var(--c-text);
 	line-height: 1.4;
@@ -68,16 +71,16 @@ $breakpoint-phone: 528px !default;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		min-width: 0;
 	}
-	
+
 	.pinned-post {
-		display: inline-block;
+		flex-shrink: 0;
 
 		.icon {
 			width: 16px;
 			height: 16px;
 			fill: var(--c-danger);
-			margin-left: 4px;
 			transition: all 0.3s ease;
 		}
 
