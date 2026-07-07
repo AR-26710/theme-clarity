@@ -39,6 +39,9 @@ declare global {
       };
     };
     reinitializeComponents?: () => void;
+    XhhaoComContentWidgets?: {
+      mount: (root: Document | HTMLElement) => void;
+    };
   }
 
   interface ShuttleOptions {
