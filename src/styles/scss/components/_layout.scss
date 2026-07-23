@@ -1,19 +1,14 @@
 $breakpoint-mobile: 768px !default;
 $breakpoint-widescreen: 1080px !default;
-$layout-max-width: 1440px !default;
-$layout-gutter: clamp(0rem, 1.25vw, 1.5rem) !default;
 
 #clarity-root {
 	display: flex;
 	justify-content: center;
 	min-width: 0;
 	min-height: 100vh;
-	padding-inline: $layout-gutter;
-	box-sizing: border-box;
 
 	@media (max-width: $breakpoint-mobile) {
 		display: block;
-		padding-inline: 0;
 	}
 }
 
@@ -30,7 +25,7 @@ $layout-gutter: clamp(0rem, 1.25vw, 1.5rem) !default;
 #content {
 	display: flex;
 	flex: 1;
-	max-width: $layout-max-width;
+	max-width: $breakpoint-widescreen;
 	min-width: 0;
 
 	> main {
