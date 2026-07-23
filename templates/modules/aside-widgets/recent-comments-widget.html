@@ -8,6 +8,8 @@
     replyCount=${T(java.lang.Integer).parseInt(item.reply_count ?: '3')},
     showAvatar=${item.show_avatar != null ? item.show_avatar : true},
     commentProvider=${theme.config.comment?.provider ?: 'halo'},
+    haloCommentComponent=${theme.config.comment?.halo_component ?: 'official'},
+    useCommentNextAnchor=${commentProvider == 'halo' and haloCommentComponent == 'next'},
     twikooEnvId=${theme.config.comment?.twikoo?.env_id ?: ''},
     twikooCustomUrl=${theme.config.comment?.twikoo?.custom_js_url ?: '/themes/theme-clarity/assets/libs/twikoo/twikoo.min.js'}
   "
@@ -25,6 +27,7 @@
           th:data-max-length="50"
           th:data-show-replies="${showReplies}"
           th:data-reply-count="${replyCount}"
+          th:data-comment-anchor-mode="${useCommentNextAnchor ? 'comment-next' : 'official'}"
         >
           <li
             th:each="comment : ${comments.items}"
@@ -62,7 +65,10 @@
             <th:block th:if="${comment.spec.subjectRef != null}">
               <th:block th:if="${comment.spec.subjectRef.kind == 'SinglePage'}">
                 <th:block th:with="singlePage = ${singlePageFinder.getByName(comment.spec.subjectRef.name)}">
-                  <a class="comment-link" th:href="${singlePage.status.permalink} + '#comment'">
+                  <a
+                    class="comment-link"
+                    th:href="${singlePage.status.permalink + (useCommentNextAnchor ? '#comment-next-comment-' + comment.metadata.name : '#comment')}"
+                  >
                     <script type="text/plain" class="comment-raw-content" th:utext="${comment.spec.content}"></script>
                     <div class="comment-content"></div>
                   </a>
@@ -70,14 +76,20 @@
               </th:block>
               <th:block th:if="${comment.spec.subjectRef.kind == 'Post'}">
                 <th:block th:with="post = ${postFinder.getByName(comment.spec.subjectRef.name)}">
-                  <a class="comment-link" th:href="${post.status.permalink} + '#comment'">
+                  <a
+                    class="comment-link"
+                    th:href="${post.status.permalink + (useCommentNextAnchor ? '#comment-next-comment-' + comment.metadata.name : '#comment')}"
+                  >
                     <script type="text/plain" class="comment-raw-content" th:utext="${comment.spec.content}"></script>
                     <div class="comment-content"></div>
                   </a>
                 </th:block>
               </th:block>
               <th:block th:if="${comment.spec.subjectRef.kind == 'Moment'}">
-                <a class="comment-link" th:href="|/moments/${comment.spec.subjectRef.name}|+ '#comment'">
+                <a
+                  class="comment-link"
+                  th:href="${'/moments/' + comment.spec.subjectRef.name + (useCommentNextAnchor ? '#comment-next-comment-' + comment.metadata.name : '#comment')}"
+                >
                   <script type="text/plain" class="comment-raw-content" th:utext="${comment.spec.content}"></script>
                   <div class="comment-content"></div>
                 </a>
@@ -91,14 +103,20 @@
               </th:block>
               <!-- 图库照片评论 -->
               <th:block th:if="${comment.spec.subjectRef.kind == 'Photo'}">
-                <a class="comment-link" th:href="|/photos/${comment.spec.subjectRef.name}| + '#comment'">
+                <a
+                  class="comment-link"
+                  th:href="${'/photos/' + comment.spec.subjectRef.name + (useCommentNextAnchor ? '#comment-next-comment-' + comment.metadata.name : '#comment')}"
+                >
                   <script type="text/plain" class="comment-raw-content" th:utext="${comment.spec.content}"></script>
                   <div class="comment-content"></div>
                 </a>
               </th:block>
               <!-- TODO 友链插件未适配评论插件 -->
               <th:block th:if="${comment.spec.subjectRef.kind == 'Plugin'}">
-                <a class="comment-link" th:href="@{/links}+ '#comment'">
+                <a
+                  class="comment-link"
+                  th:href="${'/links' + (useCommentNextAnchor ? '#comment-next-comment-' + comment.metadata.name : '#comment')}"
+                >
                   <script type="text/plain" class="comment-raw-content" th:utext="${comment.spec.content}"></script>
                   <div class="comment-content"></div>
                 </a>
@@ -112,7 +130,7 @@
             </th:block>
             <div class="comment-replies" th:if="${showReplies and comment.status.replyCount > 0}">
               <th:block th:with="replies = ${commentFinder.listReply(comment.metadata.name, 1, replyCount)}">
-                <div th:each="reply : ${replies.items}" class="reply-item">
+                <div th:each="reply : ${replies.items}" class="reply-item" th:data-reply-name="${reply.metadata.name}">
                   <img
                     th:if="${showAvatar and reply.owner != null and not #strings.isEmpty(reply.owner.avatar)}"
                     class="reply-avatar-img"
@@ -132,7 +150,8 @@
                     >回复者</span
                   >
                   <script type="text/plain" class="reply-raw-content" th:utext="${reply.spec.content}"></script>
-                  <span class="reply-content"></span>
+                  <a th:if="${useCommentNextAnchor}" class="reply-content reply-content-link" href="#"></a>
+                  <span th:unless="${useCommentNextAnchor}" class="reply-content"></span>
                 </div>
               </th:block>
             </div>
@@ -182,10 +201,140 @@
         const list = widget.querySelector(".recent-comments-list");
         if (!list) return;
 
+        const parser = new DOMParser();
+
+        const normalizeText = (value) => (value || "").replace(/\s+/g, " ").trim();
+
+        const truncateText = (value, length) => {
+          const text = normalizeText(value);
+          return text.length > length ? `${text.substring(0, length)}...` : text;
+        };
+
+        const getSafeImageSource = (source) => {
+          const rawSource = (source || "").trim();
+          if (!rawSource) return "";
+
+          try {
+            const url = new URL(rawSource, window.location.origin);
+            if (url.protocol === "data:" && !rawSource.startsWith("data:image/")) {
+              return "";
+            }
+            return ["http:", "https:", "data:", "blob:"].includes(url.protocol) ? url.href : "";
+          } catch (error) {
+            return "";
+          }
+        };
+
+        const isEmojiImage = (image) => {
+          const imageText = [
+            image.getAttribute("class"),
+            image.getAttribute("alt"),
+            image.getAttribute("title"),
+            image.getAttribute("src"),
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+          return /emoji|emoticon|sticker|twemoji|owo|表情/.test(imageText);
+        };
+
+        const createContentPreview = (raw, maxLength, options = {}) => {
+          const doc = parser.parseFromString(raw || "", "text/html");
+          const text = truncateText(doc.body.textContent || doc.body.innerText || "", maxLength);
+          if (text) {
+            return { type: "text", text };
+          }
+
+          const imageNodes = Array.from(doc.body.querySelectorAll("img[src]"));
+          const imageLimit = options.imageLimit || 2;
+          const images = imageNodes
+            .map((image) => ({
+              src: getSafeImageSource(image.getAttribute("src")),
+              alt: image.getAttribute("alt") || "",
+              emoji: isEmojiImage(image),
+            }))
+            .filter((image) => image.src)
+            .slice(0, imageLimit);
+
+          if (imageNodes.length > 0) {
+            const emojiOnly = imageNodes.every(isEmojiImage);
+            return {
+              type: "media",
+              marker: emojiOnly ? "表情" : "图片",
+              label: emojiOnly ? "表情评论" : "图片评论",
+              images,
+              count: imageNodes.length,
+            };
+          }
+
+          if (doc.body.querySelector("video")) {
+            return { type: "media", marker: "视频", label: "视频评论", images: [], count: 0 };
+          }
+
+          if (doc.body.querySelector("audio")) {
+            return { type: "media", marker: "音频", label: "音频评论", images: [], count: 0 };
+          }
+
+          if (doc.body.querySelector("iframe, embed")) {
+            return { type: "media", marker: "嵌入", label: "嵌入内容", images: [], count: 0 };
+          }
+
+          return { type: "media", marker: "内容", label: "无文字评论", images: [], count: 0 };
+        };
+
+        const renderPreview = (target, preview) => {
+          target.replaceChildren();
+          target.classList.toggle("has-media", preview.type === "media");
+
+          if (preview.type === "text") {
+            target.textContent = preview.text;
+            return;
+          }
+
+          const mediaPreview = document.createElement("span");
+          mediaPreview.className = "comment-media-preview";
+          mediaPreview.setAttribute("aria-label", preview.label);
+
+          const marker = document.createElement("span");
+          marker.className = "comment-media-marker";
+          marker.textContent = preview.marker;
+          mediaPreview.appendChild(marker);
+
+          if (preview.images.length > 0) {
+            const thumbs = document.createElement("span");
+            thumbs.className = "comment-media-thumbs";
+
+            preview.images.forEach((image) => {
+              const thumb = document.createElement("img");
+              thumb.src = image.src;
+              thumb.alt = image.alt || preview.label;
+              thumb.loading = "lazy";
+              thumbs.appendChild(thumb);
+            });
+
+            mediaPreview.appendChild(thumbs);
+          }
+
+          const label = document.createElement("span");
+          label.className = "comment-media-label";
+          label.textContent =
+            preview.images.length > 0 && preview.count > preview.images.length
+              ? `${preview.label} +${preview.count - preview.images.length}`
+              : preview.label;
+          mediaPreview.appendChild(label);
+          target.appendChild(mediaPreview);
+        };
+
         // Halo 原生评论处理
         if (!list.classList.contains("twikoo-recent-comments")) {
           const maxLength = parseInt(list.dataset.maxLength || "50", 10);
-          const parser = new DOMParser();
+          const isCommentNextAnchor = list.dataset.commentAnchorMode === "comment-next";
+
+          const getCommentBaseUrl = (item) => {
+            const commentLink = item.querySelector(".comment-link[href]");
+            return commentLink ? commentLink.href.split("#")[0] : "";
+          };
 
           const run = () => {
             const items = list.querySelectorAll(".recent-comment-item");
@@ -195,32 +344,26 @@
               const contentDiv = item.querySelector(".comment-content");
               if (rawScript && contentDiv) {
                 const raw = rawScript.textContent || rawScript.innerText || "";
-                if (raw) {
-                  const doc = parser.parseFromString(raw, "text/html");
-                  let text = doc.body.textContent || doc.body.innerText || "";
-                  text = text.trim();
-                  if (text.length > maxLength) {
-                    text = text.substring(0, maxLength) + "...";
-                  }
-                  contentDiv.textContent = text;
-                }
+                renderPreview(contentDiv, createContentPreview(raw, maxLength));
               }
 
               // 处理回复内容
               const replyItems = item.querySelectorAll(".reply-item");
+              const commentBaseUrl = isCommentNextAnchor ? getCommentBaseUrl(item) : "";
               replyItems.forEach((replyItem) => {
                 const replyRawScript = replyItem.querySelector(".reply-raw-content");
                 const replyContentSpan = replyItem.querySelector(".reply-content");
                 if (replyRawScript && replyContentSpan) {
                   const raw = replyRawScript.textContent || replyRawScript.innerText || "";
-                  if (raw) {
-                    const doc = parser.parseFromString(raw, "text/html");
-                    let text = doc.body.textContent || doc.body.innerText || "";
-                    text = text.trim();
-                    if (text.length > 30) {
-                      text = text.substring(0, 30) + "...";
+                  renderPreview(replyContentSpan, createContentPreview(raw, 30, { imageLimit: 1 }));
+
+                  if (isCommentNextAnchor && replyContentSpan.classList.contains("reply-content-link")) {
+                    const replyName = replyItem.dataset.replyName;
+                    if (commentBaseUrl && replyName) {
+                      replyContentSpan.href = `${commentBaseUrl}#comment-next-reply-${replyName}`;
+                    } else {
+                      replyContentSpan.removeAttribute("href");
                     }
-                    replyContentSpan.textContent = text;
                   }
                 }
               });
@@ -278,41 +421,61 @@
 
               // 格式化时间
               const date = new Date(comment.created);
-              const timeStr = `${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
-
-              // 使用 commentText 纯文本内容，无需手动去除 HTML
-              let contentText = comment.commentText || "";
-              contentText = contentText.trim();
-              if (contentText.length > maxLength) {
-                contentText = contentText.substring(0, maxLength) + "...";
-              }
+              const isValidDate = !Number.isNaN(date.getTime());
+              const timeStr = isValidDate
+                ? `${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`
+                : "";
 
               // 构建评论链接
-              const commentUrl = comment.url ? `${comment.url}#${comment.id}` : "#";
+              const commentUrl = comment.url ? `${comment.url}${comment.id ? `#${comment.id}` : ""}` : "#";
 
-              // 头像（0.2.9+）
-              let avatarHtml = "";
+              const header = document.createElement("div");
+              header.className = "comment-header";
+
+              const authorInfo = document.createElement("div");
+              authorInfo.className = "comment-author-info";
+
+              // 头像(0.2.9+)
               if (showAvatar) {
                 if (comment.avatar) {
-                  avatarHtml = `<img class="comment-avatar-img" src="${comment.avatar}" alt="${comment.nick || ""}" loading="lazy">`;
+                  const avatar = document.createElement("img");
+                  avatar.className = "comment-avatar-img";
+                  avatar.src = comment.avatar;
+                  avatar.alt = comment.nick || "";
+                  avatar.loading = "lazy";
+                  authorInfo.appendChild(avatar);
                 } else {
-                  const firstChar = (comment.nick || "匿名").charAt(0);
-                  avatarHtml = `<span class="comment-avatar-text">${firstChar}</span>`;
+                  const avatarText = document.createElement("span");
+                  avatarText.className = "comment-avatar-text";
+                  avatarText.textContent = (comment.nick || "匿名").charAt(0);
+                  authorInfo.appendChild(avatarText);
                 }
               }
 
-              li.innerHTML = `
-                <div class="comment-header">
-                  <div class="comment-author-info">
-                    ${avatarHtml}
-                    <span class="comment-author">${comment.nick || "匿名"}</span>
-                  </div>
-                  <time class="comment-time" datetime="${comment.created}">${timeStr}</time>
-                </div>
-                <a class="comment-link" href="${commentUrl}">
-                  <div class="comment-content">${contentText}</div>
-                </a>
-              `;
+              const author = document.createElement("span");
+              author.className = "comment-author";
+              author.textContent = comment.nick || "匿名";
+              authorInfo.appendChild(author);
+
+              const time = document.createElement("time");
+              time.className = "comment-time";
+              time.dateTime = isValidDate ? date.toISOString() : String(comment.created || "");
+              time.textContent = timeStr;
+
+              header.appendChild(authorInfo);
+              header.appendChild(time);
+
+              const link = document.createElement("a");
+              link.className = "comment-link";
+              link.href = commentUrl;
+
+              const content = document.createElement("div");
+              content.className = "comment-content";
+              renderPreview(content, createContentPreview(comment.comment || comment.commentText || "", maxLength));
+
+              link.appendChild(content);
+              li.appendChild(header);
+              li.appendChild(link);
 
               list.appendChild(li);
             });

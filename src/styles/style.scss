@@ -4,6 +4,7 @@
 $breakpoint-phone: 528px;
 $breakpoint-mobile: 768px;
 $breakpoint-widescreen: 1080px;
+$layout-max-width: 1440px;
 
 @use "./scss/color";
 @use "./scss/font";
@@ -16,7 +17,8 @@ $breakpoint-widescreen: 1080px;
 
 @use "./scss/components/layout" with (
   $breakpoint-mobile: $breakpoint-mobile,
-  $breakpoint-widescreen: $breakpoint-widescreen
+  $breakpoint-widescreen: $breakpoint-widescreen,
+  $layout-max-width: $layout-max-width
 );
 @use "./scss/components/header";
 @use "./scss/components/page-header";

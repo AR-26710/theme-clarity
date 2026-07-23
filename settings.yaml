@@ -1085,6 +1085,18 @@ spec:
               label: Halo 原生评论
             - value: twikoo
               label: Twikoo 评论
+        - $formkit: select
+          name: halo_component
+          id: halo_component
+          label: Halo 评论组件
+          value: official
+          help: 使用评论组件 Next 时，最新评论会跳转到具体评论或回复；官方评论保持跳转评论区。
+          if: "$get(provider).value === 'halo'"
+          options:
+            - value: official
+              label: 官方评论
+            - value: next
+              label: 评论组件 Next
         - $formkit: group
           name: twikoo
           id: twikoo

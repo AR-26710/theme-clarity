@@ -101,6 +101,52 @@
 	overflow: hidden;
 	transition: color .2s;
 	word-break: break-all;
+
+	&.has-media {
+		display: block;
+		-webkit-line-clamp: initial;
+	}
+}
+
+.comment-media-preview {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	min-width: 0;
+	color: var(--c-text-2);
+}
+
+.comment-media-marker {
+	flex-shrink: 0;
+	padding: 0.05rem 0.35rem;
+	border-radius: 0.35rem;
+	background: var(--c-bg-soft);
+	color: var(--c-text-2);
+	font-size: 0.75em;
+	line-height: 1.5;
+}
+
+.comment-media-thumbs {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	flex-shrink: 0;
+
+	img {
+		width: 2.2rem;
+		height: 2.2rem;
+		border: 1px solid var(--c-border);
+		border-radius: 0.35rem;
+		background: var(--c-bg-soft);
+		object-fit: cover;
+	}
+}
+
+.comment-media-label {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 // 回复列表
@@ -156,10 +202,37 @@
 }
 
 .reply-content {
+	flex: 1;
+	min-width: 0;
 	color: var(--c-text-3);
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	text-decoration: none !important;
+
+	&.has-media {
+		display: inline-flex;
+		align-items: center;
+
+		.comment-media-preview {
+			gap: 0.25rem;
+		}
+
+		.comment-media-marker {
+			padding: 0 0.25rem;
+			font-size: 0.85em;
+		}
+
+		.comment-media-thumbs img {
+			width: 1.25rem;
+			height: 1.25rem;
+			border-radius: 0.25rem;
+		}
+	}
+
+	&:hover {
+		color: var(--c-primary);
+	}
 }
 
 // Twikoo 加载状态
