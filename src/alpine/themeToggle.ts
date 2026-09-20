@@ -14,6 +14,9 @@ export function registerThemeToggle(alpine: typeof Alpine) {
     },
 
     setTheme(newTheme: string, event?: MouseEvent) {
+      if (this.theme === newTheme) {
+        return;
+      }
       this.theme = newTheme;
       localStorage.setItem("theme", newTheme);
       this.applyTheme(true, event);

@@ -1,0 +1,227 @@
+<!doctype html>
+<html
+  xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{modules/layout :: html(content = ~{::content}, showAside = true, pageTitle = ${theme.config.plugins?.friends?.title ?: '朋友圈'}, head = ~{::head})}"
+>
+  <th:block th:fragment="head">
+    <th:block th:replace="~{modules/head :: page-friends-head}" />
+  </th:block>
+  <th:block
+    th:fragment="content"
+    th:with="friendsConfig=${theme.config.plugins?.friends},
+             linksAvailable=${pluginFinder.available('PluginLinks')},
+             feedLimit=${friendsConfig?.feed_limit != null ? T(java.lang.Integer).parseInt(friendsConfig.feed_limit + '') : 30},
+             linkFeeds=${linksAvailable ? linkFeedFinder.list({limit: feedLimit}) : null},
+             enableRandom=${friendsConfig == null or friendsConfig.enable_random != false}"
+  >
+    <!--/* ========== 未安装链接插件 ========== */-->
+    <th:block th:unless="${linksAvailable}">
+      <div class="page-header">
+        <div class="page-title">
+          <span class="icon-[ph--rss-bold]"></span>
+          <h1 class="text-creative" th:text="${friendsConfig?.title ?: '朋友圈'}">朋友圈</h1>
+        </div>
+      </div>
+      <div class="friends-empty">
+        <span class="icon-[ph--plugs-bold]"></span>
+        <p>朋友圈需要链接插件支持</p>
+        <span class="empty-hint">
+          请安装并启用链接插件（plugin-links ≥ 2.2.0），在其设置中开启「公开 RSS 订阅动态」，并为友链配置 RSS 地址
+        </span>
+      </div>
+    </th:block>
+
+    <!--/* ========== 卡片模式（默认） ========== */-->
+    <th:block
+      th:if="${linksAvailable and (friendsConfig == null or friendsConfig.template == null or friendsConfig.template == 'card')}"
+    >
+      <div class="page-header">
+        <div class="page-title">
+          <span class="icon-[ph--rss-bold]"></span>
+          <h1 class="text-creative" th:text="${friendsConfig?.title ?: '朋友圈'}">朋友圈</h1>
+        </div>
+        <div class="page-actions">
+          <span class="page-count" th:if="${linkFeeds != null and !#lists.isEmpty(linkFeeds.items)}">
+            已加载 <strong id="friends-count" th:text="${#lists.size(linkFeeds.items)}">0</strong> 篇
+          </span>
+          <a th:if="${theme.config.links?.enable_submit}" href="/links#add" class="page-action-link" title="申请友链">
+            <span class="icon-[ph--handshake-bold]"></span>
+            申请友链
+          </a>
+        </div>
+      </div>
+
+      <div class="friends-list proper-height" id="friends-list">
+        <article
+          th:each="linkFeed,iterStat : ${linkFeeds?.items}"
+          class="friend-card"
+          th:style="'--delay: ' + ${iterStat.index * 0.03} + 's'"
+        >
+          <header class="friend-header">
+            <a th:href="${linkFeed.authorUrl}" target="_blank" rel="noopener" class="author-info">
+              <img
+                th:if="${linkFeed.authorLogo != null and linkFeed.authorLogo != ''}"
+                th:src="${linkFeed.authorLogo}"
+                th:alt="${linkFeed.author}"
+                class="author-avatar"
+                loading="lazy"
+              />
+              <span
+                th:unless="${linkFeed.authorLogo != null and linkFeed.authorLogo != ''}"
+                class="author-avatar-placeholder"
+              >
+                <span class="icon-[ph--user-bold]"></span>
+              </span>
+              <span class="author-name" th:text="${linkFeed.author}">作者</span>
+            </a>
+            <time
+              th:if="${linkFeed.publishedAt != null}"
+              class="friend-time"
+              th:datetime="${linkFeed.publishedAt}"
+              th:text="${#temporals.format(linkFeed.publishedAt, 'MM-dd')}"
+            ></time>
+          </header>
+
+          <a th:href="${linkFeed.url}" target="_blank" rel="noopener" class="friend-content">
+            <h2 class="friend-title" th:text="${linkFeed.title}">文章标题</h2>
+            <p
+              th:if="${linkFeed.summary != null and linkFeed.summary != ''}"
+              class="friend-desc"
+              th:text="${linkFeed.summary}"
+            ></p>
+          </a>
+
+          <footer class="friend-footer">
+            <a th:href="${linkFeed.url}" target="_blank" rel="noopener" class="read-more">
+              <span>阅读原文</span>
+              <span class="icon-[ph--arrow-up-right-bold]"></span>
+            </a>
+          </footer>
+        </article>
+
+        <div th:if="${linkFeeds == null or #lists.isEmpty(linkFeeds.items)}" class="friends-empty">
+          <span class="icon-[ph--rss-bold]"></span>
+          <p>暂无订阅内容</p>
+          <span class="empty-hint">请在链接插件中为友链配置 RSS，并开启「公开 RSS 订阅动态」</span>
+        </div>
+      </div>
+
+      <div class="friends-load-more" th:if="${linkFeeds != null and linkFeeds.hasNext}">
+        <button
+          type="button"
+          id="friends-load-more-btn"
+          class="friends-load-more-btn"
+          th:attr="data-before-published-at=${linkFeeds.nextBeforePublishedAt}, data-before-id=${linkFeeds.nextBeforeId}"
+        >
+          <span class="friends-load-more-text">加载更多</span>
+        </button>
+      </div>
+    </th:block>
+
+    <!--/* ========== 列表模式 ========== */-->
+    <th:block th:if="${linksAvailable and friendsConfig != null and friendsConfig.template == 'list'}">
+      <div
+        class="fcircle-banner"
+        th:style="${friendsConfig.banner_image != null and friendsConfig.banner_image != ''} ? 'background-image: url(' + ${friendsConfig.banner_image} + ')' : ''"
+      >
+        <div class="fcircle-banner-content">
+          <h1 class="fcircle-banner-title" th:text="${friendsConfig.title ?: '朋友圈'}">朋友圈</h1>
+          <div class="fcircle-banner-bottom">
+            <p class="fcircle-banner-desc" th:text="${friendsConfig.banner_desc ?: '发现更多有趣的博主。'}">
+              发现更多有趣的博主。
+            </p>
+            <span class="fcircle-banner-count" th:if="${linkFeeds != null and !#lists.isEmpty(linkFeeds.items)}">
+              已加载 <strong id="friends-count" th:text="${#lists.size(linkFeeds.items)}">0</strong> 篇
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-fcircle proper-height">
+        <div
+          th:if="${enableRandom and linkFeeds != null and !#lists.isEmpty(linkFeeds.items)}"
+          class="fcircle-random-wrapper"
+          id="fcircle-random"
+          style="display: none"
+        >
+          <span class="fcircle-random-title">随机阅读</span>
+          <a class="fcircle-random-card" href="#" target="_blank" rel="noopener">
+            <!-- 由 JS 填充 -->
+          </a>
+          <button class="fcircle-random-refresh" title="换一个">
+            <span class="icon-[ph--arrows-clockwise-bold]"></span>
+          </button>
+        </div>
+        <div class="fcircle-articles" id="friends-list">
+          <div
+            th:each="linkFeed,iterStat : ${linkFeeds?.items}"
+            class="fcircle-item"
+            th:style="'--delay: ' + ${iterStat.index * 0.03} + 's'"
+          >
+            <a
+              th:href="${linkFeed.authorUrl}"
+              target="_blank"
+              rel="noopener"
+              class="fcircle-item-image"
+              th:if="${linkFeed.authorLogo != null and linkFeed.authorLogo != ''}"
+            >
+              <img th:src="${linkFeed.authorLogo}" th:alt="${linkFeed.author}" loading="lazy" />
+            </a>
+            <a
+              th:href="${linkFeed.authorUrl}"
+              target="_blank"
+              rel="noopener"
+              th:unless="${linkFeed.authorLogo != null and linkFeed.authorLogo != ''}"
+              class="fcircle-avatar-placeholder"
+            >
+              <span class="icon-[ph--user-bold]"></span>
+            </a>
+            <a th:href="${linkFeed.url}" target="_blank" rel="noopener" class="fcircle-item-container gradient-card">
+              <div class="fcircle-item-header">
+                <span class="fcircle-item-author" th:text="${linkFeed.author}">网站名</span>
+                <span class="fcircle-item-title" th:text="${linkFeed.title}">文章标题</span>
+                <time
+                  th:if="${linkFeed.publishedAt != null}"
+                  class="fcircle-item-date"
+                  th:datetime="${linkFeed.publishedAt}"
+                  th:text="${#temporals.format(linkFeed.publishedAt, 'yyyy-MM-dd')}"
+                ></time>
+              </div>
+              <span
+                th:if="${linkFeed.summary != null and linkFeed.summary != ''}"
+                class="fcircle-item-desc"
+                th:text="${linkFeed.summary}"
+              ></span>
+            </a>
+          </div>
+        </div>
+
+        <div th:if="${linkFeeds == null or #lists.isEmpty(linkFeeds.items)}" class="friends-empty">
+          <span class="icon-[ph--rss-bold]"></span>
+          <p>暂无订阅内容</p>
+          <span class="empty-hint">请在链接插件中为友链配置 RSS，并开启「公开 RSS 订阅动态」</span>
+        </div>
+
+        <div class="friends-load-more" th:if="${linkFeeds != null and linkFeeds.hasNext}">
+          <button
+            type="button"
+            id="friends-load-more-btn"
+            class="friends-load-more-btn"
+            th:attr="data-before-published-at=${linkFeeds.nextBeforePublishedAt}, data-before-id=${linkFeeds.nextBeforeId}"
+          >
+            <span class="friends-load-more-text">加载更多</span>
+          </button>
+        </div>
+      </div>
+    </th:block>
+
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      window.friendsPageConfig = {
+        feedLimit: /*[[${friendsConfig?.feed_limit ?: 30}]]*/ 30,
+        enableRandom: /*[[${friendsConfig == null or friendsConfig.enable_random != false}]]*/ true,
+      };
+      /*]]>*/
+    </script>
+  </th:block>
+</html>

@@ -11,6 +11,7 @@ import { syncThemeConfig } from "./theme-config";
 import { initTwikooComments } from "../../utils/twikoo";
 import { initActivityCalendar } from "../../utils/activity-calendar";
 import { initAsideScrollSync } from "../../modules/aside-scroll-sync";
+import { initContentWidgets } from "./content-widgets";
 
 export { syncThemeConfig } from "./theme-config";
 export { reinitializeAlpineComponents } from "./alpine";
@@ -19,6 +20,7 @@ export { initActiveNavItem, initDropdownMenus } from "./navigation";
 export { initBackToTop } from "./back-to-top";
 export { momentsTags } from "./moments-tags";
 export { initMermaid } from "./mermaid";
+export { initContentWidgets } from "./content-widgets";
 
 /**
  * 重新初始化页面组件
@@ -44,4 +46,5 @@ export const reinitializeComponents = () => {
   initMermaid();
   void initTwikooComments();
   initAsideScrollSync();
+  initContentWidgets();
 };

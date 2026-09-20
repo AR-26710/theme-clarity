@@ -14,7 +14,11 @@
       <a th:if="${prevPost != null}" th:href="${prevPost.status.permalink}" class="surround-link">
         <span class="icon-[solar--rewind-back-bold-duotone] rtl-flip"></span>
         <div class="surround-text">
-          <strong class="title text-creative" th:text="${prevPost.spec.title}"></strong>
+          <strong
+            class="title text-creative"
+            th:text="${prevPost.spec.title}"
+            th:title="${prevPost.spec.title}"
+          ></strong>
           <span class="date" th:text="${#temporals.format(prevPost.spec.publishTime, 'yyyy-MM-dd')}"></span>
         </div>
       </a>
@@ -28,7 +32,11 @@
       <a th:if="${nextPost != null}" th:href="${nextPost.status.permalink}" class="surround-link align-end">
         <span class="icon-[solar--rewind-forward-bold-duotone] rtl-flip"></span>
         <div class="surround-text">
-          <strong class="title text-creative" th:text="${nextPost.spec.title}"></strong>
+          <strong
+            class="title text-creative"
+            th:text="${nextPost.spec.title}"
+            th:title="${nextPost.spec.title}"
+          ></strong>
           <span class="date" th:text="${#temporals.format(nextPost.spec.publishTime, 'yyyy-MM-dd')}"></span>
         </div>
       </a>

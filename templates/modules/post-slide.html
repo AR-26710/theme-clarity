@@ -38,7 +38,7 @@
             </div>
 
             <div class="info">
-              <div class="title text-creative" th:text="${post.spec.title}"></div>
+              <div class="title text-creative" th:text="${post.spec.title}" th:title="${post.spec.title}"></div>
               <div class="desc" th:if="${post.spec.publishTime}">
                 <span class="icon-[ph--calendar-dots-bold]"></span>
                 <span th:text="${#temporals.format(post.spec.publishTime, 'yyyy-MM-dd')}"></span>
