@@ -1,6 +1,7 @@
 <section
   th:fragment="moments-widget"
   class="widget"
+  th:if="${pluginFinder.available('PluginMoments')}"
   th:with="momentsTitle = ${item.moments_title ?: '微语'}, noTextConfig = ${item.moments_no_text}"
 >
   <hgroup class="widget-title">

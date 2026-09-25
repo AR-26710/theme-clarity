@@ -21,6 +21,7 @@ import {
   initActiveNavItem,
   initSearchShortcut,
   initAsideScrollSync,
+  initPluginHints,
 } from "./modules";
 
 // 注册全局函数
@@ -58,11 +59,13 @@ document.addEventListener("DOMContentLoaded", () => {
   void initTwikooComments();
   initFloatingPagination();
   initAsideScrollSync();
+  initPluginHints();
 });
 
 window.addEventListener("swup:success", () => {
   window.setTimeout(() => {
     initFloatingPagination();
     initAsideScrollSync();
+    initPluginHints();
   }, 0);
 });

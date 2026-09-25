@@ -129,6 +129,14 @@
 
     <div id="content">
       <main id="main-content">
+        <!-- 互动装扮依赖 interaction-plus 插件：主题开关开启但插件不可用时仅向管理员提示 -->
+        <th:block
+          th:if="${theme.config.plugins?.interaction_plus?.enable != false and not pluginFinder.available('interaction-plus')}"
+        >
+          <th:block
+            th:replace="~{modules/plugin-hint :: hint(feature='互动装扮展示', plugin='互动增强（interaction-plus）', hintId='interaction-plus', extraClass='plugin-hint-page')}"
+          ></th:block>
+        </th:block>
         <th:block th:replace="${content}" />
 
         <th:block th:replace="~{modules/footer :: footer}" />

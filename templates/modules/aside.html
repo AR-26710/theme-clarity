@@ -25,6 +25,12 @@
         </th:block>
         <th:block th:case="'moments'">
           <th:block th:replace="~{modules/aside-widgets/moments-widget :: moments-widget}"></th:block>
+          <!-- 微语组件依赖瞬间插件：未安装/未启用时仅向管理员提示 -->
+          <th:block th:unless="${pluginFinder.available('PluginMoments')}">
+            <th:block
+              th:replace="~{modules/plugin-hint :: hint(feature='侧边栏「微语」组件', plugin='瞬间（PluginMoments）', hintId='moments-widget', extraClass='widget')}"
+            ></th:block>
+          </th:block>
         </th:block>
         <th:block th:case="'community'">
           <th:block th:replace="~{modules/aside-widgets/community-widget :: community-widget}"></th:block>
