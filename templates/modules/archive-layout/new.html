@@ -1,4 +1,7 @@
-<th:block th:fragment="layout(title, posts, thumbnail, backUrl, backText, icon, emptyText)">
+<th:block
+  th:fragment="layout(title, posts, thumbnail, backUrl, backText, icon, emptyText)"
+  th:with="fromCategory=${fromCategory ?: false}"
+>
   <div class="archive proper-height">
     <header class="archive-simple-header">
       <a th:href="${backUrl}" class="archive-back" th:title="'返回' + ${backText}">
@@ -18,7 +21,10 @@
         th:style="'--delay: ' + ${postStat.index * 0.03} + 's'"
       >
         <time th:text="${#temporals.format(post.spec.publishTime, 'MM/dd')}"></time>
-        <a th:href="${post.status.permalink}" class="article-link gradient-card">
+        <a
+          th:href="${post.status.permalink + (fromCategory ? '?from=category' : '')}"
+          class="article-link gradient-card"
+        >
           <span class="article-title" th:text="${post.spec.title}" th:title="${post.spec.title}"></span>
           <th:block th:if="${post.spec.pinned}" th:insert="~{modules/common/pinned-icon :: pinned-icon}" />
           <img
