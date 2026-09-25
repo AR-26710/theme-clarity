@@ -1,11 +1,18 @@
 <!-- 搜索组件 -->
-<div
-  th:fragment="search-button"
-  th:if="${pluginFinder.available('PluginSearchWidget')}"
-  class="search-btn sidebar-nav-item gradient-card"
-  onclick="SearchWidget.open()"
->
-  <span class="icon-[ph--magnifying-glass-bold]"></span>
-  <span class="nav-text">搜索</span>
-  <kbd class="search-shortcut" x-data x-text="navigator.platform.includes('Mac') ? '⌘K' : 'Ctrl+K'"></kbd>
-</div>
+<th:block th:fragment="search-button">
+  <div
+    th:if="${pluginFinder.available('PluginSearchWidget')}"
+    class="search-btn sidebar-nav-item gradient-card"
+    onclick="SearchWidget.open()"
+  >
+    <span class="icon-[ph--magnifying-glass-bold]"></span>
+    <span class="nav-text">搜索</span>
+    <kbd class="search-shortcut" x-data x-text="navigator.platform.includes('Mac') ? '⌘K' : 'Ctrl+K'"></kbd>
+  </div>
+  <!-- 搜索按钮依赖搜索插件：未安装/未启用时仅向管理员提示 -->
+  <th:block th:unless="${pluginFinder.available('PluginSearchWidget')}">
+    <th:block
+      th:replace="~{modules/plugin-hint :: hint(feature='侧边栏搜索', plugin='搜索组件（PluginSearchWidget）', hintId='search-widget', extraClass='')}"
+    ></th:block>
+  </th:block>
+</th:block>

@@ -1,0 +1,30 @@
+<!--/*
+  插件缺失提示条（仅管理员可见，可关闭并记忆）
+  调用方需先用 pluginFinder.available(...) 判断插件可用性，仅在不可用时渲染本片段。
+  参数：
+    feature    受影响的功能描述，如 侧边栏「微语」组件
+    plugin     插件展示名（含 metadata.name），如 瞬间（PluginMoments）
+    hintId     唯一标识，用于关闭状态记忆
+    extraClass 额外 class，如侧边栏列中传 widget 以继承组件间距
+*/-->
+<div
+  th:fragment="hint (feature, plugin, hintId, extraClass)"
+  th:id="|plugin-hint-${hintId}|"
+  class="plugin-hint"
+  th:classappend="${extraClass}"
+  th:attr="data-hint-id=${hintId}"
+  role="alert"
+  sec:authorize="hasRole('super-role')"
+>
+  <span class="icon-[ph--plugs-bold] plugin-hint-icon" aria-hidden="true"></span>
+  <div class="plugin-hint-body">
+    <p class="plugin-hint-text" th:text="|${feature} 需要安装并启用「${plugin}」插件|">功能需要安装并启用「插件」</p>
+    <a class="plugin-hint-link" href="/console/plugins" target="_blank" rel="noopener" data-no-swup>
+      前往插件管理
+      <span class="icon-[ph--arrow-up-right-bold]" aria-hidden="true"></span>
+    </a>
+  </div>
+  <button class="plugin-hint-close" type="button" aria-label="关闭提示" data-plugin-hint-dismiss>
+    <span class="icon-[ph--x-bold]" aria-hidden="true"></span>
+  </button>
+</div>

@@ -616,6 +616,7 @@ spec:
                 - $formkit: select
                   name: widget
                   label: 小组件
+                  help: 「微语」需安装并启用「瞬间」插件后可用；「活跃日历」中的瞬间数据同样依赖该插件
                   options:
                     - value: "stats"
                       label: 博客统计
