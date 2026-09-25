@@ -1,4 +1,7 @@
-<th:block th:fragment="layout(title, posts, thumbnail, icon, cover, description, postCount, caller)">
+<th:block
+  th:fragment="layout(title, posts, thumbnail, icon, cover, description, postCount, caller)"
+  th:with="fromCategory=${fromCategory ?: false}"
+>
   <div class="archive-page">
     <header class="archive-page-header card">
       <div class="archive-page-info">
@@ -24,6 +27,8 @@
       />
     </header>
 
-    <th:block th:replace="~{modules/post-list :: list(posts=${posts}, caller=${caller})}" />
+    <th:block
+      th:replace="~{modules/post-list :: list(posts=${posts}, caller=${caller}, fromCategory=${fromCategory})}"
+    />
   </div>
 </th:block>

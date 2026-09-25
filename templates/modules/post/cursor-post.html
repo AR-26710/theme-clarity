@@ -1,7 +1,9 @@
 <th:block th:fragment="cursor-post(post, theme, postFinder)">
   <th:block
     th:with="
-      cursor = ${postFinder.cursor(post.metadata.name)},
+      fromCategory = ${#lists.contains(param.from, 'category')},
+      cursor = ${fromCategory ? postFinder.cursorByCategory(post.metadata.name) : postFinder.cursor(post.metadata.name)},
+      cursorSuffix = ${fromCategory ? '?from=category' : ''},
       prevPost = ${(theme.config.post.cursor != null and theme.config.post.cursor) ? cursor.previous : cursor.next},
       nextPost = ${(theme.config.post.cursor != null and theme.config.post.cursor) ? cursor.next : cursor.previous}
     "
@@ -9,9 +11,9 @@
     <div
       th:if="${prevPost != null or nextPost != null}"
       class="surround-post"
-      th:attr="data-prev-url=${prevPost != null ? prevPost.status.permalink : ''}, data-next-url=${nextPost != null ? nextPost.status.permalink : ''}"
+      th:attr="data-prev-url=${prevPost != null ? prevPost.status.permalink + cursorSuffix : ''}, data-next-url=${nextPost != null ? nextPost.status.permalink + cursorSuffix : ''}"
     >
-      <a th:if="${prevPost != null}" th:href="${prevPost.status.permalink}" class="surround-link">
+      <a th:if="${prevPost != null}" th:href="${prevPost.status.permalink + cursorSuffix}" class="surround-link">
         <span class="icon-[solar--rewind-back-bold-duotone] rtl-flip"></span>
         <div class="surround-text">
           <strong
@@ -29,7 +31,11 @@
         </div>
       </div>
 
-      <a th:if="${nextPost != null}" th:href="${nextPost.status.permalink}" class="surround-link align-end">
+      <a
+        th:if="${nextPost != null}"
+        th:href="${nextPost.status.permalink + cursorSuffix}"
+        class="surround-link align-end"
+      >
         <span class="icon-[solar--rewind-forward-bold-duotone] rtl-flip"></span>
         <div class="surround-text">
           <strong
