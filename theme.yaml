@@ -15,7 +15,7 @@ spec:
   settingName: "theme-clarity-setting"
   configMapName: "theme-clarity-configMap"
   version: "1.6.6"
-  requires: ">=2.22.0"
+  requires: ">=2.26.0"
   customTemplates:
     page:
       - name: 朋友圈
