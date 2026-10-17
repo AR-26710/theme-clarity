@@ -1153,6 +1153,11 @@ spec:
           label: 启用随机访问
           value: true
           help: 开启后显示随机友链跳转按钮
+        - $formkit: switch
+          name: show_access_status
+          label: 显示可访问性状态
+          value: true
+          help: 在友链卡片上显示站点在线/离线状态指示（需 Links 插件支持并执行过检测）
         - $formkit: group
           name: my_info
           label: 我的博客信息

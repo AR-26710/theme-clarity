@@ -8,11 +8,20 @@
     ></p>
 
     <menu class="feed-list">
-      <li th:each="link,linkStat : ${group.links}">
+      <li
+        th:each="link,linkStat : ${group.links}"
+        th:with="access=${(theme.config.links?.show_access_status != false) ? link.status?.verification?.access : null}, accessState=${access?.state?.name()}"
+      >
         <div class="feed-card-wrapper" th:data-link="${link.spec.url}">
           <a th:href="${link.spec.url}" class="feed-card gradient-card" target="_blank" rel="noopener noreferrer">
             <div class="avatar">
               <img th:src="${link.spec.logo}" th:alt="${link.spec.displayName}" loading="lazy" />
+              <i
+                th:if="${accessState != null}"
+                class="access-status"
+                th:classappend="${accessState == 'ACCESSIBLE'} ? 'is-accessible' : (${accessState == 'INACCESSIBLE'} ? 'is-inaccessible' : 'is-checking')"
+                th:title="${accessState == 'ACCESSIBLE'} ? '站点在线' : (${accessState == 'INACCESSIBLE'} ? '站点无法访问' : '可访问性检测中')"
+              ></i>
             </div>
             <span class="author" th:text="${link.spec.displayName}"></span>
           </a>
@@ -30,6 +39,19 @@
             </div>
             <div class="desc-content">
               <p th:text="${link.spec.description}"></p>
+              <p class="remark access-remark" th:if="${accessState != null}">
+                <i
+                  class="access-status"
+                  th:classappend="${accessState == 'ACCESSIBLE'} ? 'is-accessible' : (${accessState == 'INACCESSIBLE'} ? 'is-inaccessible' : 'is-checking')"
+                ></i>
+                <span th:if="${accessState == 'ACCESSIBLE'}">站点可访问</span>
+                <span th:if="${accessState == 'CHECKING'}">正在检测可访问性…</span>
+                <span
+                  th:if="${accessState == 'INACCESSIBLE'}"
+                  th:title="${access?.error}"
+                  th:text="${access?.statusCode != null and access.statusCode > 0 ? '无法访问 (HTTP ' + access.statusCode + ')' : '无法访问'}"
+                ></span>
+              </p>
             </div>
           </div>
         </div>
