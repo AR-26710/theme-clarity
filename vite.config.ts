@@ -36,7 +36,6 @@ export default ({ mode }: { mode: string }) => {
     photos: path.resolve(__dirname, "src/styles/photos/main.scss"),
     equipments: path.resolve(__dirname, "src/styles/equipments/main.scss"),
     steam: path.resolve(__dirname, "src/styles/steam/main.scss"),
-    docs: path.resolve(__dirname, "src/styles/docs/main.scss"),
     ...getAuthEntries(),
   };
 
