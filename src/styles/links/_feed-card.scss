@@ -80,3 +80,53 @@
     font-size: 0.8em;
   }
 }
+
+// ========================================
+// 可访问性状态指示 (Access Status)
+// ========================================
+.access-status {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background-color: var(--c-text-3);
+
+  &.is-accessible {
+    background-color: #34c759;
+  }
+
+  &.is-inaccessible {
+    background-color: #ff3b30;
+  }
+
+  &.is-checking {
+    background-color: #ffcc00;
+    animation: access-status-blink 1s ease-in-out infinite alternate;
+  }
+}
+
+// 卡片头像角标
+.avatar > .access-status {
+  position: absolute;
+  inset-inline-end: -0.25em;
+  bottom: -0.25em;
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 2px solid var(--ld-bg-card);
+}
+
+// 悬浮提示中的状态行
+.feed-tooltip .access-remark .access-status {
+  font-style: normal;
+}
+
+@keyframes access-status-blink {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.35;
+  }
+}
